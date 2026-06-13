@@ -10,7 +10,9 @@ import UIKit
 final class SignUpViewController: BaseViewController {
     
     //MARK: - Properties
-        
+    
+    private let viewModel: SignUpViewModel
+    
     private let mainStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -78,27 +80,100 @@ final class SignUpViewController: BaseViewController {
     
     //MARK: - Init
     
+    init(viewModel: SignUpViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     //MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        bindViewModel()
+        addActionsToButtons()
     }
     
     // MARK: - Methods
     
     private func setUpUI() {
         setCustomBackground()
-        //
+        setCustomBackButton(with: "Sign Up") { [weak self] in
+            guard let self else { return }
+            viewModel.onBack?()
+        }
         configureMainStackSubviews()
         configureKeyboardScrollView()
         setupScrollView()
     }
-
+    
+    private func bindViewModel() {
+        viewModel.onValidationError = { [weak self] errors in
+            guard let self = self else { return }
+            
+            for error in errors {
+                switch error.field {
+                case .fullname:
+                    fullnameField.showError(error.message)
+                case .username:
+                    usernameField.showError(error.message)
+                case .email:
+                    emailField.showError(error.message)
+                case .password:
+                    passwordField.showError(error.message)
+                case .confirmPassword:
+                    confirmPasswordField.showError(error.message)
+                }
+            }
+        }
+        
+        viewModel.onAuthenticationError = { [weak self] error in
+            guard let self = self else { return }
+            emailField.showError(error.message)
+        }
+        
+        //        viewModel.onLoading = { [weak self] isLoading in
+        //            guard let self = self else { return }
+        //            if isLoading {
+        //                self.showLoader()
+        //            } else {
+        //                self.hideLoader()
+        //            }
+        //        }
+    }
+    
     
     private func configureKeyboardScrollView() {
         keyboardScrollView = scrollView
+    }
+    
+    private func addActionsToButtons() {
+        addActionToSignUp()
+        addActionToLogin()
+    }
+    
+    private func addActionToSignUp() {
+        signUpButton.addAction( UIAction { [weak self] _ in
+            guard let self = self, let fullname = fullnameField.text,
+                  let username = usernameField.text,
+                  let email = emailField.text,
+                  let password = passwordField.text,
+                  let confirmPassword = confirmPasswordField.text  else { return }
+            Task {
+                await self.viewModel.signUp(with: User(fullname: fullname, username: username, email: email), password: password, confirmPassword: confirmPassword)}
+        }, for: .touchUpInside)
+    }
+    
+    private func addActionToLogin(){
+        loginButton.addAction( UIAction { [weak self] _ in
+            guard let self = self else { return }
+            viewModel.backButtonTapped()
+        }, for: .touchUpInside)
     }
     
     private func setupScrollView() {
