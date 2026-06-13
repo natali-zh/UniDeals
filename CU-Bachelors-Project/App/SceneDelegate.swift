@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+   // var appCoordinator: AppCoordinator?
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -18,9 +20,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        window.rootViewController = ViewController()
+        window.rootViewController = LoginViewController(viewModel: LoginViewModel())
         self.window = window
         window.makeKeyAndVisible()
+        
+       
+//        guard let windowScene = scene as? UIWindowScene else { return }
+//        let window = UIWindow(windowScene: windowScene)
+//        self.window = window
+//        
+//        let coordinator = AppCoordinator(window: window)
+//        self.appCoordinator = coordinator
+//        coordinator.start()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -51,6 +62,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url else { return }
+        GIDSignIn.sharedInstance.handle(url)
+    }
 }
-
