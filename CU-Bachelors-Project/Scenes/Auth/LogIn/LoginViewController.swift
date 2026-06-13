@@ -286,6 +286,13 @@ final class LoginViewController: BaseViewController {
             passwordField.showError(error.message)
         }
         
+        viewModel.onGoogleAuthError = { [weak self] message in
+            guard let self else { return }
+            let alert = UIAlertController(title: "Not a Student Account", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
+        
         //        viewModel.onLoading = { [weak self] isLoading in
         //            guard let self = self else { return }
         //            if isLoading {
@@ -304,6 +311,7 @@ final class LoginViewController: BaseViewController {
         addActionToLoginButton()
         addActionToSignUpButton()
         addActionToGoogleButton()
+        addActionToForgotPasswordButton()
     }
     
     private func addActionToLoginButton() {
@@ -323,6 +331,12 @@ final class LoginViewController: BaseViewController {
         googleButton.addAction( UIAction { [weak self] _ in
             guard let self = self else { return }
             Task { await self.viewModel.googleSignInTapped(from: self)}
+        }, for: .touchUpInside)
+    }
+    
+    private func addActionToForgotPasswordButton() {
+        forgotPasswordButton.addAction(UIAction { [weak self] _ in
+            self?.viewModel.forgotPasswordTapped()
         }, for: .touchUpInside)
     }
     

@@ -34,6 +34,10 @@ final class AuthCoordinator : Coordinator {
         logInViewModel.onNavigateToSignUp = { [weak self] in
             self?.goToSignUp()
         }
+        
+        logInViewModel.onNavigateToForgotPassword = { [weak self] in
+            self?.goToForgotPassword()
+        }
         navigationController.setViewControllers([loginViewController], animated: true)
     }
     
@@ -47,5 +51,14 @@ final class AuthCoordinator : Coordinator {
             self?.navigationController.popViewController(animated: true)
         }
         navigationController.pushViewController(signUpViewController, animated: true)
+    }
+    
+    func goToForgotPassword() {
+        let forgotPasswordViewModel = ForgotPasswordViewModel()
+        let forgotPasswordViewController = ForgotPasswordViewController(viewModel: forgotPasswordViewModel)
+        forgotPasswordViewModel.onBack = { [weak self] in
+            self?.navigationController.popViewController(animated: true)
+        }
+        navigationController.pushViewController(forgotPasswordViewController, animated: true)
     }
 }

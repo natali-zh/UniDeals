@@ -19,9 +19,11 @@ final class LoginViewModel {
     var onLoading: ((Bool) -> Void)?
     var onLoginSuccess: (() -> Void)?
     var onNavigateToSignUp: (() -> Void)?
+    var onNavigateToForgotPassword: (() -> Void)?
     
     var onValidationError: (([FieldError]) -> Void)?
     var onAuthenticationError: ((FieldError) -> Void)?
+    var onGoogleAuthError: ((String) -> Void)?
     
     //MARK: - Init
     
@@ -31,12 +33,31 @@ final class LoginViewModel {
     
     //MARK: - Methods
     
+    //    func googleSignInTapped(from viewController: UIViewController) async {
+    //        onLoading?(true)
+    //        defer { onLoading?(false) }
+    //
+    //        do {
+    //            let _ = try await authService.signInWithGoogle(presenting: viewController)
+    //            onLoginSuccess?()
+    //        } catch {
+    //        }
+    //    }
     func googleSignInTapped(from viewController: UIViewController) async {
         onLoading?(true)
         defer { onLoading?(false) }
         
         do {
-            let _ = try await authService.signInWithGoogle(presenting: viewController)
+            try await authService.signInWithGoogle(presenting: viewController)
+            
+            let email = Auth.auth().currentUser?.email ?? ""
+            
+            guard Validators.isStudentEmail(email) else {
+                onGoogleAuthError?("Please use your university email to sign in")
+                try? authService.signOut()
+                return
+            }
+            
             onLoginSuccess?()
         } catch {
         }
@@ -82,5 +103,9 @@ final class LoginViewModel {
     
     func signUpTapped() {
         onNavigateToSignUp?()
+    }
+    
+    func forgotPasswordTapped() {
+        onNavigateToForgotPassword?()
     }
 }

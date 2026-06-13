@@ -14,6 +14,8 @@ protocol AuthServiceProtocol {
     func signInWithGoogle(presenting: UIViewController) async throws
     func logIn(email: String, password: String) async throws
     func register(user: User, password: String) async throws
+    func resetPassword(email: String) async throws
+    func signOut() throws
 }
 
 final class AuthService: AuthServiceProtocol {
@@ -63,6 +65,13 @@ final class AuthService: AuthServiceProtocol {
         try await createFirestoreUser(uid: authResult.user.uid, user: user)
     }
     
+    func resetPassword(email: String) async throws {
+        try await Auth.auth().sendPasswordReset(withEmail: email)
+    }
+    
+    func signOut() throws {
+        try auth.signOut()
+    }
     
     // MARK: - Methods
     
