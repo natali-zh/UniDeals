@@ -160,6 +160,7 @@ final class LoginViewController: BaseViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    
     private let titleLabel = CustomLabel(
         text: "UniDeals",
         color: .gray900,

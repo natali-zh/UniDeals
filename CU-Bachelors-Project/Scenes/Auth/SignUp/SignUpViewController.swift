@@ -28,6 +28,18 @@ final class SignUpViewController: BaseViewController {
         return scrollView
     }()
     
+    private let titleLabel = CustomLabel(
+        text: "Create Account",
+        color: .gray900,
+        font: .systemFont(ofSize: 24, weight: .bold)
+    )
+    
+    private let descriptionLabel = CustomLabel(
+        text: "Join thousands of students saving money",
+        color: .gray500,
+        font: .systemFont(ofSize: 14, weight: .medium)
+    )
+    
     private let fullnameField = TextFieldWithError(
         labelText: "Full Name",
         textField: CustomTextField(
@@ -103,7 +115,7 @@ final class SignUpViewController: BaseViewController {
     
     private func setUpUI() {
         setCustomBackground()
-        setCustomBackButton(with: "Sign Up") { [weak self] in
+        setCustomBackButton { [weak self] in
             guard let self else { return }
             viewModel.onBack?()
         }
@@ -197,6 +209,9 @@ final class SignUpViewController: BaseViewController {
     }
     
     private func configureMainStackSubviews() {
+        mainStackView.addArrangedSubview(titleLabel)
+        mainStackView.addArrangedSubview(descriptionLabel)
+        mainStackView.setCustomSpacing(36, after: descriptionLabel)
         mainStackView.addArrangedSubview(fullnameField)
         mainStackView.addArrangedSubview(usernameField)
         mainStackView.addArrangedSubview(emailField)

@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 extension UIViewController {
-    func setCustomBackButton(with title: String, action: @escaping (() -> Void)) {
+    func setCustomBackButton(with title: String = "", action: @escaping (() -> Void)) {
         setTitle(title)
         let backButton = UIButton(type: .system)
         backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
