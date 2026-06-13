@@ -5,57 +5,6 @@
 //  Created by Natali Zhgenti on 27.04.26.
 //
 
-//import UIKit
-//
-//final class CustomButton: UIButton {
-//    
-//    enum ButtonTypes {
-//        case text
-//        case filled
-//    }
-//    
-//    //MARK: - Properties
-//    
-//    private let text: String
-//    
-//    //MARK: - Methods
-//    
-//    init(text: String, buttonType: ButtonTypes = .filled) {
-//        self.text = text
-//        super.init(frame: .zero)
-//        setTitle(text, for: .normal)
-//        
-//        titleLabel?.font =  UIFont.systemFont(ofSize: 14, weight: .semibold)
-//        
-//        
-//        switch buttonType {
-//        case .filled:
-//            backgroundColor = .colorPrimary
-//            layer.cornerRadius = 15
-//            heightAnchor.constraint(equalToConstant: 48).isActive = true
-////            titleLabel?.font =  UIFont.systemFont(ofSize: 14, weight: .semibold)
-//        case .text:
-//            setTitleColor(.colorPrimary, for: .normal)
-//        }
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-//    //MARK: - Methods
-//    
-//    //private func
-//    
-//}
-
-//
-//  CustomButton.swift
-//  FinalProject
-//
-//  Created by Natali Zhgenti on 07.01.26.
-//
-
 import UIKit
 
 final class CustomButton: UIButton {

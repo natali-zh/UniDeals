@@ -60,6 +60,11 @@ final class AppCoordinator: Coordinator {
     }
     
     private func showMainFlow() {
+        let mainCoordinator = MainCoordinator()
+        mainCoordinator.parentCoordinator = self
+        childCoordinators = [mainCoordinator]
+        mainCoordinator.start()
+        window.rootViewController = mainCoordinator.rootViewController
     }
     
     func logOut() {
