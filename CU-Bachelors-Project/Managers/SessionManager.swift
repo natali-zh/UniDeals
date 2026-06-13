@@ -22,7 +22,7 @@ final class SessionManager {
     //MARK: - Init
     
     private init() {
-        //try? Auth.auth().signOut()
+        try? Auth.auth().signOut()
     }
     
     //MARK: - Computed Properties

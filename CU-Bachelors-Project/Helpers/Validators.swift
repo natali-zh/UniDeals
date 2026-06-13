@@ -25,6 +25,12 @@ struct Validators {
         return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: email)
     }
     
+    static func isStudentEmail(_ email: String) -> Bool {
+        let lowercased = email.lowercased().trimmingCharacters(in: .whitespaces)
+        guard let domain = lowercased.split(separator: "@").last else { return false }
+        return domain.hasSuffix(".edu")
+    }
+    
     static func isValidPassword(_ password: String) -> Bool {
         password.count >= 8
     }

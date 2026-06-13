@@ -67,8 +67,9 @@ final class SignUpViewModel {
             errors.append(FieldError(field: .email, message: AuthErrorMessage.emptyEmail.message, type: .validation))
         } else if !Validators.isValidEmail(email) {
             errors.append(FieldError(field: .email, message: AuthErrorMessage.invalidEmail.message, type: .validation))
+        } else if !Validators.isStudentEmail(email) {
+            errors.append(FieldError(field: .email, message: AuthErrorMessage.invalidStudentEmail.message, type: .validation))
         }
-        
         
         if password.isEmpty {
             errors.append(FieldError(field: .password, message: AuthErrorMessage.emptyPassword.message, type: .validation))

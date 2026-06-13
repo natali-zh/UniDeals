@@ -15,6 +15,7 @@ enum AuthErrorMessage {
     case invalidFullname
     case invalidUsername
     case invalidEmail
+    case invalidStudentEmail
     case invalidPassword
     case differentPasswords
     
@@ -40,6 +41,8 @@ enum AuthErrorMessage {
             return "Only letters, numbers, and underscores allowed"
         case .invalidEmail:
             return "Invalid email format"
+        case .invalidStudentEmail:
+            return "Please use your university email address (.edu)"
         case .invalidPassword:
             return "Password must contain at least 8 characters"
             
