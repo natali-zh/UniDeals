@@ -5,10 +5,11 @@
 //  Created by Natali Zhgenti on 15.06.26.
 //
 
+import FirebaseFirestore
 import Foundation
 
 struct Discount: Identifiable, Decodable {
-    let id: String
+    @DocumentID var id: String?
     let storeId: String
     let storeName: String
     let storeAddress: String
@@ -26,9 +27,28 @@ struct Discount: Identifiable, Decodable {
     let endDate: Date
     let imageUrl: String?
     
-    //eseni computed ari
     var distanceKm: Double = 0
     var isSaved: Bool = false
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case storeId
+        case storeName
+        case storeAddress
+        case latitude
+        case longitude
+        case title
+        case description
+        case category
+        case discountType
+        case discountValue
+        case label
+        case isFeatured
+        case usageLimit
+        case startDate
+        case endDate
+        case imageUrl
+    }
 }
 
 struct DiscountCategory: Identifiable {
