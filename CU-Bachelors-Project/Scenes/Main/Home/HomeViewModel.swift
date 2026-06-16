@@ -5,8 +5,8 @@
 //  Created by Natali Zhgenti on 17.06.26.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 @MainActor
 final class HomeViewModel: ObservableObject {
@@ -15,7 +15,7 @@ final class HomeViewModel: ObservableObject {
     
     private let discountService: DiscountServiceProtocol
     
-    // MARK: - Properteis
+    // MARK: - Published Properties
     
     @Published private var discounts: [Discount] = []
     @Published var categories: [DiscountCategory] = []
@@ -25,7 +25,7 @@ final class HomeViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     
-    // MARK: - Computed Properties
+    // MARK: - Computed properties
     
     var featured: [Discount] {
         discounts.filter { $0.isFeatured }
@@ -79,7 +79,8 @@ final class HomeViewModel: ObservableObject {
     }
     
     func toggleSave(_ id: String) {
-        guard let index = discounts.firstIndex(where: { $0.id == id }) else { return }
+        guard !id.isEmpty,
+              let index = discounts.firstIndex(where: { $0.id == id }) else { return }
         discounts[index].isSaved.toggle()
         // TODO: persist to users/{userId}/savedDiscounts/{discountId}
     }
