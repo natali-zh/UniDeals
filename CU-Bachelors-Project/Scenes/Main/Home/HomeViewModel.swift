@@ -70,7 +70,9 @@ final class HomeViewModel: ObservableObject {
             result.sort { $0.distanceKm < $1.distanceKm }
         case .expiringSoon:
             result.sort { $0.endDate < $1.endDate }
-        case .default:
+        case .newest:
+            result.sort { $0.startDate > $1.startDate }
+        case .none:
             break
         }
 

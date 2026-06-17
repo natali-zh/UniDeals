@@ -13,6 +13,12 @@ struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
     @State private var pendingFilter = DiscountFilter()
     
+    // MARK: - Init
+    
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+    }
+    
     //MARK: - Body
     
     var body: some View {

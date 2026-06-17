@@ -8,30 +8,44 @@
 import Foundation
 
 struct DiscountFilter: Equatable {
-    var sortBy: SortOption = .default
-    var maxDistanceKm: Double? = nil
     var discountType: DiscountTypeFilter = .all
+    var maxDistanceKm: Double?
+    var sortBy: SortOption? = nil
 
     var isActive: Bool {
-        sortBy != .default || maxDistanceKm != nil || discountType != .all
+        sortBy != nil || discountType != .all || maxDistanceKm != nil
     }
 
     enum SortOption: String, CaseIterable {
-        case `default` = "ნაგულისხმევი"
-        case nearest = "ახლოს"
-        case expiringSoon = "მალე იწურება"
+        case nearest, expiringSoon, newest
+
+        var label: String {
+            switch self {
+            case .nearest:      return "მანძილი"
+            case .expiringSoon: return "ვადა"
+            case .newest:       return "დამატების თარიღი"
+            }
+        }
+
+        var arrow: String {
+            switch self {
+            case .nearest:      return "↑"
+            case .expiringSoon: return "↑"
+            case .newest:       return "↓"
+            }
+        }
     }
 
     enum DiscountTypeFilter: String, CaseIterable {
-        case all = "ყველა"
+        case all        = "ყველა"
         case percentage = "ფასდაკლება %"
-        case freeItem = "უფასო"
+        case freeItem   = "უფასო"
 
         var firestoreValue: String? {
             switch self {
-            case .all: return nil
+            case .all:        return nil
             case .percentage: return "percentage"
-            case .freeItem: return "freeItem"
+            case .freeItem:   return "freeItem"
             }
         }
     }

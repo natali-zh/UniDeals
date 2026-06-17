@@ -2,14 +2,14 @@
 //  ExploreView.swift
 //  CU-Bachelors-Project
 //
-//  Created by Natali Zhgenti on 14.06.26.
-//
 
 import SwiftUI
 
 struct ExploreView: View {
 
     @ObservedObject var viewModel: ExploreViewModel
+    @State private var showFilter = false
+    @State private var pendingFilter = DiscountFilter()
 
     // MARK: - Body
 
@@ -23,12 +23,9 @@ struct ExploreView: View {
                         .padding(.top, 8)
 
                     if viewModel.selectedTab == .discounts {
-                        ExploreCategoryBar(
-                            categories: viewModel.categories,
-                            selectedIds: viewModel.selectedCategoryIds,
-                            onToggle: { viewModel.toggleCategory($0) },
-                            onSelectAll: { viewModel.clearCategories() }
-                        )
+                        if hasActiveFilters {
+                            activeFilterChips
+                        }
 
                         if viewModel.isLoading {
                             ProgressView().padding(.top, 40)
@@ -55,12 +52,86 @@ struct ExploreView: View {
             .background(Color(red: 0.97, green: 0.97, blue: 0.98))
         }
         .navigationBarHidden(true)
+        .sheet(isPresented: $showFilter) {
+            FilterSheet(
+                filter: $pendingFilter,
+                selectedCategories: $viewModel.selectedCategoryIds,
+                categories: viewModel.categories,
+                onApply: {
+                    viewModel.activeFilter = pendingFilter
+                    showFilter = false
+                },
+                onReset: {
+                    pendingFilter = DiscountFilter()
+                    viewModel.activeFilter = DiscountFilter()
+                    viewModel.clearCategories()
+                    showFilter = false
+                }
+            )
+            .presentationDetents([.fraction(0.62), .large])
+            .presentationDragIndicator(.visible)
+        }
         .task {
             await viewModel.loadData()
         }
     }
 
-    // MARK: - Subviews
+    // MARK: - Custom filter overlay
+
+    // MARK: - Active filter state
+
+    private var hasActiveFilters: Bool {
+        viewModel.activeFilter.isActive || !viewModel.selectedCategoryIds.isEmpty
+    }
+
+    // MARK: - Active filter chips
+
+    private var activeFilterChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                // Sort chip
+                if let sort = viewModel.activeFilter.sortBy {
+                    ActiveFilterChip(label: "\(sort.label) \(sort.arrow)") {
+                        viewModel.activeFilter.sortBy = nil
+                    }
+                }
+
+                // Discount type chip
+                if viewModel.activeFilter.discountType != .all {
+                    ActiveFilterChip(label: viewModel.activeFilter.discountType.rawValue) {
+                        viewModel.activeFilter.discountType = .all
+                    }
+                }
+
+                // Category chips
+                ForEach(Array(viewModel.selectedCategoryIds), id: \.self) { catId in
+                    if let cat = viewModel.categories.first(where: { $0.id == catId }) {
+                        ActiveFilterChip(label: cat.name) {
+                            viewModel.selectedCategoryIds.remove(catId)
+                        }
+                    }
+                }
+
+                // Clear all
+                Button {
+                    viewModel.activeFilter = DiscountFilter()
+                    viewModel.clearCategories()
+                } label: {
+                    Text("გასუფთავება")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(.red)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(Color.red.opacity(0.08))
+                        .clipShape(Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, 16)
+        }
+    }
+
+    // MARK: - Header
 
     private var header: some View {
         VStack(spacing: 12) {
@@ -71,13 +142,22 @@ struct ExploreView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
 
-            HomeSearchBar(query: $viewModel.searchQuery)
+            HomeSearchBar(
+                query: $viewModel.searchQuery,
+                isFilterActive: hasActiveFilters,
+                onFilterTap: {
+                    pendingFilter = viewModel.activeFilter
+                    showFilter = true
+                }
+            )
             .padding(.horizontal, 4)
             .padding(.bottom, 4)
         }
         .background(Color.white)
         .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 2)
     }
+
+    // MARK: - Segmented control
 
     private var segmentedControl: some View {
         HStack(spacing: 0) {
@@ -109,6 +189,30 @@ struct ExploreView: View {
                 )
         }
         .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Active filter chip
+
+private struct ActiveFilterChip: View {
+    let label: String
+    let onRemove: () -> Void
+
+    var body: some View {
+        HStack(spacing: 5) {
+            Text(label)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundColor(.gray900)
+            Button(action: onRemove) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundColor(.gray500)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(Color.white)
+        .clipShape(Capsule())
     }
 }
 

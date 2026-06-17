@@ -2,40 +2,32 @@
 //  FilterSheet.swift
 //  CU-Bachelors-Project
 //
-//  Created by Natali Zhgenti on 17.06.26.
-//
 
 import SwiftUI
 
 struct FilterSheet: View {
     @Binding var filter: DiscountFilter
+    @Binding var selectedCategories: Set<String>
+    let categories: [DiscountCategory]
     let onApply: () -> Void
     let onReset: () -> Void
 
-    @Environment(\.dismiss) private var dismiss
-
-    private let distanceOptions: [(label: String, value: Double?)] = [
-        ("ნებისმიერი", nil),
-        ("1 კმ-მდე", 1),
-        ("5 კმ-მდე", 5),
-        ("10 კმ-მდე", 10)
-    ]
-
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            handle
-            header
+            VStack(alignment: .leading, spacing: 0) {
+                header
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    sortSection
-                    distanceSection
-                    discountTypeSection
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 28) {
+                        sortSection
+                        discountTypeSection
+                        categorySection
+                    }
+                    .padding(.top, 8)
+                    .padding(.bottom, 32)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
-                .padding(.bottom, 32)
             }
+            .padding(.horizontal, 20)
 
             actionButtons
         }
@@ -44,45 +36,56 @@ struct FilterSheet: View {
 
     // MARK: - Subviews
 
-    private var handle: some View {
-        Capsule()
-            .fill(Color.gray300)
-            .frame(width: 40, height: 4)
-            .frame(maxWidth: .infinity)
-            .padding(.top, 12)
-    }
-
     private var header: some View {
         Text("ფილტრი")
             .font(.system(size: 18, weight: .bold))
             .foregroundColor(.gray900)
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 12)
             .padding(.bottom, 12)
     }
 
     private var sortSection: some View {
-        FilterSectionContainer(
-            title: "დალაგება",
-            items: DiscountFilter.SortOption.allCases,
-            label: { $0.rawValue },
-            isSelected: { filter.sortBy == $0 },
-            onSelect: { filter.sortBy = $0 }
-        )
-    }
+        VStack(alignment: .leading, spacing: 12) {
+            Text("დალაგება")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(.gray900)
 
-    private var distanceSection: some View {
-        FilterSectionContainer(
-            title: "მანძილი",
-            items: distanceOptions.map { $0.label },
-            label: { $0 },
-            isSelected: { label in
-                filter.maxDistanceKm == distanceOptions.first(where: { $0.label == label })?.value
-            },
-            onSelect: { label in
-                filter.maxDistanceKm = distanceOptions.first(where: { $0.label == label })?.value
+            VStack(spacing: 0) {
+                ForEach(DiscountFilter.SortOption.allCases, id: \.self) { option in
+                    Button {
+                        filter.sortBy = (filter.sortBy == option) ? nil : option
+                    } label: {
+                        HStack(spacing: 12) {
+                            ZStack {
+                                Circle()
+                                    .stroke(filter.sortBy == option ? Color.colorPrimary : Color.gray300, lineWidth: 2)
+                                    .frame(width: 20, height: 20)
+                                if filter.sortBy == option {
+                                    Circle()
+                                        .fill(Color.colorPrimary)
+                                        .frame(width: 10, height: 10)
+                                }
+                            }
+                            Text(option.label)
+                                .font(.system(size: 15, weight: filter.sortBy == option ? .semibold : .regular))
+                                .foregroundColor(filter.sortBy == option ? .gray900 : .gray700)
+                            Spacer()
+                            Text(option.arrow)
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(filter.sortBy == option ? .colorPrimary : .gray300)
+                        }
+                        .padding(.vertical, 13)
+                    }
+                    .buttonStyle(.plain)
+
+                    if option != DiscountFilter.SortOption.allCases.last {
+                        Divider()
+                    }
+                }
             }
-        )
+            .padding(.horizontal, 4)
+        }
     }
 
     private var discountTypeSection: some View {
@@ -95,11 +98,36 @@ struct FilterSheet: View {
         )
     }
 
+    private var categorySection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("კატეგორია")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(.gray900)
+
+            FlowLayout(spacing: 8) {
+                FilterChip(label: "ყველა", isSelected: selectedCategories.isEmpty) {
+                    selectedCategories = []
+                }
+                ForEach(categories) { cat in
+                    FilterChip(
+                        label: cat.name,
+                        isSelected: selectedCategories.contains(cat.id)
+                    ) {
+                        if selectedCategories.contains(cat.id) {
+                            selectedCategories.remove(cat.id)
+                        } else {
+                            selectedCategories.insert(cat.id)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private var actionButtons: some View {
         HStack(spacing: 12) {
             Button {
                 onReset()
-                dismiss()
             } label: {
                 Text("გასუფთავება")
                     .font(.system(size: 15, weight: .semibold))
@@ -112,7 +140,6 @@ struct FilterSheet: View {
 
             Button {
                 onApply()
-                dismiss()
             } label: {
                 Text("გამოყენება")
                     .font(.system(size: 15, weight: .semibold))
@@ -129,7 +156,51 @@ struct FilterSheet: View {
     }
 }
 
-// MARK: - Reusable subcomponents
+// MARK: - Flow layout for wrapping chips
+
+private struct FlowLayout: Layout {
+    var spacing: CGFloat = 8
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let width = proposal.width ?? 0
+        var height: CGFloat = 0
+        var x: CGFloat = 0
+        var rowHeight: CGFloat = 0
+
+        for view in subviews {
+            let size = view.sizeThatFits(.unspecified)
+            if x + size.width > width, x > 0 {
+                height += rowHeight + spacing
+                x = 0
+                rowHeight = 0
+            }
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+        height += rowHeight
+        return CGSize(width: width, height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var x = bounds.minX
+        var y = bounds.minY
+        var rowHeight: CGFloat = 0
+
+        for view in subviews {
+            let size = view.sizeThatFits(.unspecified)
+            if x + size.width > bounds.maxX, x > bounds.minX {
+                y += rowHeight + spacing
+                x = bounds.minX
+                rowHeight = 0
+            }
+            view.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+    }
+}
+
+// MARK: - Reusable chip
 
 private struct FilterSectionContainer<Item: Hashable>: View {
     let title: String
@@ -144,7 +215,7 @@ private struct FilterSectionContainer<Item: Hashable>: View {
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundColor(.gray900)
 
-            HStack(spacing: 8) {
+            FlowLayout(spacing: 8) {
                 ForEach(items, id: \.self) { item in
                     FilterChip(
                         label: label(item),
@@ -152,13 +223,12 @@ private struct FilterSectionContainer<Item: Hashable>: View {
                         onTap: { onSelect(item) }
                     )
                 }
-                Spacer()
             }
         }
     }
 }
 
-private struct FilterChip: View {
+struct FilterChip: View {
     let label: String
     let isSelected: Bool
     let onTap: () -> Void
@@ -168,10 +238,10 @@ private struct FilterChip: View {
             Text(label)
                 .font(.system(size: 14, weight: .medium))
                 .foregroundColor(isSelected ? .white : .gray700)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 9)
-                .background(isSelected ? Color.colorPrimary : Color.gray100)
-                .clipShape(Capsule())
+            .padding(.horizontal, 16)
+            .padding(.vertical, 9)
+            .background(isSelected ? Color.colorPrimary : Color.gray100)
+            .clipShape(Capsule())
         }
         .buttonStyle(.plain)
         .animation(.easeInOut(duration: 0.15), value: isSelected)

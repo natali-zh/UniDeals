@@ -12,6 +12,8 @@ struct HomeSearchBar: View {
     //MARK: - Properties
 
     @Binding var query: String
+    var isFilterActive: Bool = false
+    var onFilterTap: (() -> Void)? = nil
 
     //MARK: - Body
 
@@ -54,13 +56,22 @@ struct HomeSearchBar: View {
     }
     
     private var filterButton: some View {
-        Button(action: {}) {
-            Image(systemName: "slider.horizontal.3")
-                .foregroundColor(.gray700)
-                .font(.system(size: 16, weight: .medium))
-                .frame(width: 46, height: 46)
-                .background(Color.gray100)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
+        Button(action: { onFilterTap?() }) {
+            ZStack(alignment: .topTrailing) {
+                Image(systemName: "slider.horizontal.3")
+                    .foregroundColor(isFilterActive ? .colorPrimary : .gray700)
+                    .font(.system(size: 16, weight: .medium))
+                    .frame(width: 46, height: 46)
+                    .background(isFilterActive ? Color.colorPrimary.opacity(0.1) : Color.gray100)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+
+                if isFilterActive {
+                    Circle()
+                        .fill(Color.colorPrimary)
+                        .frame(width: 8, height: 8)
+                        .offset(x: -4, y: 4)
+                }
+            }
         }
     }
 }

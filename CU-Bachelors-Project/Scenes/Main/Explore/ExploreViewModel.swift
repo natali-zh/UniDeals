@@ -25,6 +25,7 @@ final class ExploreViewModel: ObservableObject {
     @Published var searchQuery: String = ""
     @Published var selectedTab: ExploreTab = .discounts
     @Published var selectedCategoryIds: Set<String> = []
+    @Published var activeFilter = DiscountFilter()
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
 
@@ -47,15 +48,43 @@ final class ExploreViewModel: ObservableObject {
             }
         }
 
+        if activeFilter.discountType != .all {
+            result = result.filter { $0.discountType == activeFilter.discountType.firestoreValue }
+        }
+
+        switch activeFilter.sortBy {
+        case .expiringSoon:
+            result.sort { $0.endDate < $1.endDate }
+        case .newest:
+            result.sort { $0.startDate > $1.startDate }
+        case .nearest:
+            result.sort { $0.distanceKm < $1.distanceKm }
+        case nil:
+            break
+        }
+
         return result
     }
 
     var filteredPartners: [Partner] {
-        guard !searchQuery.trimmingCharacters(in: .whitespaces).isEmpty else { return partners }
-        let q = searchQuery.lowercased()
-        return partners.filter {
-            $0.name.lowercased().contains(q) || $0.category.lowercased().contains(q)
+        var result = partners
+
+        if !selectedCategoryIds.isEmpty {
+            result = result.filter { selectedCategoryIds.contains($0.category) }
         }
+
+        if !searchQuery.trimmingCharacters(in: .whitespaces).isEmpty {
+            let q = searchQuery.lowercased()
+            result = result.filter {
+                $0.name.lowercased().contains(q) || $0.category.lowercased().contains(q)
+            }
+        }
+
+        if activeFilter.sortBy == .nearest {
+            result.sort { offerCount(for: $0) > offerCount(for: $1) }
+        }
+
+        return result
     }
 
     let categories: [DiscountCategory] = [

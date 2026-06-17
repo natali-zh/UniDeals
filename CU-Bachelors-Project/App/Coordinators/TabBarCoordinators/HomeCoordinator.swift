@@ -24,7 +24,7 @@ final class HomeCoordinator: Coordinator {
     // MARK: - Start
 
     func start() {
-        let viewModel = HomeViewModel()
+        let viewModel = HomeViewModel(discountService: DiscountService.shared)
         viewModel.onDiscountTapped = { [weak self] id in
             self?.showDiscountDetail(id: id)
         }
