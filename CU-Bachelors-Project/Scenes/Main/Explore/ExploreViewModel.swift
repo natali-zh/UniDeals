@@ -34,6 +34,10 @@ final class ExploreViewModel: ObservableObject {
 
     // MARK: - Computed
 
+    var hasActiveFilters: Bool {
+        activeFilter.isActive || !selectedCategoryIds.isEmpty
+    }
+
     var filteredDiscounts: [Discount] {
         var result = discounts
 

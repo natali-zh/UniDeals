@@ -23,7 +23,7 @@ struct ExploreView: View {
                         .padding(.top, 8)
 
                     if viewModel.selectedTab == .discounts {
-                        if hasActiveFilters {
+                        if viewModel.hasActiveFilters {
                             activeFilterChips
                         }
 
@@ -74,14 +74,6 @@ struct ExploreView: View {
         .task {
             await viewModel.loadData()
         }
-    }
-
-    // MARK: - Custom filter overlay
-
-    // MARK: - Active filter state
-
-    private var hasActiveFilters: Bool {
-        viewModel.activeFilter.isActive || !viewModel.selectedCategoryIds.isEmpty
     }
 
     // MARK: - Active filter chips
@@ -144,7 +136,7 @@ struct ExploreView: View {
 
             HomeSearchBar(
                 query: $viewModel.searchQuery,
-                isFilterActive: hasActiveFilters,
+                isFilterActive: viewModel.hasActiveFilters,
                 onFilterTap: {
                     pendingFilter = viewModel.activeFilter
                     showFilter = true

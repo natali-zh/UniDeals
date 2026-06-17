@@ -32,11 +32,7 @@ struct DiscountDetailView: View {
             .ignoresSafeArea(edges: .top)
 
             bottomButtons
-                .background(
-                    Color.white
-                        .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: -4)
-                        .ignoresSafeArea()
-                )
+                .stickyFooter()
         }
         .navigationBarHidden(true)
         .background(Color.white)
@@ -86,20 +82,14 @@ struct DiscountDetailView: View {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 15, weight: .semibold))
                             .foregroundColor(.gray900)
-                            .frame(width: 36, height: 36)
-                            .background(Color.white)
-                            .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+                            .heroNavButton()
                     }
                     Spacer()
                     Button { viewModel.toggleSave() } label: {
                         Image(systemName: viewModel.isSaved ? "bookmark.fill" : "bookmark")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(viewModel.isSaved ? .colorPrimary : .gray900)
-                            .frame(width: 36, height: 36)
-                            .background(Color.white)
-                            .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+                            .heroNavButton()
                     }
                 }
                 .padding(.horizontal, 20)
@@ -260,30 +250,20 @@ struct DiscountDetailView: View {
         HStack(spacing: 12) {
             Button { viewModel.onViewOnMap?() } label: {
                 HStack(spacing: 6) {
-                    Image(systemName: "map")
-                        .font(.system(size: 14, weight: .medium))
-                    Text("რუკაზე ნახვა")
-                        .font(.system(size: 14, weight: .semibold))
+                    Image(systemName: "map").font(.system(size: 14, weight: .medium))
+                    Text("რუკაზე ნახვა").font(.system(size: 14, weight: .semibold))
                 }
                 .foregroundColor(.gray900)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 15)
-                .background(Color.gray100)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .secondaryActionButton()
             }
 
             Button { viewModel.onUseOffer?() } label: {
                 HStack(spacing: 6) {
-                    Image(systemName: "qrcode")
-                        .font(.system(size: 14, weight: .medium))
-                    Text("გამოყენება")
-                        .font(.system(size: 14, weight: .semibold))
+                    Image(systemName: "qrcode").font(.system(size: 14, weight: .medium))
+                    Text("გამოყენება").font(.system(size: 14, weight: .semibold))
                 }
                 .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 15)
-                .background(Color.colorPrimary)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .primaryActionButton()
             }
         }
         .padding(.horizontal, 20)

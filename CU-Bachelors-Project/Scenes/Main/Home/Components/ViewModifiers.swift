@@ -57,6 +57,73 @@ struct SectionTitleStyle: ViewModifier {
     }
 }
 
+// MARK: - Hero nav button (white circle with shadow)
+
+struct HeroNavButton: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 36, height: 36)
+            .background(Color.white)
+            .clipShape(Circle())
+            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+    }
+}
+
+// MARK: - Full-width action buttons
+
+struct PrimaryActionButton: ViewModifier {
+    var cornerRadius: CGFloat = 14
+    var verticalPadding: CGFloat = 15
+
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, verticalPadding)
+            .background(Color.colorPrimary)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+    }
+}
+
+struct SecondaryActionButton: ViewModifier {
+    var cornerRadius: CGFloat = 14
+    var verticalPadding: CGFloat = 15
+
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, verticalPadding)
+            .background(Color.gray100)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+    }
+}
+
+// MARK: - Sticky footer bar (white + upward shadow)
+
+struct StickyFooter: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .background(
+                Color.white
+                    .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: -4)
+                    .ignoresSafeArea()
+            )
+    }
+}
+
+extension View {
+    func heroNavButton() -> some View { modifier(HeroNavButton()) }
+
+    func primaryActionButton(cornerRadius: CGFloat = 14, verticalPadding: CGFloat = 15) -> some View {
+        modifier(PrimaryActionButton(cornerRadius: cornerRadius, verticalPadding: verticalPadding))
+    }
+
+    func secondaryActionButton(cornerRadius: CGFloat = 14, verticalPadding: CGFloat = 15) -> some View {
+        modifier(SecondaryActionButton(cornerRadius: cornerRadius, verticalPadding: verticalPadding))
+    }
+
+    func stickyFooter() -> some View { modifier(StickyFooter()) }
+}
+
 extension View {
     func cardStyle(
         cornerRadius: CGFloat = 16,

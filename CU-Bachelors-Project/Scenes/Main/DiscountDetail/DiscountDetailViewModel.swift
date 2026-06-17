@@ -53,30 +53,9 @@ final class DiscountDetailViewModel: ObservableObject {
 
     // MARK: - Computed display helpers
 
-    var daysLeftText: String {
-        let days = Calendar.current.dateComponents([.day], from: Date(), to: discount.endDate).day ?? 0
-        if days < 0 { return "ვადა გასულია" }
-        if days == 0 { return "დღეს იწურება" }
-        return "\(days) დღე დარჩა"
-    }
-
-    var daysLeftIsUrgent: Bool {
-        let days = Calendar.current.dateComponents([.day], from: Date(), to: discount.endDate).day ?? 0
-        return days <= 3
-    }
-
-    var isExpired: Bool {
-        discount.endDate < Date()
-    }
-
-    var formattedEndDate: String {
-        let f = DateFormatter()
-        f.dateFormat = "d MMMM, yyyy"
-        f.locale = Locale(identifier: "ka_GE")
-        return f.string(from: discount.endDate)
-    }
-
-    var distanceText: String {
-        String(format: "%.1f კმ", discount.distanceKm)
-    }
+    var daysLeftText: String { DiscountFormatter.daysLeftText(for: discount.endDate) }
+    var daysLeftIsUrgent: Bool { DiscountFormatter.isUrgent(endDate: discount.endDate) }
+    var isExpired: Bool { DiscountFormatter.isExpired(endDate: discount.endDate) }
+    var formattedEndDate: String { DiscountFormatter.formattedDate(discount.endDate) }
+    var distanceText: String { DiscountFormatter.distanceText(discount.distanceKm) }
 }

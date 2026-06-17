@@ -126,28 +126,18 @@ struct FilterSheet: View {
 
     private var actionButtons: some View {
         HStack(spacing: 12) {
-            Button {
-                onReset()
-            } label: {
+            Button { onReset() } label: {
                 Text("გასუფთავება")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundColor(.gray700)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(Color.gray100)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .secondaryActionButton(verticalPadding: 14)
             }
 
-            Button {
-                onApply()
-            } label: {
+            Button { onApply() } label: {
                 Text("გამოყენება")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(Color.colorPrimary)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .primaryActionButton(verticalPadding: 14)
             }
         }
         .padding(.horizontal, 20)

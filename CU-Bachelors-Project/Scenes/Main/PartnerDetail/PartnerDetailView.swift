@@ -26,11 +26,7 @@ struct PartnerDetailView: View {
             .ignoresSafeArea(edges: .top)
 
             mapButton
-                .background(
-                    Color.white
-                        .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: -4)
-                        .ignoresSafeArea()
-                )
+                .stickyFooter()
         }
         .navigationBarHidden(true)
         .background(Color.white)
@@ -79,20 +75,14 @@ struct PartnerDetailView: View {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 15, weight: .semibold))
                             .foregroundColor(.gray900)
-                            .frame(width: 36, height: 36)
-                            .background(Color.white)
-                            .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+                            .heroNavButton()
                     }
                     Spacer()
                     Button { viewModel.toggleSave() } label: {
                         Image(systemName: viewModel.isSaved ? "bookmark.fill" : "bookmark")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(viewModel.isSaved ? .colorPrimary : .gray900)
-                            .frame(width: 36, height: 36)
-                            .background(Color.white)
-                            .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+                            .heroNavButton()
                     }
                 }
                 .padding(.horizontal, 20)
@@ -236,16 +226,11 @@ struct PartnerDetailView: View {
     private var mapButton: some View {
         Button { viewModel.onViewOnMap?() } label: {
             HStack(spacing: 8) {
-                Image(systemName: "map")
-                    .font(.system(size: 15, weight: .medium))
-                Text("რუკაზე ნახვა")
-                    .font(.system(size: 16, weight: .semibold))
+                Image(systemName: "map").font(.system(size: 15, weight: .medium))
+                Text("რუკაზე ნახვა").font(.system(size: 16, weight: .semibold))
             }
             .foregroundColor(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 15)
-            .background(Color.colorPrimary)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .primaryActionButton()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
@@ -298,11 +283,13 @@ private struct OfferRow: View {
                         .lineLimit(2)
 
                     HStack(spacing: 10) {
-                        Label(String(format: "%.1f კმ", offer.distanceKm), systemImage: "location.fill")
+                        Label(DiscountFormatter.distanceText(offer.distanceKm), systemImage: "location.fill")
                             .font(.system(size: 12))
                             .foregroundColor(.gray500)
 
-                        daysLeftPill(for: offer)
+                        Label(DiscountFormatter.daysLeftText(for: offer.endDate), systemImage: "clock")
+                            .font(.system(size: 12))
+                            .foregroundColor(DiscountFormatter.daysLeftColor(for: offer.endDate))
                     }
                 }
 
@@ -319,24 +306,4 @@ private struct OfferRow: View {
         .buttonStyle(.plain)
     }
 
-    private func daysLeftPill(for offer: Discount) -> some View {
-        let days = Calendar.current.dateComponents([.day], from: Date(), to: offer.endDate).day ?? 0
-        let text: String
-        let color: Color
-
-        if days < 0 {
-            text = "ვადა გასულია"
-            color = .gray500
-        } else if days == 0 {
-            text = "დღეს იწურება"
-            color = .red
-        } else {
-            text = "\(days)დ დარჩა"
-            color = days <= 3 ? .red : .green
-        }
-
-        return Label(text, systemImage: "clock")
-            .font(.system(size: 12))
-            .foregroundColor(color)
-    }
 }
