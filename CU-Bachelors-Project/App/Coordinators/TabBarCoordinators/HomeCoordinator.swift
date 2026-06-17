@@ -14,6 +14,7 @@ final class HomeCoordinator: Coordinator {
 
     let navigationController: UINavigationController
     var onSeeAll: (() -> Void)?
+    var onShowOnMap: ((Discount) -> Void)?
 
     // MARK: - Init
 
@@ -44,6 +45,10 @@ final class HomeCoordinator: Coordinator {
             let detailVM = DiscountDetailViewModel(discount: discount)
             detailVM.onBack = { [weak self] in
                 self?.navigationController.popViewController(animated: true)
+            }
+            detailVM.onViewOnMap = { [weak self] discount in
+                self?.navigationController.popViewController(animated: false)
+                self?.onShowOnMap?(discount)
             }
             detailVM.onToggleSave = { _ in /* TODO: persist */ }
             let detailView = DiscountDetailView(viewModel: detailVM)

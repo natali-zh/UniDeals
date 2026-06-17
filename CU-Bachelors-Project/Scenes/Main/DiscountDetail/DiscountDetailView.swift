@@ -254,7 +254,7 @@ struct DiscountDetailView: View {
 
     private var bottomButtons: some View {
         HStack(spacing: 12) {
-            Button { viewModel.onViewOnMap?() } label: {
+            Button { viewModel.onViewOnMap?(viewModel.discount) } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "map").font(.system(size: 14, weight: .medium))
                     Text("რუკაზე ნახვა").font(.system(size: 14, weight: .semibold))

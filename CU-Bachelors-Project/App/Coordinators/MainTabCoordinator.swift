@@ -41,10 +41,16 @@ final class MainCoordinator: Coordinator {
         homeCoordinator?.onSeeAll = { [weak self] in
             self?.tabBarController.selectedIndex = 1
         }
+        homeCoordinator?.onShowOnMap = { [weak self] discount in
+            self?.showOnMap(discount: discount)
+        }
         homeCoordinator?.start()
 
         let exploreNav = makeNav(title: "Explore", icon: "magnifyingglass", selectedIcon: "magnifyingglass")
         exploreCoordinator = ExploreCoordinator(navigationController: exploreNav)
+        exploreCoordinator?.onShowOnMap = { [weak self] discount in
+            self?.showOnMap(discount: discount)
+        }
         exploreCoordinator?.start()
 
         // Create navigation controllers for SwiftUI views
@@ -67,6 +73,11 @@ final class MainCoordinator: Coordinator {
             mapNav,
             profileNav
         ]
+    }
+
+    private func showOnMap(discount: Discount) {
+        tabBarController.selectedIndex = 3
+        mapCoordinator?.show(discount: discount)
     }
 
     private func makeNav(title: String, icon: String, selectedIcon: String) -> UINavigationController {

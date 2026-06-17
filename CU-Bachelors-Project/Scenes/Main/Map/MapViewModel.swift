@@ -14,6 +14,7 @@ final class MapViewModel {
     var isLoading = false
 
     var onViewOffer: ((Discount) -> Void)?
+    var pendingDiscount: Discount? = nil
 
     func load() async {
         isLoading = true
@@ -27,5 +28,10 @@ final class MapViewModel {
 
     func clearSelection() {
         selectedDiscount = nil
+    }
+
+    func show(discount: Discount) {
+        pendingDiscount = discount
+        selectedDiscount = discount
     }
 }

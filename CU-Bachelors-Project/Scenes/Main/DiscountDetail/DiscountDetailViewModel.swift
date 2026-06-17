@@ -24,7 +24,7 @@ final class DiscountDetailViewModel: ObservableObject {
     // MARK: - Navigation callbacks
 
     var onBack: (() -> Void)?
-    var onViewOnMap: (() -> Void)?
+    var onViewOnMap: ((Discount) -> Void)?
     var onUseOffer: (() -> Void)?
     var onToggleSave: ((String) -> Void)?
 

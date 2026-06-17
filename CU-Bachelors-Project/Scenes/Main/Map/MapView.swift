@@ -65,6 +65,16 @@ struct MapView: View {
                 ))
             }
         }
+        .onChange(of: viewModel.pendingDiscount?.id) { _, id in
+            guard id != nil, let discount = viewModel.pendingDiscount else { return }
+            withAnimation {
+                position = .region(MKCoordinateRegion(
+                    center: CLLocationCoordinate2D(latitude: discount.latitude, longitude: discount.longitude),
+                    span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                ))
+            }
+            viewModel.pendingDiscount = nil
+        }
     }
 
     // MARK: - Discount card
