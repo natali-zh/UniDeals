@@ -9,12 +9,13 @@ import SwiftUI
 
 struct PartnersListView: View {
     let partners: [Partner]
+    let offerCount: (Partner) -> Int
     let onTap: (String) -> Void
 
     var body: some View {
         VStack(spacing: 10) {
             ForEach(partners) { partner in
-                PartnerRow(partner: partner)
+                PartnerRow(partner: partner, offerCount: offerCount(partner))
                     .onTapGesture { onTap(partner.id ?? "") }
             }
         }
@@ -24,6 +25,7 @@ struct PartnersListView: View {
 
 private struct PartnerRow: View {
     let partner: Partner
+    let offerCount: Int
 
     var body: some View {
         HStack(spacing: 14) {
@@ -39,16 +41,7 @@ private struct PartnerRow: View {
                     .foregroundColor(.gray500)
 
                 HStack(spacing: 6) {
-                    HStack(spacing: 3) {
-                        Image(systemName: "star.fill")
-                            .font(.system(size: 11))
-                            .foregroundColor(.orange)
-                        Text(String(format: "%.1f", partner.rating))
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.gray700)
-                    }
-
-                    Text("\(partner.offerCount) შეთავაზება")
+                    Text("\(offerCount) შეთავაზება")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(.colorPrimary)
                         .padding(.horizontal, 8)

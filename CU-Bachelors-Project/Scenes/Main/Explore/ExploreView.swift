@@ -44,6 +44,7 @@ struct ExploreView: View {
                         } else {
                             PartnersListView(
                                 partners: viewModel.filteredPartners,
+                                offerCount: { viewModel.offerCount(for: $0) },
                                 onTap: { viewModel.onPartnerTapped?($0) }
                             )
                         }

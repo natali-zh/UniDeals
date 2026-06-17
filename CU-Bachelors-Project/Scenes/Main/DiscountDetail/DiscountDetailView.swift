@@ -46,77 +46,68 @@ struct DiscountDetailView: View {
     // MARK: - Hero
 
     private var heroSection: some View {
-        ZStack(alignment: .bottom) {
-            heroImage
-
-            // Gradient overlay
-            LinearGradient(
-                colors: [.clear, .black.opacity(0.45)],
-                startPoint: .center,
-                endPoint: .bottom
-            )
-            .frame(height: 280)
-
-            // Badge
-            Text(viewModel.discount.label)
-                .badgeStyle()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 20)
-                .padding(.bottom, 36)
-
-            // Top buttons
-            HStack {
-                Button { viewModel.onBack?() } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(.gray900)
-                        .frame(width: 36, height: 36)
-                        .background(Color.white)
-                        .clipShape(Circle())
-                        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
-                }
-
-                Spacer()
-
-                Button { viewModel.toggleSave() } label: {
-                    Image(systemName: viewModel.isSaved ? "bookmark.fill" : "bookmark")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(viewModel.isSaved ? .colorPrimary : .gray900)
-                        .frame(width: 36, height: 36)
-                        .background(Color.white)
-                        .clipShape(Circle())
-                        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 56)
-            .frame(maxHeight: .infinity, alignment: .top)
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 280)
-        .clipped()
-    }
-
-    private var heroImage: some View {
         GeometryReader { geo in
-            if let urlStr = viewModel.discount.imageUrl, let url = URL(string: urlStr) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geo.size.width, height: 280)
-                            .clipped()
-                    default:
-                        Color.gray100
-                            .frame(width: geo.size.width, height: 280)
+            let stretch = max(0, geo.frame(in: .global).minY)
+            let totalHeight = 280 + stretch
+
+            ZStack(alignment: .bottom) {
+                // Image stretches to fill pull-down gap
+                if let urlStr = viewModel.discount.imageUrl, let url = URL(string: urlStr) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image.resizable().aspectRatio(contentMode: .fill)
+                                .frame(width: geo.size.width, height: totalHeight)
+                                .clipped()
+                        default:
+                            Color.gray100.frame(width: geo.size.width, height: totalHeight)
+                        }
+                    }
+                } else {
+                    Color.gray100.frame(width: geo.size.width, height: totalHeight)
+                }
+
+                LinearGradient(
+                    colors: [.clear, .black.opacity(0.45)],
+                    startPoint: .center,
+                    endPoint: .bottom
+                )
+                .frame(height: totalHeight)
+                .frame(maxWidth: .infinity)
+
+                Text(viewModel.discount.label)
+                    .badgeStyle()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 36)
+
+                HStack {
+                    Button { viewModel.onBack?() } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(.gray900)
+                            .frame(width: 36, height: 36)
+                            .background(Color.white)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+                    }
+                    Spacer()
+                    Button { viewModel.toggleSave() } label: {
+                        Image(systemName: viewModel.isSaved ? "bookmark.fill" : "bookmark")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(viewModel.isSaved ? .colorPrimary : .gray900)
+                            .frame(width: 36, height: 36)
+                            .background(Color.white)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
                     }
                 }
-            } else {
-                Color.gray100
-                    .frame(width: geo.size.width, height: 280)
+                .padding(.horizontal, 20)
+                .padding(.top, 56)
+                .frame(maxHeight: .infinity, alignment: .top)
             }
+            .frame(width: geo.size.width, height: totalHeight)
+            .offset(y: -stretch)
         }
         .frame(height: 280)
     }

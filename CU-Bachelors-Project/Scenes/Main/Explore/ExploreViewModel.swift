@@ -99,6 +99,11 @@ final class ExploreViewModel: ObservableObject {
         }
     }
 
+    func offerCount(for partner: Partner) -> Int {
+        guard let pid = partner.id else { return 0 }
+        return discounts.filter { $0.storeId == pid }.count
+    }
+
     func toggleCategory(_ id: String) {
         if selectedCategoryIds.contains(id) {
             selectedCategoryIds.remove(id)
