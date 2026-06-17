@@ -22,27 +22,59 @@ final class HomeViewModel: ObservableObject {
     @Published var selectedCategoryId: String = "all"
     @Published var userName: String = "Alex"
     @Published var searchQuery: String = ""
+    @Published var activeFilter: DiscountFilter = DiscountFilter()
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
-    
+
     // MARK: - Computed properties
-    
+
     var featured: [Discount] {
-        discounts.filter { $0.isFeatured }
+        applyFilter(to: discounts.filter { $0.isFeatured })
     }
-    
+
     var nearby: [Discount] {
-        let filtered = selectedCategoryId == "all"
-        ? discounts
-        : discounts.filter { $0.category == selectedCategoryId }
-        return filtered.sorted { $0.distanceKm < $1.distanceKm }
+        let byCategory = selectedCategoryId == "all"
+            ? discounts
+            : discounts.filter { $0.category == selectedCategoryId }
+        return applyFilter(to: byCategory)
     }
-    
+
     var expiring: [Discount] {
         let threeDaysFromNow = Date().addingTimeInterval(3 * 24 * 60 * 60)
-        return discounts
-            .filter { $0.endDate <= threeDaysFromNow && $0.endDate >= Date() }
-            .sorted { $0.endDate < $1.endDate }
+        let soon = discounts.filter { $0.endDate <= threeDaysFromNow && $0.endDate >= Date() }
+        return applyFilter(to: soon)
+    }
+
+    // MARK: - Private helpers
+
+    private func applyFilter(to list: [Discount]) -> [Discount] {
+        var result = list
+
+        if !searchQuery.trimmingCharacters(in: .whitespaces).isEmpty {
+            let q = searchQuery.lowercased()
+            result = result.filter {
+                $0.title.lowercased().contains(q) || $0.storeName.lowercased().contains(q)
+            }
+        }
+
+        if let maxKm = activeFilter.maxDistanceKm {
+            result = result.filter { $0.distanceKm <= maxKm }
+        }
+
+        if let type = activeFilter.discountType.firestoreValue {
+            result = result.filter { $0.discountType == type }
+        }
+
+        switch activeFilter.sortBy {
+        case .nearest:
+            result.sort { $0.distanceKm < $1.distanceKm }
+        case .expiringSoon:
+            result.sort { $0.endDate < $1.endDate }
+        case .default:
+            break
+        }
+
+        return result
     }
     
     // MARK: - Navigation callbacks
@@ -78,6 +110,14 @@ final class HomeViewModel: ObservableObject {
         selectedCategoryId = id
     }
     
+    func applyFilter(_ filter: DiscountFilter) {
+        activeFilter = filter
+    }
+
+    func resetFilter() {
+        activeFilter = DiscountFilter()
+    }
+
     func toggleSave(_ id: String) {
         guard !id.isEmpty,
               let index = discounts.firstIndex(where: { $0.id == id }) else { return }
@@ -87,12 +127,12 @@ final class HomeViewModel: ObservableObject {
     
     private func setupCategories() {
         categories = [
-            DiscountCategory(id: "all",     name: "All",     icon: "square.grid.2x2.fill"),
-            DiscountCategory(id: "food",    name: "Food",    icon: "fork.knife"),
-            DiscountCategory(id: "tech",    name: "Tech",    icon: "laptopcomputer"),
-            DiscountCategory(id: "fashion", name: "Fashion", icon: "tshirt.fill"),
-            DiscountCategory(id: "fitness", name: "Fitness", icon: "heart.fill"),
-            DiscountCategory(id: "books",   name: "Books",   icon: "book.fill"),
+            DiscountCategory(id: "all",     name: "ყველა",    icon: "square.grid.2x2.fill"),
+            DiscountCategory(id: "food",    name: "საკვები",  icon: "fork.knife"),
+            DiscountCategory(id: "tech",    name: "ტექნიკა",  icon: "laptopcomputer"),
+            DiscountCategory(id: "fashion", name: "მოდა",     icon: "tshirt.fill"),
+            DiscountCategory(id: "fitness", name: "ფიტნესი",  icon: "heart.fill"),
+            DiscountCategory(id: "books",   name: "წიგნები",  icon: "book.fill"),
         ]
     }
 }

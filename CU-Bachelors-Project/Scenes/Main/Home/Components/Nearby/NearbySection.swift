@@ -16,10 +16,10 @@ struct NearbySection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
-                Text("შენ გვერდით")
+                Text("შენთან ახლოს")
                     .sectionTitleStyle()
                 Spacer()
-                Button("ყველა") { onSeeAll() }
+                Button("ყველას ნახვა") { onSeeAll() }
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.colorPrimary)
             }
@@ -56,12 +56,11 @@ private struct NearbyCard: View {
                     .padding(10)
 
                 Button(action: onSave) {
-                    Image(systemName: discount.isSaved ? "heart.fill" : "heart")
+                    Image(systemName: discount.isSaved ? "bookmark.fill" : "bookmark")
                         .font(.system(size: 13, weight: .medium))
-                        .foregroundColor(discount.isSaved ? .red : .gray500)
+                        .foregroundColor(.white)
                         .padding(8)
-                        .background(Circle().fill(Color.white))
-                        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 1)
+                        .background(Circle().fill(Color.black.opacity(0.25)))
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .padding(10)
@@ -79,8 +78,6 @@ private struct NearbyCard: View {
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.gray500)
 
-                Spacer(minLength: 8)
-
                 HStack(spacing: 4) {
                     Image(systemName: "location")
                         .font(.system(size: 11))
@@ -89,6 +86,7 @@ private struct NearbyCard: View {
                         .font(.system(size: 12, weight: .regular))
                         .foregroundColor(.gray500)
                 }
+                .padding(.top, 6)
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -102,8 +100,7 @@ private struct NearbyCardImage: View {
     let imageUrl: String?
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 0)
-            .fill(Color.gray100)
+        Color.gray100
             .frame(height: 130)
             .overlay(content)
             .clipShape(
@@ -122,7 +119,7 @@ private struct NearbyCardImage: View {
             AsyncImage(url: url) { phase in
                 switch phase {
                 case .success(let image):
-                    image.resizable().aspectRatio(contentMode: .fill)
+                    image.resizable().aspectRatio(contentMode: .fill).clipped()
                 default:
                     placeholderIcon
                 }

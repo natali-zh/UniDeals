@@ -15,13 +15,13 @@ struct ExpiringSoonSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
-                Text("იწურება მალე")
+                Text("მალე იწურება")
                     .sectionTitleStyle()
                 Circle()
                     .fill(Color.red)
                     .frame(width: 8, height: 8)
                 Spacer()
-                Button("ყველა") { onSeeAll() }
+                Button("ყველას ნახვა") { onSeeAll() }
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.colorPrimary)
             }

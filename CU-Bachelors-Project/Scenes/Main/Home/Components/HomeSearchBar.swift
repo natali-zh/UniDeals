@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct HomeSearchBar: View {
-    
+
     //MARK: - Properties
-    
+
     @Binding var query: String
-    
+
     //MARK: - Body
-    
+
     var body: some View {
-        
         HStack(spacing: 12) {
             searchTextField
             filterButton
@@ -32,7 +31,7 @@ struct HomeSearchBar: View {
                 .foregroundColor(.gray500)
                 .font(.system(size: 15))
             
-            TextField("Search discounts...", text: $query)
+            TextField("მოძებნეთ შეთავაზებები...", text: $query)
                 .font(.system(size: 14))
                 .foregroundColor(.gray900)
                 .submitLabel(.search)
@@ -55,7 +54,7 @@ struct HomeSearchBar: View {
     }
     
     private var filterButton: some View {
-        Button (action: {}) {
+        Button(action: {}) {
             Image(systemName: "slider.horizontal.3")
                 .foregroundColor(.gray700)
                 .font(.system(size: 16, weight: .medium))

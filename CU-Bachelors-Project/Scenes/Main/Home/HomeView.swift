@@ -5,44 +5,53 @@
 //  Created by Natali Zhgenti on 14.06.26.
 //
 
+import Combine
 import SwiftUI
 
 struct HomeView: View {
-
+    
     //TODO: inj
     @StateObject private var viewModel = HomeViewModel()
-
+    @State private var pendingFilter = DiscountFilter()
+    
     //MARK: - Body
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                HomeSearchBar(query: $viewModel.searchQuery)
-                  
-
-                featuredSection
+        VStack(spacing: 0) {
+            
+            ScrollView {
+                LazyVStack(spacing: 8) {
+                    //TODO: Header design
+                    
+                    featuredSection
+                    
+                    categorySection
+                    
+                    nearbySection
+                    
+                    expiringSoonSection
+                        .padding(.top, 8)
+                        .padding(.bottom, 24)
+                }
             }
+            .background(Color(red: 0.97, green: 0.97, blue: 0.98))
         }
-        .background(Color.white)
+        .navigationBarHidden(true)
         .task {
             await viewModel.loadDiscounts()
         }
     }
-
+    
     //MARK: - Subviews
     
     private var featuredSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
-                Text("Featured")
+                Text("გამორჩეული შეთავაზებები")
                     .sectionTitleStyle()
-                Spacer()
-                Button("See All") { viewModel.onSeeAllFeatured?() }
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(.colorPrimary)
             }
             .padding(.horizontal, 20)
-
+            
             if viewModel.isLoading && viewModel.featured.isEmpty {
                 FeaturedPlaceholder(text: "Loading...")
                     .padding(.horizontal, 20)
@@ -57,7 +66,34 @@ struct HomeView: View {
                 )
             }
         }
-        .padding(.top, 16)
+    }
+    
+    private var categorySection: some View {
+        CategorySection(
+            categories: viewModel.categories,
+            selectedId: viewModel.selectedCategoryId,
+            onSelect: { viewModel.selectCategory($0) }
+        )
+        .padding(.top, 8)
+    }
+    
+    private var nearbySection: some View {
+        NearbySection(
+            discounts: viewModel.nearby,
+            onSeeAll: { viewModel.onSeeAllNearby?() },
+            onTap: { viewModel.onDiscountTapped?($0) },
+            onSave: { viewModel.toggleSave($0) }
+        )
+        .padding(.top, 24)
+    }
+    
+    private var expiringSoonSection: some View {
+        ExpiringSoonSection(
+            discounts: viewModel.expiring,
+            onSeeAll: { viewModel.onSeeAllExpiring?() },
+            onTap: { viewModel.onDiscountTapped?($0) }
+        )
+        .padding(.top, 24)
     }
 }
 
