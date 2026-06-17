@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import FirebaseAuth
 
 final class AppCoordinator: Coordinator {
     
@@ -38,7 +39,7 @@ final class AppCoordinator: Coordinator {
         case .auth:
             showAuth()
         case .main:
-            showMainFlow()
+            Task { await showMainOrOnboarding() }
         }
     }
     
@@ -59,6 +60,25 @@ final class AppCoordinator: Coordinator {
         }
     }
     
+    private func showMainOrOnboarding() async {
+        await UserManager.shared.fetchUser()
+        if UserManager.shared.currentUser?.university == nil {
+            showUniversityPicker()
+        } else {
+            showMainFlow()
+        }
+    }
+
+    private func showUniversityPicker() {
+        let vm = UniversityPickerViewModel()
+        vm.onComplete = { [weak self] in
+            self?.showMainFlow()
+        }
+        let vc = UIHostingController(rootView: UniversityPickerView(viewModel: vm))
+        vc.modalPresentationStyle = .fullScreen
+        window.rootViewController = vc
+    }
+
     private func showMainFlow() {
         let mainCoordinator = MainCoordinator()
         mainCoordinator.parentCoordinator = self
