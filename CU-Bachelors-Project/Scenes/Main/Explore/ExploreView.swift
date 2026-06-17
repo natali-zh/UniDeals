@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ExploreView: View {
 
-    // TODO: inj
-    @StateObject private var viewModel = ExploreViewModel()
+    @ObservedObject var viewModel: ExploreViewModel
 
     // MARK: - Body
 
@@ -113,5 +112,5 @@ struct ExploreView: View {
 }
 
 #Preview {
-    ExploreView()
+    ExploreView(viewModel: ExploreViewModel())
 }

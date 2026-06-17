@@ -9,6 +9,7 @@ import FirebaseFirestore
 
 protocol DiscountServiceProtocol {
     func fetchAllDiscounts() async throws -> [Discount]
+    func fetchDiscount(id: String) async throws -> Discount
 }
 
 final class DiscountService: DiscountServiceProtocol {
@@ -20,8 +21,11 @@ final class DiscountService: DiscountServiceProtocol {
     
     func fetchAllDiscounts() async throws -> [Discount] {
         let snapshot = try await db.collection("discounts").getDocuments()
-        return try snapshot.documents.compactMap { doc in
-            try doc.data(as: Discount.self)
-        }
+        return try snapshot.documents.compactMap { try $0.data(as: Discount.self) }
+    }
+
+    func fetchDiscount(id: String) async throws -> Discount {
+        let doc = try await db.collection("discounts").document(id).getDocument()
+        return try doc.data(as: Discount.self)
     }
 }

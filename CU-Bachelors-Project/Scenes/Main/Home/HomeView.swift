@@ -10,8 +10,7 @@ import SwiftUI
 
 struct HomeView: View {
     
-    //TODO: inj
-    @StateObject private var viewModel = HomeViewModel()
+    @ObservedObject var viewModel: HomeViewModel
     @State private var pendingFilter = DiscountFilter()
     
     //MARK: - Body
@@ -106,5 +105,5 @@ extension Color {
 }
 
 #Preview {
-    HomeView()
+    HomeView(viewModel: HomeViewModel())
 }

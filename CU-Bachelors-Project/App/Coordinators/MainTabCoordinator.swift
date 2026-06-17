@@ -9,61 +9,63 @@ import UIKit
 import SwiftUI
 
 final class MainCoordinator: Coordinator {
-    
+
     // MARK: - Properties
-    
+
     weak var parentCoordinator: AppCoordinator?
     private let tabBarController = UITabBarController()
-    
-    //MARK: - Computed Properties
-    
+    private var homeCoordinator: HomeCoordinator?
+    private var exploreCoordinator: ExploreCoordinator?
+
+    // MARK: - Computed Properties
+
     var rootViewController: UIViewController {
         tabBarController
     }
-    
-    //MARK: - Methods
-    
+
+    // MARK: - Methods
+
     func start() {
         tabBarController.tabBar.tintColor = .colorPrimary
         tabBarController.viewControllers = makeTabs()
     }
-    
+
     private func makeTabs() -> [UIViewController] {
-        [
-            createTab(root: UIHostingController(rootView: HomeView()),
-                      title: "Home",
-                      icon: "house",
-                      selectedIcon: "house.fill"),
-            
-            createTab(root: UIHostingController(rootView: ExploreView()),
-                      title: "Explore",
-                      icon: "magnifyingglass",
-                      selectedIcon: "magnifyingglass"),
-            
-            createTab(root: UIHostingController(rootView: CardView()),
-                      title: "Card",
-                      icon: "creditcard",
-                      selectedIcon: "creditcard.fill"),
-            
-            createTab(root: UIHostingController(rootView: MapView()),
-                      title: "Map",
-                      icon: "map",
-                      selectedIcon: "map.fill"),
-            
-            createTab(root: UIHostingController(rootView: ProfileView()),
-                      title: "Account",
-                      icon: "person",
-                      selectedIcon: "person.fill"),
+        let homeNav = makeNav(title: "Home", icon: "house", selectedIcon: "house.fill")
+        homeCoordinator = HomeCoordinator(navigationController: homeNav)
+        homeCoordinator?.start()
+
+        let exploreNav = makeNav(title: "Explore", icon: "magnifyingglass", selectedIcon: "magnifyingglass")
+        exploreCoordinator = ExploreCoordinator(navigationController: exploreNav)
+        exploreCoordinator?.start()
+
+        // Create navigation controllers for SwiftUI views
+        let cardNav = makeNav(title: "Card", icon: "creditcard", selectedIcon: "creditcard.fill")
+        let cardVC = UIHostingController(rootView: CardView())
+        cardNav.setViewControllers([cardVC], animated: false)
+
+        let mapNav = makeNav(title: "Map", icon: "map", selectedIcon: "map.fill")
+        let mapVC = UIHostingController(rootView: MapView())
+        mapNav.setViewControllers([mapVC], animated: false)
+
+        let profileNav = makeNav(title: "Account", icon: "person", selectedIcon: "person.fill")
+        let profileVC = UIHostingController(rootView: ProfileView())
+        profileNav.setViewControllers([profileVC], animated: false)
+
+        return [
+            homeNav,
+            exploreNav,
+            cardNav,
+            mapNav,
+            profileNav
         ]
     }
-    
-    private func createTab(root: UIViewController, title: String, icon: String, selectedIcon: String) -> UINavigationController {
-        let navigationController = UINavigationController(rootViewController: root)
-        navigationController.tabBarItem = UITabBarItem(
-            title: title,
-            image: UIImage(systemName: icon),
-            selectedImage: UIImage(systemName: selectedIcon)
-        )
-        return navigationController
+
+    private func makeNav(title: String, icon: String, selectedIcon: String) -> UINavigationController {
+        let nav = UINavigationController()
+        nav.tabBarItem = UITabBarItem(title: title,
+                                      image: UIImage(systemName: icon),
+                                      selectedImage: UIImage(systemName: selectedIcon))
+        return nav
     }
 }
