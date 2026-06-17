@@ -10,6 +10,7 @@ import SwiftUI
 struct DiscountDetailView: View {
 
     @StateObject private var viewModel: DiscountDetailViewModel
+    @State private var showCard = false
 
     init(discount: Discount) {
         _viewModel = StateObject(wrappedValue: DiscountDetailViewModel(discount: discount))
@@ -37,6 +38,11 @@ struct DiscountDetailView: View {
         .navigationBarHidden(true)
         .background(Color.white)
         .task { await viewModel.loadPartner() }
+        .sheet(isPresented: $showCard) {
+            CardView()
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+        }
     }
 
     // MARK: - Hero
@@ -257,7 +263,7 @@ struct DiscountDetailView: View {
                 .secondaryActionButton()
             }
 
-            Button { viewModel.onUseOffer?() } label: {
+            Button { showCard = true } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "qrcode").font(.system(size: 14, weight: .medium))
                     Text("გამოყენება").font(.system(size: 14, weight: .semibold))
