@@ -13,6 +13,7 @@ final class HomeCoordinator: Coordinator {
     // MARK: - Properties
 
     let navigationController: UINavigationController
+    var onSeeAll: (() -> Void)?
 
     // MARK: - Init
 
@@ -27,6 +28,9 @@ final class HomeCoordinator: Coordinator {
         viewModel.onDiscountTapped = { [weak self] id in
             self?.showDiscountDetail(id: id)
         }
+        viewModel.onSeeAllFeatured = { [weak self] in self?.onSeeAll?() }
+        viewModel.onSeeAllNearby   = { [weak self] in self?.onSeeAll?() }
+        viewModel.onSeeAllExpiring = { [weak self] in self?.onSeeAll?() }
         let view = HomeView(viewModel: viewModel)
         let vc = UIHostingController(rootView: view)
         navigationController.setViewControllers([vc], animated: false)

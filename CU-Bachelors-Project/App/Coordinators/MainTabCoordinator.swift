@@ -33,6 +33,9 @@ final class MainCoordinator: Coordinator {
     private func makeTabs() -> [UIViewController] {
         let homeNav = makeNav(title: "Home", icon: "house", selectedIcon: "house.fill")
         homeCoordinator = HomeCoordinator(navigationController: homeNav)
+        homeCoordinator?.onSeeAll = { [weak self] in
+            self?.tabBarController.selectedIndex = 1
+        }
         homeCoordinator?.start()
 
         let exploreNav = makeNav(title: "Explore", icon: "magnifyingglass", selectedIcon: "magnifyingglass")
