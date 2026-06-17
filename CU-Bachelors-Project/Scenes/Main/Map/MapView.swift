@@ -57,7 +57,7 @@ struct MapView: View {
             categoryChips
                 .zIndex(2)
         } // outer ZStack
-        .navigationTitle("მახლობელი მაღაზიები")
+        .navigationTitle("აღმოაჩინე რუკაზე")
         .navigationBarTitleDisplayMode(.inline)
         .task { await viewModel.load() }
         .onAppear { LocationManager.shared.requestPermission() }

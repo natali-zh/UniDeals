@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E14BE8A22FE3453400B0CF1A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = E14BE8A12FE3453400B0CF1A /* FirebaseStorage */; };
 		E1E017C02FDCB1C2005EAE12 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E1E017BF2FDCB1C2005EAE12 /* FirebaseAuth */; };
 		E1E017C22FDCB1C2005EAE12 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = E1E017C12FDCB1C2005EAE12 /* FirebaseCore */; };
 		E1E017C42FDCB1C2005EAE12 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E1E017C32FDCB1C2005EAE12 /* FirebaseFirestore */; };
@@ -49,16 +50,25 @@
 				E1E017C72FDCB1F0005EAE12 /* GoogleSignIn in Frameworks */,
 				E1E017C02FDCB1C2005EAE12 /* FirebaseAuth in Frameworks */,
 				E1E017C42FDCB1C2005EAE12 /* FirebaseFirestore in Frameworks */,
+				E14BE8A22FE3453400B0CF1A /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E14BE8A02FE3453400B0CF1A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E1603B3F2F83F7E600A16266 = {
 			isa = PBXGroup;
 			children = (
 				E1603B4A2F83F7E600A16266 /* CU-Bachelors-Project */,
+				E14BE8A02FE3453400B0CF1A /* Frameworks */,
 				E1603B492F83F7E600A16266 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -96,6 +106,7 @@
 				E1E017C32FDCB1C2005EAE12 /* FirebaseFirestore */,
 				E1E017C62FDCB1F0005EAE12 /* GoogleSignIn */,
 				E1E017C82FDCB1F0005EAE12 /* GoogleSignInSwift */,
+				E14BE8A12FE3453400B0CF1A /* FirebaseStorage */,
 			);
 			productName = "CU-Bachelors-Project";
 			productReference = E1603B482F83F7E600A16266 /* CU-Bachelors-Project.app */;
@@ -388,6 +399,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E14BE8A12FE3453400B0CF1A /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1E017BE2FDCB1C2005EAE12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		E1E017BF2FDCB1C2005EAE12 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E1E017BE2FDCB1C2005EAE12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

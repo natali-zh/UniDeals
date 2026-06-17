@@ -17,6 +17,7 @@ final class MainCoordinator: Coordinator {
     private var homeCoordinator: HomeCoordinator?
     private var exploreCoordinator: ExploreCoordinator?
     private var mapCoordinator: MapCoordinator?
+    private var profileCoordinator: ProfileCoordinator?
 
     // MARK: - Computed Properties
 
@@ -63,8 +64,11 @@ final class MainCoordinator: Coordinator {
         mapCoordinator?.start()
 
         let profileNav = makeNav(title: "Account", icon: "person", selectedIcon: "person.fill")
-        let profileVC = UIHostingController(rootView: ProfileView())
-        profileNav.setViewControllers([profileVC], animated: false)
+        profileCoordinator = ProfileCoordinator(navigationController: profileNav)
+        profileCoordinator?.onLogOut = { [weak self] in
+            self?.parentCoordinator?.logOut()
+        }
+        profileCoordinator?.start()
 
         return [
             homeNav,

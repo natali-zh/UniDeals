@@ -162,4 +162,11 @@ extension View {
     func sectionTitleStyle() -> some View {
         modifier(SectionTitleStyle())
     }
+
+    func settingsCard() -> some View {
+        self
+            .background(Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: .black.opacity(0.04), radius: 8, x: 0, y: 2)
+    }
 }
