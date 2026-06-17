@@ -105,12 +105,13 @@ struct CardView: View {
     private var cardHeader: some View {
         HStack {
             HStack(spacing: 8) {
-                RoundedRectangle(cornerRadius: 6)
+                RoundedRectangle(cornerRadius: 8)
                     .fill(Color.white)
-                    .frame(width: 28, height: 28)
+                    .frame(width: 34, height: 34)
                     .overlay(
-                        Text("CU")
-                            .font(.system(size: 11, weight: .black))
+                        Text("U")
+                            .font(.system(size: 17, weight: .black, design: .rounded))
+                            .italic()
                             .foregroundColor(.colorPrimary)
                     )
                 VStack(alignment: .leading, spacing: 0) {
