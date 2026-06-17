@@ -30,8 +30,6 @@ struct HomeView: View {
                     
                     featuredSection
                     
-                    categorySection
-                    
                     nearbySection
                     
                     expiringSoonSection
@@ -71,15 +69,6 @@ struct HomeView: View {
                 )
             }
         }
-    }
-    
-    private var categorySection: some View {
-        CategorySection(
-            categories: viewModel.categories,
-            selectedId: viewModel.selectedCategoryId,
-            onSelect: { viewModel.selectCategory($0) }
-        )
-        .padding(.top, 8)
     }
     
     private var nearbySection: some View {

@@ -18,8 +18,6 @@ final class HomeViewModel: ObservableObject {
     // MARK: - Published Properties
     
     @Published private var discounts: [Discount] = []
-    @Published var categories: [DiscountCategory] = []
-    @Published var selectedCategoryId: String = "all"
     @Published var userName: String = "Alex"
     @Published var searchQuery: String = ""
     @Published var activeFilter: DiscountFilter = DiscountFilter()
@@ -33,10 +31,7 @@ final class HomeViewModel: ObservableObject {
     }
 
     var nearby: [Discount] {
-        let byCategory = selectedCategoryId == "all"
-            ? discounts
-            : discounts.filter { $0.category == selectedCategoryId }
-        return Array(applyFilter(to: byCategory).prefix(5))
+        Array(applyFilter(to: discounts).prefix(5))
     }
 
     var expiring: [Discount] {
@@ -90,7 +85,6 @@ final class HomeViewModel: ObservableObject {
     
     init(discountService: DiscountServiceProtocol = DiscountService.shared) {
         self.discountService = discountService
-        setupCategories()
     }
     
     // MARK: - Methods
@@ -108,10 +102,6 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    func selectCategory(_ id: String) {
-        selectedCategoryId = id
-    }
-    
     func applyFilter(_ filter: DiscountFilter) {
         activeFilter = filter
     }
@@ -127,14 +117,4 @@ final class HomeViewModel: ObservableObject {
         // TODO: persist to users/{userId}/savedDiscounts/{discountId}
     }
     
-    private func setupCategories() {
-        categories = [
-            DiscountCategory(id: "all",     name: "ყველა",    icon: "square.grid.2x2.fill"),
-            DiscountCategory(id: "food",    name: "საკვები",  icon: "fork.knife"),
-            DiscountCategory(id: "tech",    name: "ტექნიკა",  icon: "laptopcomputer"),
-            DiscountCategory(id: "fashion", name: "მოდა",     icon: "tshirt.fill"),
-            DiscountCategory(id: "fitness", name: "ფიტნესი",  icon: "heart.fill"),
-            DiscountCategory(id: "books",   name: "წიგნები",  icon: "book.fill"),
-        ]
-    }
 }
