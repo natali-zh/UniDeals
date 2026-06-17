@@ -20,10 +20,11 @@ struct MapView: View {
     ))
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack(alignment: .top) {
+            ZStack(alignment: .bottom) {
             Map(position: $position) {
                 UserAnnotation()
-                ForEach(viewModel.discounts) { discount in
+                ForEach(viewModel.filteredDiscounts) { discount in
                     if let id = discount.id {
                         Annotation("", coordinate: CLLocationCoordinate2D(
                             latitude: discount.latitude,
@@ -51,7 +52,11 @@ struct MapView: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(1)
             }
-        }
+        } // inner ZStack
+
+            categoryChips
+                .zIndex(2)
+        } // outer ZStack
         .navigationTitle("მახლობელი მაღაზიები")
         .navigationBarTitleDisplayMode(.inline)
         .task { await viewModel.load() }
@@ -75,6 +80,28 @@ struct MapView: View {
             }
             viewModel.pendingDiscount = nil
         }
+    }
+
+    // MARK: - Category chips
+
+    private var categoryChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(viewModel.categories) { category in
+                    MapCategoryChip(
+                        category: category,
+                        isSelected: viewModel.selectedCategoryId == category.id
+                    ) {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.75)) {
+                            viewModel.selectCategory(category.id)
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+        }
+        .background(.ultraThinMaterial)
     }
 
     // MARK: - Discount card
@@ -211,5 +238,31 @@ private struct DiscountPin: View {
             }
         }
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
+    }
+}
+
+// MARK: - Category Chip
+
+private struct MapCategoryChip: View {
+    let category: DiscountCategory
+    let isSelected: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: 5) {
+                Image(systemName: category.icon)
+                    .font(.system(size: 12, weight: .medium))
+                Text(category.name)
+                    .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
+            }
+            .foregroundColor(isSelected ? .white : .gray900)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .background(isSelected ? Color.colorPrimary : Color.white)
+            .clipShape(Capsule())
+            .shadow(color: .black.opacity(isSelected ? 0 : 0.08), radius: 4, x: 0, y: 2)
+        }
+        .buttonStyle(.plain)
     }
 }
