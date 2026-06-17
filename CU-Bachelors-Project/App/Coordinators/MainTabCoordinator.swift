@@ -16,6 +16,7 @@ final class MainCoordinator: Coordinator {
     private let tabBarController = UITabBarController()
     private var homeCoordinator: HomeCoordinator?
     private var exploreCoordinator: ExploreCoordinator?
+    private var mapCoordinator: MapCoordinator?
 
     // MARK: - Computed Properties
 
@@ -27,6 +28,10 @@ final class MainCoordinator: Coordinator {
 
     func start() {
         tabBarController.tabBar.tintColor = .colorPrimary
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        tabBarController.tabBar.standardAppearance = appearance
+        tabBarController.tabBar.scrollEdgeAppearance = appearance
         tabBarController.viewControllers = makeTabs()
     }
 
@@ -48,8 +53,8 @@ final class MainCoordinator: Coordinator {
         cardNav.setViewControllers([cardVC], animated: false)
 
         let mapNav = makeNav(title: "Map", icon: "map", selectedIcon: "map.fill")
-        let mapVC = UIHostingController(rootView: MapView())
-        mapNav.setViewControllers([mapVC], animated: false)
+        mapCoordinator = MapCoordinator(navigationController: mapNav)
+        mapCoordinator?.start()
 
         let profileNav = makeNav(title: "Account", icon: "person", selectedIcon: "person.fill")
         let profileVC = UIHostingController(rootView: ProfileView())
