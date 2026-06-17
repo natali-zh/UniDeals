@@ -224,14 +224,19 @@ struct PartnerDetailView: View {
     // MARK: - Map button
 
     private var mapButton: some View {
-        Button { viewModel.onViewOnMap?() } label: {
+        let firstOffer = viewModel.offers.first
+        return Button {
+            if let offer = firstOffer { viewModel.onViewOnMap?(offer) }
+        } label: {
             HStack(spacing: 8) {
                 Image(systemName: "map").font(.system(size: 15, weight: .medium))
                 Text("რუკაზე ნახვა").font(.system(size: 16, weight: .semibold))
             }
-            .foregroundColor(.white)
+            .foregroundColor(firstOffer == nil ? .gray500 : .white)
             .primaryActionButton()
         }
+        .disabled(firstOffer == nil || viewModel.isLoading)
+        .opacity(firstOffer == nil ? 0.5 : 1)
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
     }

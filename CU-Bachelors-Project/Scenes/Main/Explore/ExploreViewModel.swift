@@ -124,7 +124,7 @@ final class ExploreViewModel: ObservableObject {
         do {
             async let fetchedDiscounts = discountService.fetchAllDiscounts()
             async let fetchedPartners = partnerService.fetchAllPartners()
-            discounts = try await fetchedDiscounts
+            discounts = DiscountFormatter.withDistances(try await fetchedDiscounts)
             partners = try await fetchedPartners
         } catch {
             errorMessage = "მონაცემების ჩატვირთვა ვერ მოხდა."

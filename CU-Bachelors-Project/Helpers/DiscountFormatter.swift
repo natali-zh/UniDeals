@@ -4,8 +4,19 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 enum DiscountFormatter {
+    static func withDistances(_ discounts: [Discount]) -> [Discount] {
+        guard let userCoord = LocationManager.shared.userLocation else { return discounts }
+        let userLocation = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
+        return discounts.map { discount in
+            var d = discount
+            let loc = CLLocation(latitude: discount.latitude, longitude: discount.longitude)
+            d.distanceKm = userLocation.distance(from: loc) / 1000.0
+            return d
+        }
+    }
     static func daysLeftText(for endDate: Date) -> String {
         let days = Calendar.current.dateComponents([.day], from: Date(), to: endDate).day ?? 0
         if days < 0 { return "ვადა გასულია" }

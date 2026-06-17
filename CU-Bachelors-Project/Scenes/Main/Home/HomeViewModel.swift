@@ -36,7 +36,7 @@ final class HomeViewModel: ObservableObject {
         let byCategory = selectedCategoryId == "all"
             ? discounts
             : discounts.filter { $0.category == selectedCategoryId }
-        return applyFilter(to: byCategory)
+        return Array(applyFilter(to: byCategory).prefix(5))
     }
 
     var expiring: [Discount] {
@@ -101,7 +101,7 @@ final class HomeViewModel: ObservableObject {
         defer { isLoading = false }
         
         do {
-            discounts = try await discountService.fetchAllDiscounts()
+            discounts = DiscountFormatter.withDistances(try await discountService.fetchAllDiscounts())
         } catch {
             errorMessage = "Couldn't load discounts. Please try again."
             print("loadDiscounts failed: \(error.localizedDescription)")

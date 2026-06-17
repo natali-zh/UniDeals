@@ -18,7 +18,7 @@ final class MapViewModel {
 
     func load() async {
         isLoading = true
-        discounts = (try? await DiscountService.shared.fetchAllDiscounts()) ?? []
+        discounts = DiscountFormatter.withDistances((try? await DiscountService.shared.fetchAllDiscounts()) ?? [])
         isLoading = false
     }
 

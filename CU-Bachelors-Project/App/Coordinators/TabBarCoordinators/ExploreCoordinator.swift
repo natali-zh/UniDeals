@@ -52,6 +52,10 @@ final class ExploreCoordinator: Coordinator {
             detailVM.onBack = { [weak self] in
                 self?.navigationController.popViewController(animated: true)
             }
+            detailVM.onViewOnMap = { [weak self] discount in
+                self?.navigationController.popViewController(animated: false)
+                self?.onShowOnMap?(discount)
+            }
             detailVM.onOfferTapped = { [weak self] discountId in
                 self?.showDiscountDetailFromPartner(id: discountId)
             }
