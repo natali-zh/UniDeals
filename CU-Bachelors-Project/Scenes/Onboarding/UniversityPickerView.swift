@@ -189,20 +189,14 @@ struct UniversityPickerView: View {
 
     private var continueButton: some View {
         Button {
-            Task { await viewModel.confirm() }
+            viewModel.confirm()
         } label: {
-            Group {
-                if viewModel.isSaving {
-                    ProgressView().tint(.white)
-                } else {
-                    Text("გაგრძელება")
-                        .font(.system(size: 16, weight: .semibold))
-                }
-            }
-            .foregroundColor(.white)
-            .primaryActionButton(verticalPadding: 16)
+            Text("გაგრძელება")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.white)
+                .primaryActionButton(verticalPadding: 16)
         }
-        .disabled(viewModel.selectedUniversity == nil || viewModel.isSaving)
+        .disabled(viewModel.selectedUniversity == nil)
         .opacity(viewModel.selectedUniversity == nil ? 0.5 : 1)
     }
 }

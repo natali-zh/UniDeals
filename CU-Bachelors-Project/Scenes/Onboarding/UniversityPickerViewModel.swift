@@ -16,7 +16,7 @@ final class UniversityPickerViewModel {
 
     // MARK: - Callbacks
 
-    var onComplete: (() -> Void)?
+    var onComplete: ((String) -> Void)?
 
     // MARK: - Dependencies
 
@@ -43,21 +43,8 @@ final class UniversityPickerViewModel {
 
     // MARK: - Methods
 
-    func confirm() async {
-        guard let university = selectedUniversity,
-              let uid = sessionManager.userId else { return }
-        isSaving = true
-        do {
-            try await firestoreService.updateDocument(
-                collection: FirestorePaths.users,
-                documentId: uid,
-                fields: ["university": university]
-            )
-            UserManager.shared.currentUser?.university = university
-            onComplete?()
-        } catch {
-            errorMessage = "შენახვა ვერ მოხდა. სცადე თავიდან."
-        }
-        isSaving = false
+    func confirm() {
+        guard let university = selectedUniversity else { return }
+        onComplete?(university)
     }
 }

@@ -81,9 +81,9 @@ struct CardView: View {
                         Text("სტატუსი")
                             .font(.system(size: 11, weight: .medium))
                             .foregroundColor(.white.opacity(0.65))
-                        Text("აქტიური")
+                        Text(viewModel.isExpired ? "ვადაგასული" : "აქტიური")
                             .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(.green)
+                            .foregroundColor(viewModel.isExpired ? .red : .green)
                     }
                 }
                 .padding(.horizontal, 28)

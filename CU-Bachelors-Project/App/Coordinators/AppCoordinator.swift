@@ -62,8 +62,11 @@ final class AppCoordinator: Coordinator {
     
     private func showMainOrOnboarding() async {
         await UserManager.shared.fetchUser()
-        if UserManager.shared.currentUser?.university == nil {
+        let user = UserManager.shared.currentUser
+        if user?.university == nil {
             showUniversityPicker()
+        } else if user?.semester == nil {
+            showGraduationYearPicker(university: user?.university ?? "")
         } else {
             showMainFlow()
         }
@@ -71,11 +74,19 @@ final class AppCoordinator: Coordinator {
 
     private func showUniversityPicker() {
         let vm = UniversityPickerViewModel()
+        vm.onComplete = { [weak self] university in
+            self?.showGraduationYearPicker(university: university)
+        }
+        let vc = UIHostingController(rootView: UniversityPickerView(viewModel: vm))
+        window.rootViewController = vc
+    }
+
+    private func showGraduationYearPicker(university: String) {
+        let vm = GraduationYearPickerViewModel(university: university)
         vm.onComplete = { [weak self] in
             self?.showMainFlow()
         }
-        let vc = UIHostingController(rootView: UniversityPickerView(viewModel: vm))
-        vc.modalPresentationStyle = .fullScreen
+        let vc = UIHostingController(rootView: GraduationYearPickerView(viewModel: vm))
         window.rootViewController = vc
     }
 

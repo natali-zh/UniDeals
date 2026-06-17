@@ -41,12 +41,28 @@ final class CardViewModel {
     // MARK: - Computed display
 
     var validityText: String {
+        guard let semester = user?.semester else { return "–" }
+        let (enrollmentYear, graduationYear) = academicYears(for: semester)
+        return "09/\(enrollmentYear) – 06/\(graduationYear)"
+    }
+
+    var isExpired: Bool {
+        guard let semester = user?.semester else { return false }
+        let (_, graduationYear) = academicYears(for: semester)
+        let now = Date()
+        let year = Calendar.current.component(.year, from: now)
+        let month = Calendar.current.component(.month, from: now)
+        return year > graduationYear || (year == graduationYear && month > 6)
+    }
+
+    private func academicYears(for semester: Int) -> (enrollment: Int, graduation: Int) {
         let now = Date()
         let cal = Calendar.current
         let year = cal.component(.year, from: now)
         let month = cal.component(.month, from: now)
-        let startYear = month >= 9 ? year : year - 1
-        return "09/\(startYear) – 06/\(startYear + 1)"
+        let academicStart = month >= 9 ? year : year - 1
+        let enrollmentYear = academicStart - (semester - 1) / 2
+        return (enrollmentYear, enrollmentYear + 4)
     }
 
     // MARK: - Private
