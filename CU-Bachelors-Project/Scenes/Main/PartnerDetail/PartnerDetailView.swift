@@ -1,3 +1,4 @@
+import CoreLocation
 import SwiftUI
 
 struct PartnerDetailView: View {
@@ -277,7 +278,7 @@ private struct OfferRow: View {
                         .lineLimit(2)
 
                     HStack(spacing: 10) {
-                        Label(DiscountFormatter.distanceText(offer.distanceKm), systemImage: "location.fill")
+                        Label(liveDistanceText(for: offer), systemImage: "location.fill")
                             .font(.system(size: 12))
                             .foregroundColor(.gray500)
 
@@ -298,6 +299,16 @@ private struct OfferRow: View {
             .clipShape(RoundedRectangle(cornerRadius: 14))
         }
         .buttonStyle(.plain)
+    }
+
+    private func liveDistanceText(for discount: Discount) -> String {
+        if let userCoord = LocationManager.shared.userLocation {
+            let userLoc = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
+            let discountLoc = CLLocation(latitude: discount.latitude, longitude: discount.longitude)
+            let km = userLoc.distance(from: discountLoc) / 1000.0
+            return DiscountFormatter.distanceText(km)
+        }
+        return DiscountFormatter.distanceText(discount.distanceKm)
     }
 
 }

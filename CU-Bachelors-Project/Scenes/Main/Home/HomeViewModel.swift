@@ -111,6 +111,11 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    func refreshDistances() {
+        guard !discounts.isEmpty else { return }
+        discounts = DiscountFormatter.withDistances(discounts)
+    }
+
     func refreshSavedState() async {
         guard !discounts.isEmpty, let uid = SessionManager.shared.userId,
               let savedIds = try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid) else { return }

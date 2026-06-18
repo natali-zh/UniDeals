@@ -40,6 +40,9 @@ struct HomeView: View {
         .onAppear {
             Task { await viewModel.refreshSavedState() }
         }
+        .onChange(of: LocationManager.shared.locationUpdateCount) { _, _ in
+            viewModel.refreshDistances()
+        }
     }
     
     //MARK: - Subviews

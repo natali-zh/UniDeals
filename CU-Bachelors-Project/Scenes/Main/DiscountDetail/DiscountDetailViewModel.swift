@@ -1,3 +1,4 @@
+import CoreLocation
 import Foundation
 import Combine
 
@@ -65,5 +66,13 @@ final class DiscountDetailViewModel: ObservableObject {
     var daysLeftIsUrgent: Bool { DiscountFormatter.isUrgent(endDate: discount.endDate) }
     var isExpired: Bool { DiscountFormatter.isExpired(endDate: discount.endDate) }
     var formattedEndDate: String { DiscountFormatter.formattedDate(discount.endDate) }
-    var distanceText: String { DiscountFormatter.distanceText(discount.distanceKm) }
+    var distanceText: String {
+        if let userCoord = LocationManager.shared.userLocation {
+            let userLoc = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
+            let discountLoc = CLLocation(latitude: discount.latitude, longitude: discount.longitude)
+            let km = userLoc.distance(from: discountLoc) / 1000.0
+            return DiscountFormatter.distanceText(km)
+        }
+        return DiscountFormatter.distanceText(discount.distanceKm)
+    }
 }

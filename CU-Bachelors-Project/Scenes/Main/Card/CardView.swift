@@ -17,7 +17,11 @@ struct CardView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 16)
 
-                studentCard
+                if viewModel.user == nil {
+                    CardSkeleton()
+                } else {
+                    studentCard
+                }
 
                 // Hint
                 Text("შეთავაზების გამოსაყენებლად აჩვენეთ ბარათი პარტნიორ ობიექტში")

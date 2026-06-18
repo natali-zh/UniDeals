@@ -106,6 +106,78 @@ private struct ExpiringCardSkeleton: View {
     }
 }
 
+// MARK: - Student card skeleton
+
+struct CardSkeleton: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            // Header band
+            HStack {
+                HStack(spacing: 8) {
+                    SkeletonBlock(cornerRadius: 8).frame(width: 34, height: 34)
+                    VStack(alignment: .leading, spacing: 4) {
+                        SkeletonBlock(cornerRadius: 3).frame(width: 50, height: 8)
+                        SkeletonBlock(cornerRadius: 3).frame(width: 36, height: 8)
+                    }
+                }
+                Spacer()
+                SkeletonBlock(cornerRadius: 4).frame(width: 22, height: 22)
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(Color.white.opacity(0.12))
+
+            VStack(spacing: 20) {
+                // Avatar
+                Circle()
+                    .fill(Color.white.opacity(0.2))
+                    .frame(width: 88, height: 88)
+                    .overlay(Circle().stroke(Color.white.opacity(0.3), lineWidth: 3))
+                    .padding(.top, 24)
+
+                // Name + university
+                VStack(spacing: 8) {
+                    SkeletonBlock(cornerRadius: 6).frame(width: 140, height: 20).opacity(0.35)
+                    SkeletonBlock(cornerRadius: 5).frame(width: 100, height: 14).opacity(0.25)
+                }
+
+                Divider().background(Color.white.opacity(0.25)).padding(.horizontal, 24)
+
+                // Validity
+                HStack {
+                    VStack(alignment: .leading, spacing: 6) {
+                        SkeletonBlock(cornerRadius: 3).frame(width: 50, height: 11).opacity(0.25)
+                        SkeletonBlock(cornerRadius: 3).frame(width: 80, height: 13).opacity(0.35)
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing, spacing: 6) {
+                        SkeletonBlock(cornerRadius: 3).frame(width: 44, height: 11).opacity(0.25)
+                        SkeletonBlock(cornerRadius: 3).frame(width: 56, height: 13).opacity(0.35)
+                    }
+                }
+                .padding(.horizontal, 28)
+
+                // QR placeholder
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color.white.opacity(0.15))
+                    .frame(width: 134, height: 134)
+                    .padding(.bottom, 28)
+            }
+        }
+        .background(
+            LinearGradient(
+                colors: [Color.colorPrimary, Color(red: 0.28, green: 0.18, blue: 0.72)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .shadow(color: Color.colorPrimary.opacity(0.35), radius: 24, x: 0, y: 12)
+        .padding(.horizontal, 24)
+        .shimmer()
+    }
+}
+
 // MARK: - Grid skeleton
 
 struct DiscountsGridSkeleton: View {
