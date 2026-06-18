@@ -13,7 +13,18 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="Launch" translatesAutoresizingMaskIntoConstraints="NO" id="lau-im-age">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="lau-im-age" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="c1"/>
+                            <constraint firstItem="lau-im-age" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="c2"/>
+                            <constraint firstItem="lau-im-age" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="c3"/>
+                            <constraint firstItem="lau-im-age" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="c4"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
@@ -22,4 +33,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Launch" width="375" height="667"/>
+    </resources>
 </document>

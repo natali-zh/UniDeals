@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E1603B482F83F7E600A16266 /* CU-Bachelors-Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CU-Bachelors-Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1603B482F83F7E600A16266 /* UniDeals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniDeals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -78,7 +78,7 @@
 		E1603B492F83F7E600A16266 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E1603B482F83F7E600A16266 /* CU-Bachelors-Project.app */,
+				E1603B482F83F7E600A16266 /* UniDeals.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,7 +112,7 @@
 				E1F9238A2FE4A39200B111E2 /* Kingfisher */,
 			);
 			productName = "CU-Bachelors-Project";
-			productReference = E1603B482F83F7E600A16266 /* CU-Bachelors-Project.app */;
+			productReference = E1603B482F83F7E600A16266 /* UniDeals.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -197,7 +197,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.natali.CU-Bachelors-Project";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = UniDeals;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -230,7 +230,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.natali.CU-Bachelors-Project";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = UniDeals;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
