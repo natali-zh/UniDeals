@@ -29,6 +29,8 @@ struct ExploreView: View {
 
                         if viewModel.isLoading {
                             DiscountsGridSkeleton()
+                        } else if viewModel.filteredDiscounts.isEmpty {
+                            ExploreEmptyState(message: "შეთავაზება ვერ მოიძებნა")
                         } else {
                             DiscountsGridView(
                                 discounts: viewModel.filteredDiscounts,
@@ -39,6 +41,8 @@ struct ExploreView: View {
                     } else {
                         if viewModel.isLoading {
                             DiscountsGridSkeleton()
+                        } else if viewModel.filteredPartners.isEmpty {
+                            ExploreEmptyState(message: "პარტნიორი ვერ მოიძებნა")
                         } else {
                             PartnersListView(
                                 partners: viewModel.filteredPartners,
@@ -206,6 +210,23 @@ private struct ActiveFilterChip: View {
         .padding(.vertical, 8)
         .background(Color.white)
         .clipShape(Capsule())
+    }
+}
+
+private struct ExploreEmptyState: View {
+    let message: String
+
+    var body: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 40, weight: .light))
+                .foregroundColor(.gray300)
+            Text(message)
+                .font(.system(size: 15, weight: .medium))
+                .foregroundColor(.gray500)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 60)
     }
 }
 

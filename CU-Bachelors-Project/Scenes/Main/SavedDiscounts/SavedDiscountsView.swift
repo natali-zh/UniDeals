@@ -56,7 +56,7 @@ struct SavedDiscountsView: View {
             Text("შენახული შეთავაზება არ გაქვს")
                 .font(.system(size: 16, weight: .medium))
                 .foregroundColor(.gray500)
-            Text("დააჭირე გულის ღილაკს შეთავაზების გვერდზე, რომ შეინახო")
+            Text("შენი ფავორიტი შეთავაზებები აქ გამოჩნდება")
                 .font(.system(size: 13))
                 .foregroundColor(.gray300)
                 .multilineTextAlignment(.center)
