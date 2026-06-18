@@ -1,10 +1,3 @@
-//
-//  Partner.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 17.06.26.
-//
-
 import FirebaseFirestore
 import Foundation
 import CoreLocation

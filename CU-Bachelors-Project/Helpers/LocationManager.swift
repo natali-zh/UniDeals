@@ -1,8 +1,3 @@
-//
-//  LocationManager.swift
-//  CU-Bachelors-Project
-//
-
 import CoreLocation
 import Observation
 

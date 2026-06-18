@@ -1,10 +1,3 @@
-//
-//  ForgotPasswordViewModel.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 14.06.26.
-//
-
 import Foundation
 
 final class ForgotPasswordViewModel {

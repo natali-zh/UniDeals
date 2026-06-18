@@ -1,10 +1,3 @@
-//
-//  SignUpViewController.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 13.06.26.
-//
-
 import UIKit
 
 final class SignUpViewController: BaseViewController {
@@ -46,14 +39,6 @@ final class SignUpViewController: BaseViewController {
             placeholder: "შეიყვანეთ სრული სახელი",
             type: .normal(icon: "person.text.rectangle.fill"))
     )
-    private let usernameField =  TextFieldWithError(
-        labelText: "Username",
-        textField: CustomTextField(
-            placeholder: "Your username",
-            type: .normal(icon: "person.fill")
-        )
-    )
-    
     private let emailField = TextFieldWithError(
         labelText: "სტუდენტური ელფოსტა",
         textField: CustomTextField(
@@ -132,8 +117,6 @@ final class SignUpViewController: BaseViewController {
                 switch error.field {
                 case .fullname:
                     fullnameField.showError(error.message)
-                case .username:
-                    usernameField.showError(error.message)
                 case .email:
                     emailField.showError(error.message)
                 case .password:
@@ -149,14 +132,12 @@ final class SignUpViewController: BaseViewController {
             emailField.showError(error.message)
         }
         
-        //        viewModel.onLoading = { [weak self] isLoading in
-        //            guard let self = self else { return }
-        //            if isLoading {
-        //                self.showLoader()
-        //            } else {
-        //                self.hideLoader()
-        //            }
-        //        }
+        viewModel.onLoading = { [weak self] isLoading in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                isLoading ? self.showLoader() : self.hideLoader()
+            }
+        }
     }
     
     
@@ -172,12 +153,11 @@ final class SignUpViewController: BaseViewController {
     private func addActionToSignUp() {
         signUpButton.addAction( UIAction { [weak self] _ in
             guard let self = self, let fullname = fullnameField.text,
-                  let username = usernameField.text,
                   let email = emailField.text,
                   let password = passwordField.text,
                   let confirmPassword = confirmPasswordField.text  else { return }
             Task {
-                await self.viewModel.signUp(with: User(fullname: fullname, username: username, email: email), password: password, confirmPassword: confirmPassword)}
+                await self.viewModel.signUp(with: User(fullname: fullname, email: email), password: password, confirmPassword: confirmPassword)}
         }, for: .touchUpInside)
     }
     
@@ -213,7 +193,6 @@ final class SignUpViewController: BaseViewController {
         mainStackView.addArrangedSubview(descriptionLabel)
         mainStackView.setCustomSpacing(36, after: descriptionLabel)
         mainStackView.addArrangedSubview(fullnameField)
-        mainStackView.addArrangedSubview(usernameField)
         mainStackView.addArrangedSubview(emailField)
         mainStackView.addArrangedSubview(passwordField)
         mainStackView.addArrangedSubview(confirmPasswordField)

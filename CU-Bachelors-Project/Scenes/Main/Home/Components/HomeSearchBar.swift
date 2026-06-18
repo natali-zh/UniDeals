@@ -1,10 +1,3 @@
-//
-//  HomeSearchBar.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 15.06.26.
-//
-
 import SwiftUI
 
 struct HomeSearchBar: View {

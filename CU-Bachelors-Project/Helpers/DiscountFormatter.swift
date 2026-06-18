@@ -1,8 +1,3 @@
-//
-//  DiscountFormatter.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 import CoreLocation
 

@@ -1,10 +1,3 @@
-//
-//  ForgotPasswordViewController.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 14.06.26.
-//
-
 import UIKit
 
 final class ForgotPasswordViewController: BaseViewController {
@@ -103,14 +96,21 @@ final class ForgotPasswordViewController: BaseViewController {
             emailField.showError(error.message)
         }
         
+        viewModel.onLoading = { [weak self] isLoading in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                isLoading ? self.showLoader() : self.hideLoader()
+            }
+        }
+
         viewModel.onSuccess = { [weak self] in
             guard let self else { return }
             let alert = UIAlertController(
-                title: "Check your inbox",
-                message: "A password reset link has been sent to your email.",
+                title: "შეამოწმე ელფოსტა",
+                message: "პაროლის აღდგენის ბმული გამოგზავნილია.",
                 preferredStyle: .alert
             )
-            alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            alert.addAction(UIAlertAction(title: "კარგი", style: .default) { [weak self] _ in
                 self?.viewModel.backTapped()
             })
             present(alert, animated: true)

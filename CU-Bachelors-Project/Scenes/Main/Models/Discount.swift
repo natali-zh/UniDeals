@@ -1,10 +1,3 @@
-//
-//  FeaturedDiscount.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 15.06.26.
-//
-
 import FirebaseFirestore
 import Foundation
 

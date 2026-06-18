@@ -1,8 +1,3 @@
-//
-//  FilterSheet.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct FilterSheet: View {

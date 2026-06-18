@@ -1,10 +1,3 @@
-//
-//  HomeHeaderView.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 18.06.26.
-//
-
 import SwiftUI
 
 struct HomeHeaderView: View {

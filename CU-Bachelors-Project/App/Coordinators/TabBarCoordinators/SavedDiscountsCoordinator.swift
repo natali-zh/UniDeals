@@ -1,8 +1,3 @@
-//
-//  SavedDiscountsCoordinator.swift
-//  CU-Bachelors-Project
-//
-
 import UIKit
 import SwiftUI
 

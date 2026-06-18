@@ -1,10 +1,3 @@
-//
-//  Validators.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 13.06.26.
-//
-
 import UIKit
 
 struct Validators {
@@ -12,12 +5,6 @@ struct Validators {
         let fullnameRegex = "^[A-Za-z ]+$"
         return NSPredicate(format: "SELF MATCHES %@", fullnameRegex)
             .evaluate(with: fullname)
-    }
-    
-    static func isValidUsername(_ username: String) -> Bool {
-        let usernameRegex = "^[A-Za-z0-9_]{3,}$"
-        return NSPredicate(format: "SELF MATCHES %@", usernameRegex)
-            .evaluate(with: username)
     }
     
     static func isValidEmail(_ email: String) -> Bool {

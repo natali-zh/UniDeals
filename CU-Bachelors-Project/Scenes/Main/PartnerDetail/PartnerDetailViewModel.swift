@@ -1,8 +1,3 @@
-//
-//  PartnerDetailViewModel.swift
-//  CU-Bachelors-Project
-//
-
 import Foundation
 import Combine
 

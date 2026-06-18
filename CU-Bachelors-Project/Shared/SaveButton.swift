@@ -1,8 +1,3 @@
-//
-//  SaveButton.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct SaveButton: View {

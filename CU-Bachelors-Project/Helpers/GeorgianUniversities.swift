@@ -1,8 +1,3 @@
-//
-//  GeorgianUniversities.swift
-//  CU-Bachelors-Project
-//
-
 enum GeorgianUniversities {
     static let all: [String] = [
         // თბილისი

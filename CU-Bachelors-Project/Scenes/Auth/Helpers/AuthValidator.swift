@@ -1,19 +1,10 @@
-//
-//  AuthValidator.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 13.06.26.
-//
-
 enum AuthErrorMessage {
     case emptyFullname
-    case emptyUsername
     case emptyEmail
     case emptyPassword
     case emptyConfirmPassword
     
     case invalidFullname
-    case invalidUsername
     case invalidEmail
     case invalidStudentEmail
     case invalidPassword
@@ -25,34 +16,30 @@ enum AuthErrorMessage {
     var message: String {
         switch self {
         case .emptyFullname:
-            return "Fullname is required"
-        case .emptyUsername:
-            return "Username is required"
+            return "სახელი სავალდებულოა"
         case .emptyEmail:
-            return "Email is required"
+            return "ელფოსტა სავალდებულოა"
         case .emptyPassword:
-            return "Password is required"
+            return "პაროლი სავალდებულოა"
         case .emptyConfirmPassword:
-            return "Confirm password is required"
-            
+            return "გაიმეორეთ პაროლი"
+
         case .invalidFullname:
-            return "Only letters and spaces allowed"
-        case .invalidUsername:
-            return "Only letters, numbers, and underscores allowed"
+            return "გამოიყენეთ მხოლოდ ასოები და გამოტოვებები"
         case .invalidEmail:
-            return "Invalid email format"
+            return "ელფოსტის ფორმატი არასწორია"
         case .invalidStudentEmail:
-            return "Please use your university email address (.edu)"
+            return "გამოიყენე სტუდენტური ელფოსტა (.edu)"
         case .invalidPassword:
-            return "Password must contain at least 8 characters"
-            
+            return "პაროლი მინიმუმ 8 სიმბოლოს უნდა შეიცავდეს"
+
         case .differentPasswords:
-            return "Passwords don't match"
-            
+            return "პაროლები არ ემთხვევა"
+
         case .authFailed:
-            return "Incorrect email or password"
+            return "ელფოსტა ან პაროლი არასწორია"
         case .usedEmail:
-            return "This email is already registered"
+            return "ეს ელფოსტა უკვე რეგისტრირებულია"
         }
     }
 }
@@ -70,7 +57,6 @@ struct FieldError {
 
 enum AuthField {
     case fullname
-    case username
     case email
     case password
     case confirmPassword

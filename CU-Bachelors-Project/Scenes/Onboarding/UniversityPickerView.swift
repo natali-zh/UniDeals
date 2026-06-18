@@ -1,8 +1,3 @@
-//
-//  UniversityPickerView.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct UniversityPickerView: View {

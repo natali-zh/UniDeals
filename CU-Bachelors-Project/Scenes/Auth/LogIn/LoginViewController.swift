@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 06.04.26.
-//
-
 import UIKit
 
 final class LoginViewController: BaseViewController {
@@ -156,19 +149,17 @@ final class LoginViewController: BaseViewController {
         
         viewModel.onGoogleAuthError = { [weak self] message in
             guard let self else { return }
-            let alert = UIAlertController(title: "Not a Student Account", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            let alert = UIAlertController(title: "სტუდენტური ანგარიში არ არის", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "კარგი", style: .default))
             present(alert, animated: true)
         }
         
-        //        viewModel.onLoading = { [weak self] isLoading in
-        //            guard let self = self else { return }
-        //            if isLoading {
-        //                self.showLoader()
-        //            } else {
-        //                self.hideLoader()
-        //            }
-        //        }
+        viewModel.onLoading = { [weak self] isLoading in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                isLoading ? self.showLoader() : self.hideLoader()
+            }
+        }
     }
     
     private func configureKeyboardScrollView() {

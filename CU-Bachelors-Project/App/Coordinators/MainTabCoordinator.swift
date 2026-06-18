@@ -1,10 +1,3 @@
-//
-//  MainTabCoordinator.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 14.06.26.
-//
-
 import UIKit
 import SwiftUI
 
@@ -37,7 +30,7 @@ final class MainCoordinator: Coordinator {
     }
 
     private func makeTabs() -> [UIViewController] {
-        let homeNav = makeNav(title: "Home", icon: "house", selectedIcon: "house.fill")
+        let homeNav = makeNav(title: "მთავარი", icon: "house", selectedIcon: "house.fill")
         homeCoordinator = HomeCoordinator(navigationController: homeNav)
         homeCoordinator?.onSeeAll = { [weak self] in
             self?.tabBarController.selectedIndex = 1
@@ -50,7 +43,7 @@ final class MainCoordinator: Coordinator {
         }
         homeCoordinator?.start()
 
-        let exploreNav = makeNav(title: "Explore", icon: "magnifyingglass", selectedIcon: "magnifyingglass")
+        let exploreNav = makeNav(title: "აღმოჩენა", icon: "magnifyingglass", selectedIcon: "magnifyingglass")
         exploreCoordinator = ExploreCoordinator(navigationController: exploreNav)
         exploreCoordinator?.onShowOnMap = { [weak self] discount in
             self?.showOnMap(discount: discount)
@@ -58,15 +51,15 @@ final class MainCoordinator: Coordinator {
         exploreCoordinator?.start()
 
         // Create navigation controllers for SwiftUI views
-        let cardNav = makeNav(title: "Card", icon: "creditcard", selectedIcon: "creditcard.fill")
+        let cardNav = makeNav(title: "ბარათი", icon: "creditcard", selectedIcon: "creditcard.fill")
         let cardVC = UIHostingController(rootView: CardView())
         cardNav.setViewControllers([cardVC], animated: false)
 
-        let mapNav = makeNav(title: "Map", icon: "map", selectedIcon: "map.fill")
+        let mapNav = makeNav(title: "რუქა", icon: "map", selectedIcon: "map.fill")
         mapCoordinator = MapCoordinator(navigationController: mapNav)
         mapCoordinator?.start()
 
-        let savedNav = makeNav(title: "Saved", icon: "heart", selectedIcon: "heart.fill")
+        let savedNav = makeNav(title: "შენახული", icon: "heart", selectedIcon: "heart.fill")
         savedCoordinator = SavedDiscountsCoordinator(navigationController: savedNav)
         savedCoordinator?.start()
 

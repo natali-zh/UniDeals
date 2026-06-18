@@ -1,8 +1,3 @@
-//
-//  CameraView.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 import UIKit
 

@@ -1,8 +1,3 @@
-//
-//  MapViewModel.swift
-//  CU-Bachelors-Project
-//
-
 import Foundation
 
 @MainActor

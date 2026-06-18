@@ -1,8 +1,3 @@
-//
-//  CardViewModel.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 import CoreImage
 import CoreImage.CIFilterBuiltins

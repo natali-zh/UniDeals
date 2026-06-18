@@ -1,8 +1,3 @@
-//
-//  SavedDiscountsService.swift
-//  CU-Bachelors-Project
-//
-
 import FirebaseFirestore
 
 final class SavedDiscountsService {

@@ -1,10 +1,3 @@
-//
-//  AuthService.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 13.06.26.
-//
-
 import FirebaseAuth
 import GoogleSignIn
 import FirebaseCore
@@ -82,7 +75,6 @@ final class AuthService: AuthServiceProtocol {
         if !docSnapshot.exists {
             let data: [String: Any] = [
                 "fullname": googleUser.profile?.name ?? "",
-                "username": googleUser.profile?.email.components(separatedBy: "@").first ?? "",
                 "email": googleUser.profile?.email ?? "",
                 "imageUrl": googleUser.profile?.imageURL(withDimension: 320)?.absoluteString ?? ""
             ]
@@ -92,8 +84,7 @@ final class AuthService: AuthServiceProtocol {
     
     private func createFirestoreUser(uid: String, user: User) async throws {
         let data: [String: Any] = [
-            "fullname" : user.fullname,
-            "username": user.username,
+            "fullname": user.fullname,
             "email": user.email
         ]
         try await db.collection(FirestorePaths.users).document(uid).setData(data)

@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 06.04.26.
-//
-
 import UIKit
 import GoogleSignIn
 

@@ -1,8 +1,3 @@
-//
-//  ProfileViewModel.swift
-//  CU-Bachelors-Project
-//
-
 import Foundation
 import UIKit
 import FirebaseStorage

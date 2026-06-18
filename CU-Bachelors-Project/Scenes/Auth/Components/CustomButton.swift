@@ -1,10 +1,3 @@
-//
-//  CustomButton.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 27.04.26.
-//
-
 import UIKit
 
 final class CustomButton: UIButton {

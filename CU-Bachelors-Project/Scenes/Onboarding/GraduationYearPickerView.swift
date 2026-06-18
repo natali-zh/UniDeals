@@ -1,8 +1,3 @@
-//
-//  SemesterPickerView.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct GraduationYearPickerView: View {

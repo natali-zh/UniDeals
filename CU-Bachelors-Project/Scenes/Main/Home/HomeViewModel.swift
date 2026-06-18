@@ -1,10 +1,3 @@
-//
-//  HomeViewModel.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 17.06.26.
-//
-
 import Combine
 import Foundation
 
@@ -107,7 +100,7 @@ final class HomeViewModel: ObservableObject {
             }
             discounts = loaded
         } catch {
-            errorMessage = "Couldn't load discounts. Please try again."
+            errorMessage = "შეთავაზებების ჩატვირთვა ვერ მოხერხდა. სცადე თავიდან."
             print("loadDiscounts failed: \(error.localizedDescription)")
         }
     }

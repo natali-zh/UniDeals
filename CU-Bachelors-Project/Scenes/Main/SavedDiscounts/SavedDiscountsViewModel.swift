@@ -1,8 +1,3 @@
-//
-//  SavedDiscountsViewModel.swift
-//  CU-Bachelors-Project
-//
-
 import Foundation
 
 @MainActor

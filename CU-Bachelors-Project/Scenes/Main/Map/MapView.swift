@@ -1,8 +1,3 @@
-//
-//  MapView.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 import MapKit
 

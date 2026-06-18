@@ -1,8 +1,3 @@
-//
-//  ShimmerModifier.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct ShimmerModifier: ViewModifier {

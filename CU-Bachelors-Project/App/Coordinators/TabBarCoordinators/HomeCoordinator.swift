@@ -1,10 +1,3 @@
-//
-//  HomeCoordinator.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 17.06.26.
-//
-
 import UIKit
 import SwiftUI
 

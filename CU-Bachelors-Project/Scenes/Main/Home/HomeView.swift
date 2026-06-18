@@ -1,10 +1,3 @@
-//
-//  HomeView.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 14.06.26.
-//
-
 import Combine
 import SwiftUI
 
@@ -86,7 +79,7 @@ struct HomeView: View {
             if viewModel.isLoading {
                 FeaturedCardSkeleton()
             } else if viewModel.featured.isEmpty {
-                FeaturedPlaceholder(text: "No featured discounts yet")
+                FeaturedPlaceholder(text: "გამორჩეული შეთავაზება არ არის")
                     .padding(.horizontal, 20)
             } else {
                 FeaturedCarousel(

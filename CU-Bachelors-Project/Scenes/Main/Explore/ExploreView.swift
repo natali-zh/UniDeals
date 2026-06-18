@@ -1,8 +1,3 @@
-//
-//  ExploreView.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct ExploreView: View {

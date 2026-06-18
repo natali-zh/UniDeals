@@ -1,8 +1,3 @@
-//
-//  ProfileView.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct ProfileView: View {

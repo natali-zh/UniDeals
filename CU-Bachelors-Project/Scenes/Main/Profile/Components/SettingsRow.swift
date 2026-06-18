@@ -1,8 +1,3 @@
-//
-//  SettingsRow.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct SettingsRow: View {

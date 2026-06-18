@@ -1,10 +1,3 @@
-//
-//  LoginViewModel.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 26.04.26.
-//
-
 import UIKit
 import FirebaseAuth
 import GoogleSignIn

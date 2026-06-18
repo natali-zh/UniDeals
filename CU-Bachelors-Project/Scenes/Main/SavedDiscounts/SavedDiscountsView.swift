@@ -1,8 +1,3 @@
-//
-//  SavedDiscountsView.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct SavedDiscountsView: View {

@@ -1,10 +1,3 @@
-//
-//  PartnersListView.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 17.06.26.
-//
-
 import SwiftUI
 
 struct PartnersListView: View {

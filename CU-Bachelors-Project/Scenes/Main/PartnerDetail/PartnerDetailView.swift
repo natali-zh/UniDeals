@@ -1,8 +1,3 @@
-//
-//  PartnerDetailView.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct PartnerDetailView: View {

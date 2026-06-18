@@ -1,10 +1,3 @@
-//
-//  BaseViewController.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 13.06.26.
-//
-
 import UIKit
 import SwiftUI
 
@@ -12,9 +5,43 @@ class BaseViewController: UIViewController {
     
     //MARK: - Properties
     
-   // var loaderViewController: UIHostingController<LoaderView>?
-    
     var keyboardScrollView: UIScrollView?
+
+    private lazy var loadingOverlay: UIView = {
+        let overlay = UIView()
+        overlay.backgroundColor = UIColor.black.withAlphaComponent(0.35)
+        overlay.translatesAutoresizingMaskIntoConstraints = false
+
+        let spinner = RingSpinnerView()
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        overlay.addSubview(spinner)
+
+        NSLayoutConstraint.activate([
+            spinner.centerXAnchor.constraint(equalTo: overlay.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: overlay.centerYAnchor),
+            spinner.widthAnchor.constraint(equalToConstant: 52),
+            spinner.heightAnchor.constraint(equalToConstant: 52)
+        ])
+        return overlay
+    }()
+
+    func showLoader() {
+        guard loadingOverlay.superview == nil else { return }
+        view.addSubview(loadingOverlay)
+        NSLayoutConstraint.activate([
+            loadingOverlay.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingOverlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingOverlay.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        view.bringSubviewToFront(loadingOverlay)
+        (loadingOverlay.subviews.first as? RingSpinnerView)?.startAnimating()
+    }
+
+    func hideLoader() {
+        (loadingOverlay.subviews.first as? RingSpinnerView)?.stopAnimating()
+        loadingOverlay.removeFromSuperview()
+    }
     
     
     //MARK: - View Lifecycle

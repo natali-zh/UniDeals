@@ -1,10 +1,3 @@
-//
-//  ExploreViewModel.swift
-//  CU-Bachelors-Project
-//
-//  Created by Natali Zhgenti on 17.06.26.
-//
-
 import Combine
 import Foundation
 
@@ -174,7 +167,6 @@ final class ExploreViewModel: ObservableObject {
 //    func applyFilter(_ filter: DiscountFilter) {
 //        activeFilter = filter
 //    }
-//
 //    func resetFilter() {
 //        activeFilter = DiscountFilter()
 //    }

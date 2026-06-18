@@ -1,8 +1,3 @@
-//
-//  RemoteImage.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct RemoteImage: View {

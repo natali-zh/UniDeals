@@ -1,8 +1,3 @@
-//
-//  CardView.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 struct CardView: View {

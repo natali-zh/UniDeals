@@ -1,8 +1,3 @@
-//
-//  SkeletonCards.swift
-//  CU-Bachelors-Project
-//
-
 import SwiftUI
 
 // MARK: - Base
