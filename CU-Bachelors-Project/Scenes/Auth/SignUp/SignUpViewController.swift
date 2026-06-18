@@ -29,21 +29,21 @@ final class SignUpViewController: BaseViewController {
     }()
     
     private let titleLabel = CustomLabel(
-        text: "Create Account",
+        text: "ანგარიშის შექმნა",
         color: .gray900,
         font: .systemFont(ofSize: 24, weight: .bold)
     )
     
     private let descriptionLabel = CustomLabel(
-        text: "Join thousands of students saving money",
+        text: "შეუერთდი ათასობით სტუდენტს და დაზოგე თანხა",
         color: .gray500,
         font: .systemFont(ofSize: 14, weight: .medium)
     )
     
     private let fullnameField = TextFieldWithError(
-        labelText: "Full Name",
+        labelText: "სრული სახელი",
         textField: CustomTextField(
-            placeholder: "Your full name",
+            placeholder: "შეიყვანეთ სრული სახელი",
             type: .normal(icon: "person.text.rectangle.fill"))
     )
     private let usernameField =  TextFieldWithError(
@@ -55,38 +55,38 @@ final class SignUpViewController: BaseViewController {
     )
     
     private let emailField = TextFieldWithError(
-        labelText: "Student Email",
+        labelText: "სტუდენტური ელფოსტა",
         textField: CustomTextField(
-            placeholder: "Your student email",
+            placeholder: "შეიყვანეთ სტუდენტური ელფოსტა",
             type: .normal(icon: "envelope.fill")
         )
     )
     
     private let passwordField =  TextFieldWithError(
-        labelText: "Enter Password",
+        labelText: "პაროლი",
         textField: CustomTextField(
-            placeholder: "Your password",
+            placeholder: "შეიყვანეთ პაროლი",
             type: .password
         )
     )
     
     private let confirmPasswordField = TextFieldWithError(
-        labelText:  "Confirm Password",
+        labelText:  "გაიმეორეთ პაროლი",
         textField: CustomTextField(
-            placeholder:  "Confirm Password",
+            placeholder:  "გაიმეორეთ პაროლი",
             type: .password
         )
     )
     
-    private let signUpButton = CustomButton(title: "Create Account", style: .primary)
+    private let signUpButton = CustomButton(title: "რეგისტრაცია", style: .primary)
     
     private let loginLabel = CustomLabel(
-        text: "Already have an account?",
+        text: "უკვე გაქვთ ანგარიში?",
         color:  UIColor.gray500,
         font: .systemFont(ofSize: 12, weight: .medium)
     )
     
-    private let loginButton = CustomButton(title: "Sign In", style: .text)
+    private let loginButton = CustomButton(title: "შესვლა", style: .text)
     private lazy var loginContainer = CustomStackContainer(label: loginLabel, button: loginButton)
     
     

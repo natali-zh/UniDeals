@@ -36,29 +36,29 @@ final class LoginViewController: BaseViewController {
     )
     
     private let descriptionLabel = CustomLabel(
-        text: "Sign in to access your student discounts",
+        text: "შედით თქვენს ანგარიშზე სტუდენტურ ფასდაკლებებზე წვდომისთვის",
         color: .gray500,
         font: .systemFont(ofSize: 14, weight: .medium)
     )
     
     private let emailField = TextFieldWithError(
-        labelText: "Email",
+        labelText: "ელფოსტა",
         textField: CustomTextField(
-            placeholder: "Your email",
+            placeholder: "შეიყვანეთ ელფოსტა",
             type: .normal(icon: "envelope.fill")
         )
     )
     
     private let passwordField = TextFieldWithError(
-        labelText: "Password",
+        labelText: "პაროლი",
         textField: CustomTextField(
-            placeholder: "Your password",
+            placeholder: "შეიყვანეთ პაროლი",
             type: .password
         )
     )
     
     private let forgotPasswordButton = CustomButton(
-        title: "Forgot password?",
+        title: "დაგავიწყდათ პაროლი?",
         style: .text
     )
     
@@ -71,7 +71,7 @@ final class LoginViewController: BaseViewController {
         return stackView
     }()
     
-    private let signInButton = CustomButton(title: "Sign in", style: .primary)
+    private let signInButton = CustomButton(title: "შესვლა", style: .primary)
     
     private lazy var orHorizontalStack = {
         let stackView =  UIStackView()
@@ -86,21 +86,21 @@ final class LoginViewController: BaseViewController {
     private lazy var leftLine = makeLine()
     
     private let orLabel = CustomLabel(
-        text: "Or",
+        text: "ან",
         color:  UIColor.gray500,
         font: .systemFont(ofSize: 12, weight: .medium)
     )
     private lazy var rightLine = makeLine()
     
-    private let googleButton = CustomButton(title: "Continue with Google", style: .secondary, image: UIImage(named: "Google"))
+    private let googleButton = CustomButton(title: "Google-ით გაგრძელება", style: .secondary, image: UIImage(named: "Google"))
     
     private let signUpLabel = CustomLabel(
-        text: "Don't have an account?",
+        text: "არ გაქვთ ანგარიში?",
         color:  UIColor.gray500,
         font:  .systemFont(ofSize: 12, weight: .medium)
     )
     
-    private let signUpButton = CustomButton(title: "Sign up", style: .text)
+    private let signUpButton = CustomButton(title: "რეგისტრაცია", style: .text)
     
     private lazy var signUpStackContainer = CustomStackContainer(label: signUpLabel, button: signUpButton)
     

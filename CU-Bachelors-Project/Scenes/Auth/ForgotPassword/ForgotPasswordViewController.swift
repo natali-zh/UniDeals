@@ -30,34 +30,34 @@ final class ForgotPasswordViewController: BaseViewController {
     }()
     
     private let titleLabel = CustomLabel(
-        text: "Reset Password",
+        text: "პაროლის აღდგენა",
         color: .gray900,
         font: .systemFont(ofSize: 24, weight: .bold)
     )
     
     private let descriptionLabel = CustomLabel(
-        text: "Enter your email and we'll send you a reset link",
+        text: "შეიყვანეთ ელფოსტა და გამოგიგზავნით პაროლის აღდგენის ბმულს",
         color: .gray500,
         font: .systemFont(ofSize: 14, weight: .medium)
     )
     
     private let emailField = TextFieldWithError(
-        labelText: "Email",
+        labelText: "ელფოსტა",
         textField: CustomTextField(
-            placeholder: "Your email",
+            placeholder: "შეიყვანეთ ელფოსტა",
             type: .normal(icon: "envelope.fill")
         )
     )
     
-    private let sendButton = CustomButton(title: "Send Reset Link", style: .primary)
+    private let sendButton = CustomButton(title: "ბმულის გაგზავნა", style: .primary)
     
     private let backLabel = CustomLabel(
-        text: "Remember your password?",
+        text: "გაგახსენდათ პაროლი?",
         color: .gray500,
         font: .systemFont(ofSize: 12, weight: .medium)
     )
     
-    private let backButton = CustomButton(title: "Sign in", style: .text)
+    private let backButton = CustomButton(title: "შესვლა", style: .text)
     
     private lazy var backStackContainer = CustomStackContainer(label: backLabel, button: backButton)
     
