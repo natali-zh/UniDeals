@@ -110,6 +110,7 @@ final class ExploreViewModel: ObservableObject {
     // MARK: - Methods
 
     func loadData() async {
+        guard discounts.isEmpty else { return }
         isLoading = true
         errorMessage = nil
         defer { isLoading = false }
@@ -129,6 +130,14 @@ final class ExploreViewModel: ObservableObject {
         } catch {
             errorMessage = "მონაცემების ჩატვირთვა ვერ მოხდა."
             print("ExploreViewModel loadData failed: \(error.localizedDescription)")
+        }
+    }
+
+    func refreshSavedState() async {
+        guard !discounts.isEmpty, let uid = SessionManager.shared.userId,
+              let savedIds = try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid) else { return }
+        for i in discounts.indices {
+            discounts[i].isSaved = savedIds.contains(discounts[i].id ?? "")
         }
     }
 

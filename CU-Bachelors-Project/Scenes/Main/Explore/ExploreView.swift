@@ -74,6 +74,9 @@ struct ExploreView: View {
         .task {
             await viewModel.loadData()
         }
+        .onAppear {
+            Task { await viewModel.refreshSavedState() }
+        }
     }
 
     // MARK: - Active filter chips

@@ -91,6 +91,7 @@ final class HomeViewModel: ObservableObject {
     // MARK: - Methods
     
     func loadDiscounts() async {
+        guard discounts.isEmpty else { return }
         isLoading = true
         errorMessage = nil
         defer { isLoading = false }
@@ -110,6 +111,14 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
+    func refreshSavedState() async {
+        guard !discounts.isEmpty, let uid = SessionManager.shared.userId,
+              let savedIds = try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid) else { return }
+        for i in discounts.indices {
+            discounts[i].isSaved = savedIds.contains(discounts[i].id ?? "")
+        }
+    }
+
     func applyFilter(_ filter: DiscountFilter) {
         activeFilter = filter
     }

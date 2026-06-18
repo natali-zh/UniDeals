@@ -1,20 +1,18 @@
 import SwiftUI
+import Kingfisher
 
 struct RemoteImage: View {
     let url: String?
-    var contentMode: ContentMode = .fill
+    var contentMode: SwiftUI.ContentMode = .fill
     var placeholder: Image = Image(systemName: "photo")
 
     var body: some View {
         if let url, let parsed = URL(string: url), !url.isEmpty {
-            AsyncImage(url: parsed) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().aspectRatio(contentMode: contentMode)
-                default:
-                    placeholderView
-                }
-            }
+            KFImage(parsed)
+                .placeholder { placeholderView }
+                .fade(duration: 0)
+                .resizable()
+                .aspectRatio(contentMode: contentMode)
         } else {
             placeholderView
         }
@@ -31,3 +29,4 @@ struct RemoteImage: View {
         }
     }
 }
+

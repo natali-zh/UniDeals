@@ -37,6 +37,9 @@ struct HomeView: View {
         .task {
             await viewModel.loadDiscounts()
         }
+        .onAppear {
+            Task { await viewModel.refreshSavedState() }
+        }
     }
     
     //MARK: - Subviews
