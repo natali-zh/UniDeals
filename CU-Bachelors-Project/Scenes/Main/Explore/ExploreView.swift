@@ -32,7 +32,8 @@ struct ExploreView: View {
                         } else {
                             DiscountsGridView(
                                 discounts: viewModel.filteredDiscounts,
-                                onTap: { viewModel.onDiscountTapped?($0) }
+                                onTap: { viewModel.onDiscountTapped?($0) },
+                                onSave: { viewModel.toggleSave($0) }
                             )
                         }
                     } else {

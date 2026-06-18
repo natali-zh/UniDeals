@@ -78,9 +78,9 @@ struct FeaturedCard: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Button(action: onSave) {
-                Image(systemName: discount.isSaved ? "bookmark.fill" : "bookmark")
+                Image(systemName: discount.isSaved ? "heart.fill" : "heart")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(.white)
+                    .foregroundColor(discount.isSaved ? .red : .white)
                     .padding(10)
                     .background(Circle().fill(Color.black.opacity(0.25)))
             }

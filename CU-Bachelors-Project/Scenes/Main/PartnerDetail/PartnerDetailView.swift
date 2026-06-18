@@ -78,12 +78,6 @@ struct PartnerDetailView: View {
                             .heroNavButton()
                     }
                     Spacer()
-                    Button { viewModel.toggleSave() } label: {
-                        Image(systemName: viewModel.isSaved ? "bookmark.fill" : "bookmark")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(viewModel.isSaved ? .colorPrimary : .gray900)
-                            .heroNavButton()
-                    }
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 56)

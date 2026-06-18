@@ -29,7 +29,7 @@ final class ExploreViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
 
-    private var discounts: [Discount] = []
+    @Published private var discounts: [Discount] = []
     private var partners: [Partner] = []
 
     // MARK: - Computed
@@ -124,11 +124,33 @@ final class ExploreViewModel: ObservableObject {
         do {
             async let fetchedDiscounts = discountService.fetchAllDiscounts()
             async let fetchedPartners = partnerService.fetchAllPartners()
-            discounts = DiscountFormatter.withDistances(try await fetchedDiscounts)
+            var loaded = DiscountFormatter.withDistances(try await fetchedDiscounts)
+            if let uid = SessionManager.shared.userId,
+               let savedIds = try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid) {
+                for i in loaded.indices where savedIds.contains(loaded[i].id ?? "") {
+                    loaded[i].isSaved = true
+                }
+            }
+            discounts = loaded
             partners = try await fetchedPartners
         } catch {
             errorMessage = "მონაცემების ჩატვირთვა ვერ მოხდა."
             print("ExploreViewModel loadData failed: \(error.localizedDescription)")
+        }
+    }
+
+    func toggleSave(_ id: String) {
+        guard !id.isEmpty,
+              let index = discounts.firstIndex(where: { $0.id == id }),
+              let uid = SessionManager.shared.userId else { return }
+        discounts[index].isSaved.toggle()
+        let nowSaved = discounts[index].isSaved
+        Task {
+            if nowSaved {
+                try? await SavedDiscountsService.shared.save(discountId: id, uid: uid)
+            } else {
+                try? await SavedDiscountsService.shared.unsave(discountId: id, uid: uid)
+            }
         }
     }
 

@@ -92,9 +92,9 @@ struct DiscountDetailView: View {
                     }
                     Spacer()
                     Button { viewModel.toggleSave() } label: {
-                        Image(systemName: viewModel.isSaved ? "bookmark.fill" : "bookmark")
+                        Image(systemName: viewModel.isSaved ? "heart.fill" : "heart")
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(viewModel.isSaved ? .colorPrimary : .gray900)
+                            .foregroundColor(viewModel.isSaved ? .red : .gray900)
                             .heroNavButton()
                     }
                 }

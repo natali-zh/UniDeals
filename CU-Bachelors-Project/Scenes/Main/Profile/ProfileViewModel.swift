@@ -50,11 +50,16 @@ final class ProfileViewModel {
         return "ვერსია \(v) (\(b))"
     }
 
+    var savedCount: Int = 0
+
     func load() async {
         if UserManager.shared.currentUser == nil {
             await UserManager.shared.fetchUser()
         }
         user = UserManager.shared.currentUser
+        if let uid = SessionManager.shared.userId {
+            savedCount = (try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid))?.count ?? 0
+        }
     }
 
     func updateName(_ newName: String) async {

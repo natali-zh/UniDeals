@@ -42,13 +42,30 @@ final class DiscountDetailViewModel: ObservableObject {
     // MARK: - Methods
 
     func loadPartner() async {
-        guard !discount.storeId.isEmpty else { return }
-        partner = try? await partnerService.fetchPartner(id: discount.storeId)
+        async let partnerFetch = partnerService.fetchPartner(id: discount.storeId)
+        async let savedFetch: [String] = {
+            guard let uid = SessionManager.shared.userId else { return [] }
+            return (try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid)) ?? []
+        }()
+
+        partner = try? await partnerFetch
+        let savedIds = await savedFetch
+        if let id = discount.id {
+            isSaved = savedIds.contains(id)
+        }
     }
 
     func toggleSave() {
+        guard let id = discount.id, let uid = SessionManager.shared.userId else { return }
         isSaved.toggle()
-        onToggleSave?(discount.id ?? "")
+        onToggleSave?(id)
+        Task {
+            if isSaved {
+                try? await SavedDiscountsService.shared.save(discountId: id, uid: uid)
+            } else {
+                try? await SavedDiscountsService.shared.unsave(discountId: id, uid: uid)
+            }
+        }
     }
 
     // MARK: - Computed display helpers

@@ -56,9 +56,9 @@ private struct NearbyCard: View {
                     .padding(10)
 
                 Button(action: onSave) {
-                    Image(systemName: discount.isSaved ? "bookmark.fill" : "bookmark")
+                    Image(systemName: discount.isSaved ? "heart.fill" : "heart")
                         .font(.system(size: 13, weight: .medium))
-                        .foregroundColor(.white)
+                        .foregroundColor(discount.isSaved ? .red : .white)
                         .padding(8)
                         .background(Circle().fill(Color.black.opacity(0.25)))
                 }

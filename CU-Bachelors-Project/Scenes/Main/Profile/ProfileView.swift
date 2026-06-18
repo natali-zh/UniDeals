@@ -33,10 +33,10 @@ struct ProfileView: View {
                 // Saved discounts
                 VStack(spacing: 0) {
                     SettingsRow(
-                        icon: "bookmark.fill",
+                        icon: "heart.fill",
                         iconColor: .gray500,
                         title: "შენახული შეთავაზებები",
-                        value: "0"
+                        value: viewModel.savedCount > 0 ? "\(viewModel.savedCount)" : nil
                     ) {
                         viewModel.onSavedDiscounts?()
                     }

@@ -11,6 +11,7 @@ struct ExpiringSoonSection: View {
     let discounts: [Discount]
     let onSeeAll: () -> Void
     let onTap: (String) -> Void
+    var onSave: ((String) -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -29,7 +30,7 @@ struct ExpiringSoonSection: View {
 
             VStack(spacing: 12) {
                 ForEach(discounts) { discount in
-                    ExpiringCard(discount: discount)
+                    ExpiringCard(discount: discount, onSave: onSave.map { cb in { cb(discount.id ?? "") } })
                         .onTapGesture { onTap(discount.id ?? "") }
                 }
             }
@@ -40,6 +41,7 @@ struct ExpiringSoonSection: View {
 
 private struct ExpiringCard: View {
     let discount: Discount
+    var onSave: (() -> Void)? = nil
 
     var body: some View {
         HStack(spacing: 0) {
@@ -47,11 +49,25 @@ private struct ExpiringCard: View {
                 .frame(width: 110, height: 110)
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(discount.title)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(.gray900)
-                    .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
+                HStack(alignment: .top, spacing: 8) {
+                    Text(discount.title)
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(.gray900)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    if let onSave {
+                        Button(action: onSave) {
+                            Image(systemName: discount.isSaved ? "heart.fill" : "heart")
+                                .font(.system(size: 13, weight: .medium))
+                                .foregroundColor(discount.isSaved ? .red : .white)
+                                .padding(7)
+                                .background(Circle().fill(Color.black.opacity(0.18)))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
 
                 Text(discount.storeName)
                     .font(.system(size: 13, weight: .regular))

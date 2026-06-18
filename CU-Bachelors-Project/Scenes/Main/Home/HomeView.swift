@@ -85,7 +85,8 @@ struct HomeView: View {
         ExpiringSoonSection(
             discounts: viewModel.expiring,
             onSeeAll: { viewModel.onSeeAllExpiring?() },
-            onTap: { viewModel.onDiscountTapped?($0) }
+            onTap: { viewModel.onDiscountTapped?($0) },
+            onSave: { viewModel.toggleSave($0) }
         )
         .padding(.top, 24)
     }

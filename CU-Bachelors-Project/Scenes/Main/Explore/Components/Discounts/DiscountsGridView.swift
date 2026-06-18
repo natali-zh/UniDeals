@@ -10,6 +10,7 @@ import SwiftUI
 struct DiscountsGridView: View {
     let discounts: [Discount]
     let onTap: (String) -> Void
+    var onSave: ((String) -> Void)? = nil
 
     private let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -25,7 +26,7 @@ struct DiscountsGridView: View {
 
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(discounts) { discount in
-                    DiscountGridCard(discount: discount)
+                    DiscountGridCard(discount: discount, onSave: onSave.map { cb in { cb(discount.id ?? "") } })
                         .onTapGesture { onTap(discount.id ?? "") }
                 }
             }
@@ -36,6 +37,7 @@ struct DiscountsGridView: View {
 
 struct DiscountGridCard: View {
     let discount: Discount
+    var onSave: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -45,6 +47,18 @@ struct DiscountGridCard: View {
                 Text(discount.label)
                     .badgeStyle(fontSize: 11, horizontalPadding: 8, verticalPadding: 5)
                     .padding(8)
+
+                if let onSave {
+                    Button(action: onSave) {
+                        Image(systemName: discount.isSaved ? "heart.fill" : "heart")
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(discount.isSaved ? .red : .white)
+                            .padding(8)
+                            .background(Circle().fill(Color.black.opacity(0.25)))
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                    .padding(8)
+                }
             }
             .frame(height: 120)
 

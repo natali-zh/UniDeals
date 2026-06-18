@@ -93,9 +93,16 @@ final class HomeViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         defer { isLoading = false }
-        
+
         do {
-            discounts = DiscountFormatter.withDistances(try await discountService.fetchAllDiscounts())
+            var loaded = DiscountFormatter.withDistances(try await discountService.fetchAllDiscounts())
+            if let uid = SessionManager.shared.userId,
+               let savedIds = try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid) {
+                for i in loaded.indices where savedIds.contains(loaded[i].id ?? "") {
+                    loaded[i].isSaved = true
+                }
+            }
+            discounts = loaded
         } catch {
             errorMessage = "Couldn't load discounts. Please try again."
             print("loadDiscounts failed: \(error.localizedDescription)")
@@ -112,9 +119,17 @@ final class HomeViewModel: ObservableObject {
 
     func toggleSave(_ id: String) {
         guard !id.isEmpty,
-              let index = discounts.firstIndex(where: { $0.id == id }) else { return }
+              let index = discounts.firstIndex(where: { $0.id == id }),
+              let uid = SessionManager.shared.userId else { return }
         discounts[index].isSaved.toggle()
-        // TODO: persist to users/{userId}/savedDiscounts/{discountId}
+        let nowSaved = discounts[index].isSaved
+        Task {
+            if nowSaved {
+                try? await SavedDiscountsService.shared.save(discountId: id, uid: uid)
+            } else {
+                try? await SavedDiscountsService.shared.unsave(discountId: id, uid: uid)
+            }
+        }
     }
     
 }
