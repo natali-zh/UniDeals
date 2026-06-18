@@ -3,16 +3,19 @@ enum AuthErrorMessage {
     case emptyEmail
     case emptyPassword
     case emptyConfirmPassword
-    
+
     case invalidFullname
     case invalidEmail
     case invalidStudentEmail
     case invalidPassword
     case differentPasswords
-    
+
     case authFailed
     case usedEmail
-    
+    case networkError
+    case googleSignInFailed
+    case notStudentEmail
+
     var message: String {
         switch self {
         case .emptyFullname:
@@ -23,7 +26,6 @@ enum AuthErrorMessage {
             return "პაროლი სავალდებულოა"
         case .emptyConfirmPassword:
             return "გაიმეორეთ პაროლი"
-
         case .invalidFullname:
             return "გამოიყენეთ მხოლოდ ასოები და გამოტოვებები"
         case .invalidEmail:
@@ -32,14 +34,18 @@ enum AuthErrorMessage {
             return "გამოიყენე სტუდენტური ელფოსტა (.edu)"
         case .invalidPassword:
             return "პაროლი მინიმუმ 8 სიმბოლოს უნდა შეიცავდეს"
-
         case .differentPasswords:
             return "პაროლები არ ემთხვევა"
-
         case .authFailed:
             return "ელფოსტა ან პაროლი არასწორია"
         case .usedEmail:
             return "ეს ელფოსტა უკვე რეგისტრირებულია"
+        case .networkError:
+            return "შეამოწმე ინტერნეტ კავშირი და სცადე თავიდან"
+        case .googleSignInFailed:
+            return "Google-ით შესვლა ვერ მოხერხდა. სცადე თავიდან"
+        case .notStudentEmail:
+            return "გამოიყენე სტუდენტური ელფოსტა (.edu)"
         }
     }
 }

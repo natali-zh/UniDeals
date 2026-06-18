@@ -28,20 +28,21 @@ final class LoginViewModel {
     func googleSignInTapped(from viewController: UIViewController) async {
         onLoading?(true)
         defer { onLoading?(false) }
-        
+
         do {
             try await authService.signInWithGoogle(presenting: viewController)
-            
+
             let email = Auth.auth().currentUser?.email ?? ""
-            
+
             guard Validators.isStudentEmail(email) else {
-                onGoogleAuthError?("Please use your university email to sign in")
+                onGoogleAuthError?(AuthErrorMessage.notStudentEmail.message)
                 try? authService.signOut()
                 return
             }
-            
+
             onLoginSuccess?()
         } catch {
+            onGoogleAuthError?(AuthErrorMessage.googleSignInFailed.message)
         }
     }
     

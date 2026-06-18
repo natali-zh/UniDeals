@@ -54,8 +54,12 @@ final class AuthService: AuthServiceProtocol {
     
     func register(user: User, password: String) async throws {
         let authResult = try await auth.createUser(withEmail: user.email, password: password)
-        
-        try await createFirestoreUser(uid: authResult.user.uid, user: user)
+        do {
+            try await createFirestoreUser(uid: authResult.user.uid, user: user)
+        } catch {
+            try? auth.signOut()
+            throw error
+        }
     }
     
     func resetPassword(email: String) async throws {

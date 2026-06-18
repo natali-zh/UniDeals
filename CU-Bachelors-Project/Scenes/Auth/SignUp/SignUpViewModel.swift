@@ -1,5 +1,4 @@
 import FirebaseAuth
-import FirebaseFirestore
 
 final class SignUpViewModel {
     
@@ -34,9 +33,14 @@ final class SignUpViewModel {
         do {
             try await authService.register(user: user, password: password)
             onLoginSuccess?()
-        } catch {
-            let authError = FieldError(field: .email, message: AuthErrorMessage.usedEmail.message, type: .authentication)
-            onAuthenticationError?(authError)
+        } catch let error as NSError {
+            let message: String
+            if let authCode = AuthErrorCode(rawValue: error.code), authCode == .emailAlreadyInUse {
+                message = AuthErrorMessage.usedEmail.message
+            } else {
+                message = AuthErrorMessage.networkError.message
+            }
+            onAuthenticationError?(FieldError(field: .email, message: message, type: .authentication))
         }
     }
     
