@@ -28,7 +28,7 @@ struct ExploreView: View {
                         }
 
                         if viewModel.isLoading {
-                            ProgressView().padding(.top, 40)
+                            DiscountsGridSkeleton()
                         } else {
                             DiscountsGridView(
                                 discounts: viewModel.filteredDiscounts,
@@ -38,7 +38,7 @@ struct ExploreView: View {
                         }
                     } else {
                         if viewModel.isLoading {
-                            ProgressView().padding(.top, 40)
+                            DiscountsGridSkeleton()
                         } else {
                             PartnersListView(
                                 partners: viewModel.filteredPartners,

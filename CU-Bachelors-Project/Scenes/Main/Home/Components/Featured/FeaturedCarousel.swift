@@ -77,14 +77,8 @@ struct FeaturedCard: View {
                 .padding(14)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Button(action: onSave) {
-                Image(systemName: discount.isSaved ? "heart.fill" : "heart")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(discount.isSaved ? .red : .white)
-                    .padding(10)
-                    .background(Circle().fill(Color.black.opacity(0.25)))
-            }
-            .padding(14)
+            SaveButton(isSaved: discount.isSaved, action: onSave)
+                .padding(14)
 
             FeaturedCardInfoOverlay(discount: discount)
         }
@@ -104,26 +98,8 @@ struct FeaturedCardImage: View {
             .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 
-    @ViewBuilder
     private var content: some View {
-        if let imageUrl, let url = URL(string: imageUrl), !imageUrl.isEmpty {
-            AsyncImage(url: url) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().aspectRatio(contentMode: .fill)
-                default:
-                    placeholderIcon
-                }
-            }
-        } else {
-            placeholderIcon
-        }
-    }
-
-    private var placeholderIcon: some View {
-        Image(systemName: "photo")
-            .font(.system(size: 44))
-            .foregroundColor(Color.gray500.opacity(0.3))
+        RemoteImage(url: imageUrl, placeholder: Image(systemName: "photo"))
     }
 }
 

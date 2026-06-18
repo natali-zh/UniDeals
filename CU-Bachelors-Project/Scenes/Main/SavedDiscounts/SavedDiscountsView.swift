@@ -18,7 +18,10 @@ struct SavedDiscountsView: View {
             Color(red: 0.97, green: 0.97, blue: 0.98).ignoresSafeArea()
 
             if viewModel.isLoading {
-                ProgressView()
+                ScrollView(showsIndicators: false) {
+                    DiscountsGridSkeleton()
+                        .padding(.top, 16)
+                }
             } else if viewModel.discounts.isEmpty {
                 emptyState
             } else {

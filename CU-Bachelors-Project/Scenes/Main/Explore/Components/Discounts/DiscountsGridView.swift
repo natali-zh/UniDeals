@@ -49,15 +49,9 @@ struct DiscountGridCard: View {
                     .padding(8)
 
                 if let onSave {
-                    Button(action: onSave) {
-                        Image(systemName: discount.isSaved ? "heart.fill" : "heart")
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(discount.isSaved ? .red : .white)
-                            .padding(8)
-                            .background(Circle().fill(Color.black.opacity(0.25)))
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                    .padding(8)
+                    SaveButton(isSaved: discount.isSaved, action: onSave)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                        .padding(8)
                 }
             }
             .frame(height: 120)
@@ -101,25 +95,7 @@ private struct DiscountGridCardImage: View {
             .clipShape(.rect(topLeadingRadius: 14, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 14))
     }
 
-    @ViewBuilder
     private var content: some View {
-        if let imageUrl, let url = URL(string: imageUrl), !imageUrl.isEmpty {
-            AsyncImage(url: url) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().aspectRatio(contentMode: .fill).clipped()
-                default:
-                    placeholderIcon
-                }
-            }
-        } else {
-            placeholderIcon
-        }
-    }
-
-    private var placeholderIcon: some View {
-        Image(systemName: "photo")
-            .font(.system(size: 28))
-            .foregroundColor(Color.gray500.opacity(0.3))
+        RemoteImage(url: imageUrl, placeholder: Image(systemName: "photo"))
     }
 }

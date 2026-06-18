@@ -1,0 +1,38 @@
+//
+//  RemoteImage.swift
+//  CU-Bachelors-Project
+//
+
+import SwiftUI
+
+struct RemoteImage: View {
+    let url: String?
+    var contentMode: ContentMode = .fill
+    var placeholder: Image = Image(systemName: "photo")
+
+    var body: some View {
+        if let url, let parsed = URL(string: url), !url.isEmpty {
+            AsyncImage(url: parsed) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable().aspectRatio(contentMode: contentMode)
+                default:
+                    placeholderView
+                }
+            }
+        } else {
+            placeholderView
+        }
+    }
+
+    private var placeholderView: some View {
+        ZStack {
+            Color.gray.opacity(0.15)
+            placeholder
+                .resizable()
+                .scaledToFit()
+                .frame(width: 40, height: 40)
+                .foregroundColor(.gray.opacity(0.4))
+        }
+    }
+}

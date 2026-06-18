@@ -27,6 +27,7 @@ struct HomeView: View {
             ScrollView {
                 LazyVStack(spacing: 8) {
                     homeHeader
+                        .padding(.bottom)
 
                     featuredSection
                     
@@ -61,26 +62,9 @@ struct HomeView: View {
             Button {
                 viewModel.onSettingsTapped?()
             } label: {
-                let imageUrl = viewModel.userImageUrl
-                Group {
-                    if let url = imageUrl.flatMap({ URL(string: $0) }) {
-                        AsyncImage(url: url) { phase in
-                            if let image = phase.image {
-                                image.resizable().scaledToFill()
-                            } else {
-                                Image(systemName: "person.circle.fill")
-                                    .resizable()
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    } else {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .foregroundColor(.secondary)
-                    }
-                }
-                .frame(width: 40, height: 40)
-                .clipShape(Circle())
+                RemoteImage(url: viewModel.userImageUrl, placeholder: Image(systemName: "person.circle.fill"))
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
             }
         }
         .padding(.horizontal, 20)
@@ -98,10 +82,9 @@ struct HomeView: View {
                     .sectionTitleStyle()
             }
             .padding(.horizontal, 20)
-            
-            if viewModel.isLoading && viewModel.featured.isEmpty {
-                FeaturedPlaceholder(text: "Loading...")
-                    .padding(.horizontal, 20)
+
+            if viewModel.isLoading {
+                FeaturedCardSkeleton()
             } else if viewModel.featured.isEmpty {
                 FeaturedPlaceholder(text: "No featured discounts yet")
                     .padding(.horizontal, 20)
@@ -114,24 +97,36 @@ struct HomeView: View {
             }
         }
     }
-    
+
     private var nearbySection: some View {
-        NearbySection(
-            discounts: viewModel.nearby,
-            onSeeAll: { viewModel.onSeeAllNearby?() },
-            onTap: { viewModel.onDiscountTapped?($0) },
-            onSave: { viewModel.toggleSave($0) }
-        )
+        Group {
+            if viewModel.isLoading {
+                NearbySectionSkeleton()
+            } else {
+                NearbySection(
+                    discounts: viewModel.nearby,
+                    onSeeAll: { viewModel.onSeeAllNearby?() },
+                    onTap: { viewModel.onDiscountTapped?($0) },
+                    onSave: { viewModel.toggleSave($0) }
+                )
+            }
+        }
         .padding(.top, 24)
     }
-    
+
     private var expiringSoonSection: some View {
-        ExpiringSoonSection(
-            discounts: viewModel.expiring,
-            onSeeAll: { viewModel.onSeeAllExpiring?() },
-            onTap: { viewModel.onDiscountTapped?($0) },
-            onSave: { viewModel.toggleSave($0) }
-        )
+        Group {
+            if viewModel.isLoading {
+                ExpiringSectionSkeleton()
+            } else {
+                ExpiringSoonSection(
+                    discounts: viewModel.expiring,
+                    onSeeAll: { viewModel.onSeeAllExpiring?() },
+                    onTap: { viewModel.onDiscountTapped?($0) },
+                    onSave: { viewModel.toggleSave($0) }
+                )
+            }
+        }
         .padding(.top, 24)
     }
 }

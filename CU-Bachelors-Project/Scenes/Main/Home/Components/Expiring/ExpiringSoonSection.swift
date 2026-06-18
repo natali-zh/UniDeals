@@ -58,14 +58,8 @@ private struct ExpiringCard: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     if let onSave {
-                        Button(action: onSave) {
-                            Image(systemName: discount.isSaved ? "heart.fill" : "heart")
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(discount.isSaved ? .red : .white)
-                                .padding(7)
-                                .background(Circle().fill(Color.black.opacity(0.18)))
-                        }
-                        .buttonStyle(.plain)
+                        SaveButton(isSaved: discount.isSaved, backgroundOpacity: 0.18, action: onSave)
+                            .buttonStyle(.plain)
                     }
                 }
 
@@ -109,25 +103,7 @@ private struct ExpiringCardImage: View {
             )
     }
 
-    @ViewBuilder
     private var content: some View {
-        if let imageUrl, let url = URL(string: imageUrl), !imageUrl.isEmpty {
-            AsyncImage(url: url) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().aspectRatio(contentMode: .fill).clipped()
-                default:
-                    placeholderIcon
-                }
-            }
-        } else {
-            placeholderIcon
-        }
-    }
-
-    private var placeholderIcon: some View {
-        Image(systemName: "photo")
-            .font(.system(size: 28))
-            .foregroundColor(Color.gray500.opacity(0.3))
+        RemoteImage(url: imageUrl, placeholder: Image(systemName: "photo"))
     }
 }
