@@ -7,7 +7,7 @@
 
 import FirebaseFirestore
 
-@MainActor protocol FirestoreServiceProtocol {
+protocol FirestoreServiceProtocol {
     func uploadDocument<T: Encodable>(_ object: T, to collection: String, documentId: String?) async throws -> String
     func fetchDocument<T: Decodable>(from collection: String, documentId: String, as type: T.Type) async throws -> T?
     func fetchCollection<T: Decodable>(from collection: String, as type: T.Type) async throws -> [T]

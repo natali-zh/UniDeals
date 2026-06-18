@@ -26,8 +26,8 @@ struct HomeView: View {
             
             ScrollView {
                 LazyVStack(spacing: 8) {
-                    //TODO: Header design
-                    
+                    homeHeader
+
                     featuredSection
                     
                     nearbySection
@@ -46,7 +46,51 @@ struct HomeView: View {
     }
     
     //MARK: - Subviews
-    
+
+    private var homeHeader: some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("გამარჯობა,")
+                    .font(.system(size: 13, weight: .regular))
+                    .foregroundColor(.secondary)
+                Text(viewModel.userName)
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundColor(.primary)
+            }
+            Spacer()
+            Button {
+                viewModel.onSettingsTapped?()
+            } label: {
+                let imageUrl = viewModel.userImageUrl
+                Group {
+                    if let url = imageUrl.flatMap({ URL(string: $0) }) {
+                        AsyncImage(url: url) { phase in
+                            if let image = phase.image {
+                                image.resizable().scaledToFill()
+                            } else {
+                                Image(systemName: "person.circle.fill")
+                                    .resizable()
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    } else {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 20)
+        .overlay(alignment: .bottom) {
+            Divider()
+        }
+        .padding(.bottom, 8)
+    }
+
     private var featuredSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {

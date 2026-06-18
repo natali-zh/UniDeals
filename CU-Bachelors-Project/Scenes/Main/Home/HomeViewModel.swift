@@ -18,7 +18,6 @@ final class HomeViewModel: ObservableObject {
     // MARK: - Published Properties
     
     @Published private var discounts: [Discount] = []
-    @Published var userName: String = "Alex"
     @Published var searchQuery: String = ""
     @Published var activeFilter: DiscountFilter = DiscountFilter()
     @Published var isLoading: Bool = false
@@ -74,12 +73,16 @@ final class HomeViewModel: ObservableObject {
         return result
     }
     
+    var userName: String { UserManager.shared.currentUser?.fullname.components(separatedBy: " ").first ?? "სტუდენტო" }
+    var userImageUrl: String? { UserManager.shared.currentUser?.imageUrl }
+
     // MARK: - Navigation callbacks
     
     var onSeeAllFeatured: (() -> Void)?
     var onSeeAllNearby: (() -> Void)?
     var onSeeAllExpiring: (() -> Void)?
     var onDiscountTapped: ((String) -> Void)?
+    var onSettingsTapped: (() -> Void)?
     
     // MARK: - Init
     

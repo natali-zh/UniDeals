@@ -44,7 +44,7 @@ final class DiscountDetailViewModel: ObservableObject {
     func loadPartner() async {
         async let partnerFetch = partnerService.fetchPartner(id: discount.storeId)
         async let savedFetch: [String] = {
-            guard let uid = SessionManager.shared.userId else { return [] }
+            guard let uid = await SessionManager.shared.userId else { return [] }
             return (try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid)) ?? []
         }()
 

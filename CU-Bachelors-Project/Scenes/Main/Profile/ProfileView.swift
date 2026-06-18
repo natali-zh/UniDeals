@@ -30,20 +30,6 @@ struct ProfileView: View {
                 )
                 .padding(.bottom, 32)
 
-                // Saved discounts
-                VStack(spacing: 0) {
-                    SettingsRow(
-                        icon: "heart.fill",
-                        iconColor: .gray500,
-                        title: "შენახული შეთავაზებები",
-                        value: viewModel.savedCount > 0 ? "\(viewModel.savedCount)" : nil
-                    ) {
-                        viewModel.onSavedDiscounts?()
-                    }
-                }
-                .settingsCard()
-                .padding(.bottom, 12)
-
                 // University & semester
                 VStack(alignment: .leading, spacing: 0) {
                     SettingsRow(
@@ -92,7 +78,8 @@ struct ProfileView: View {
             .padding(.top, 24)
         }
         .background(Color(red: 0.97, green: 0.97, blue: 0.98).ignoresSafeArea())
-        .navigationTitle("პროფილი")
+        .navigationBarHidden(false)
+        .navigationTitle("პარამეტრები")
         .navigationBarTitleDisplayMode(.inline)
         .task { await viewModel.load() }
         .alert("სახელის შეცვლა", isPresented: $showEditNameAlert) {

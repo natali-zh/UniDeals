@@ -17,7 +17,7 @@ final class MainCoordinator: Coordinator {
     private var homeCoordinator: HomeCoordinator?
     private var exploreCoordinator: ExploreCoordinator?
     private var mapCoordinator: MapCoordinator?
-    private var profileCoordinator: ProfileCoordinator?
+    private var savedCoordinator: SavedDiscountsCoordinator?
 
     // MARK: - Computed Properties
 
@@ -45,6 +45,9 @@ final class MainCoordinator: Coordinator {
         homeCoordinator?.onShowOnMap = { [weak self] discount in
             self?.showOnMap(discount: discount)
         }
+        homeCoordinator?.onLogOut = { [weak self] in
+            self?.parentCoordinator?.logOut()
+        }
         homeCoordinator?.start()
 
         let exploreNav = makeNav(title: "Explore", icon: "magnifyingglass", selectedIcon: "magnifyingglass")
@@ -63,24 +66,21 @@ final class MainCoordinator: Coordinator {
         mapCoordinator = MapCoordinator(navigationController: mapNav)
         mapCoordinator?.start()
 
-        let profileNav = makeNav(title: "Account", icon: "person", selectedIcon: "person.fill")
-        profileCoordinator = ProfileCoordinator(navigationController: profileNav)
-        profileCoordinator?.onLogOut = { [weak self] in
-            self?.parentCoordinator?.logOut()
-        }
-        profileCoordinator?.start()
+        let savedNav = makeNav(title: "Saved", icon: "heart", selectedIcon: "heart.fill")
+        savedCoordinator = SavedDiscountsCoordinator(navigationController: savedNav)
+        savedCoordinator?.start()
 
         return [
             homeNav,
             exploreNav,
             cardNav,
-            mapNav,
-            profileNav
+            savedNav,
+            mapNav
         ]
     }
 
     private func showOnMap(discount: Discount) {
-        tabBarController.selectedIndex = 3
+        tabBarController.selectedIndex = 4
         mapCoordinator?.show(discount: discount)
     }
 

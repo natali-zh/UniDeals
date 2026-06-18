@@ -15,6 +15,7 @@ final class HomeCoordinator: Coordinator {
     let navigationController: UINavigationController
     var onSeeAll: (() -> Void)?
     var onShowOnMap: ((Discount) -> Void)?
+    var onLogOut: (() -> Void)?
 
     // MARK: - Init
 
@@ -32,9 +33,44 @@ final class HomeCoordinator: Coordinator {
         viewModel.onSeeAllFeatured = { [weak self] in self?.onSeeAll?() }
         viewModel.onSeeAllNearby   = { [weak self] in self?.onSeeAll?() }
         viewModel.onSeeAllExpiring = { [weak self] in self?.onSeeAll?() }
+        viewModel.onSettingsTapped = { [weak self] in self?.showSettings() }
         let view = HomeView(viewModel: viewModel)
         let vc = UIHostingController(rootView: view)
         navigationController.setViewControllers([vc], animated: false)
+    }
+
+    private func showSettings() {
+        let vm = ProfileViewModel()
+        vm.onLogOut = { [weak self] in
+            self?.onLogOut?()
+        }
+        vm.onEditUniversity = { [weak self] in self?.showUniversityPicker() }
+        vm.onEditSemester = { [weak self] in self?.showSemesterPicker() }
+        let vc = UIHostingController(rootView: ProfileView(viewModel: vm))
+        vc.hidesBottomBarWhenPushed = true
+        navigationController.pushViewController(vc, animated: true)
+    }
+
+    private func showUniversityPicker() {
+        let vm = UniversityPickerViewModel()
+        vm.onComplete = { [weak self] university in
+            self?.navigationController.popViewController(animated: true)
+            self?.showSemesterPicker(university: university)
+        }
+        let vc = UIHostingController(rootView: UniversityPickerView(viewModel: vm))
+        vc.hidesBottomBarWhenPushed = true
+        navigationController.pushViewController(vc, animated: true)
+    }
+
+    private func showSemesterPicker(university: String? = nil) {
+        let uni = university ?? UserManager.shared.currentUser?.university ?? ""
+        let vm = GraduationYearPickerViewModel(university: uni)
+        vm.onComplete = { [weak self] in
+            self?.navigationController.popViewController(animated: true)
+        }
+        let vc = UIHostingController(rootView: GraduationYearPickerView(viewModel: vm))
+        vc.hidesBottomBarWhenPushed = true
+        navigationController.pushViewController(vc, animated: true)
     }
 
     // MARK: - Navigation
