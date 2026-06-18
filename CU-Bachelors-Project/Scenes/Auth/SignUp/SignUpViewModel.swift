@@ -1,7 +1,6 @@
 import FirebaseAuth
 import FirebaseFirestore
 
-//@MainActor
 final class SignUpViewModel {
     
     //MARK: - Properties

@@ -31,7 +31,7 @@ final class GraduationYearPickerViewModel {
         isSaving = true
         do {
             try await firestoreService.updateDocument(
-                collection: FirestorePaths.users,
+                collection: FirestoreCollections.users,
                 documentId: uid,
                 fields: ["university": university, "semester": semester]
             )

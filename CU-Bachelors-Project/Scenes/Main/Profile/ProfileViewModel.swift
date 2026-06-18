@@ -42,7 +42,7 @@ final class ProfileViewModel {
         isUpdatingName = true
         do {
             try await Firestore.firestore()
-                .collection(FirestorePaths.users)
+                .collection(FirestoreCollections.users)
                 .document(uid)
                 .updateData(["fullname": trimmed])
             UserManager.shared.currentUser?.fullname = trimmed
@@ -69,7 +69,7 @@ final class ProfileViewModel {
             let urlString = url.absoluteString
 
             try await Firestore.firestore()
-                .collection(FirestorePaths.users)
+                .collection(FirestoreCollections.users)
                 .document(uid)
                 .updateData(["imageUrl": urlString])
 

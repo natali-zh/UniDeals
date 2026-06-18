@@ -13,20 +13,20 @@ final class SavedDiscountsService {
 
     func fetchSavedIds(uid: String) async throws -> [String] {
         if let cached = cachedIds { return cached }
-        let doc = try await db.collection(FirestorePaths.users).document(uid).getDocument()
+        let doc = try await db.collection(FirestoreCollections.users).document(uid).getDocument()
         let ids = doc.data()?["savedDiscountIds"] as? [String] ?? []
         cachedIds = ids
         return ids
     }
 
     func save(discountId: String, uid: String) async throws {
-        try await db.collection(FirestorePaths.users).document(uid)
+        try await db.collection(FirestoreCollections.users).document(uid)
             .updateData(["savedDiscountIds": FieldValue.arrayUnion([discountId])])
         cachedIds = (cachedIds ?? []) + [discountId]
     }
 
     func unsave(discountId: String, uid: String) async throws {
-        try await db.collection(FirestorePaths.users).document(uid)
+        try await db.collection(FirestoreCollections.users).document(uid)
             .updateData(["savedDiscountIds": FieldValue.arrayRemove([discountId])])
         cachedIds = cachedIds?.filter { $0 != discountId }
     }

@@ -2,7 +2,6 @@ import UIKit
 import FirebaseAuth
 import GoogleSignIn
 
-//@MainActor
 final class LoginViewModel {
     
     //MARK: - Properties
@@ -25,17 +24,7 @@ final class LoginViewModel {
     }
     
     //MARK: - Methods
-    
-    //    func googleSignInTapped(from viewController: UIViewController) async {
-    //        onLoading?(true)
-    //        defer { onLoading?(false) }
-    //
-    //        do {
-    //            let _ = try await authService.signInWithGoogle(presenting: viewController)
-    //            onLoginSuccess?()
-    //        } catch {
-    //        }
-    //    }
+
     func googleSignInTapped(from viewController: UIViewController) async {
         onLoading?(true)
         defer { onLoading?(false) }

@@ -25,7 +25,7 @@ final class UserManager: ObservableObject {
     func fetchUser() async {
         guard let userId = sessionManager.userId else { return }
         do {
-            currentUser = try await firestoreService.fetchDocument(from: FirestorePaths.users, documentId: userId, as: User.self)
+            currentUser = try await firestoreService.fetchDocument(from: FirestoreCollections.users, documentId: userId, as: User.self)
         } catch {
             print("fetchuser: \(error.localizedDescription)")
         }

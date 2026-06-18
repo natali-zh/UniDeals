@@ -13,12 +13,12 @@ final class PartnerService: PartnerServiceProtocol {
     private init() {}
 
     func fetchAllPartners() async throws -> [Partner] {
-        let snapshot = try await db.collection("partners").getDocuments()
+        let snapshot = try await db.collection(FirestoreCollections.partners).getDocuments()
         return try snapshot.documents.compactMap { try $0.data(as: Partner.self) }
     }
 
     func fetchPartner(id: String) async throws -> Partner {
-        let doc = try await db.collection("partners").document(id).getDocument()
+        let doc = try await db.collection(FirestoreCollections.partners).document(id).getDocument()
         return try doc.data(as: Partner.self)
     }
 }

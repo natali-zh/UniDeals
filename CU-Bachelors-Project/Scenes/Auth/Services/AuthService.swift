@@ -69,7 +69,7 @@ final class AuthService: AuthServiceProtocol {
     // MARK: - Methods
     
     private func syncUserToFirestore(_ firebaseUser: FirebaseAuth.User, googleUser: GIDGoogleUser) async throws {
-        let userDoc = db.collection(FirestorePaths.users).document(firebaseUser.uid)
+        let userDoc = db.collection(FirestoreCollections.users).document(firebaseUser.uid)
         let docSnapshot = try await userDoc.getDocument()
         
         if !docSnapshot.exists {
@@ -87,6 +87,6 @@ final class AuthService: AuthServiceProtocol {
             "fullname": user.fullname,
             "email": user.email
         ]
-        try await db.collection(FirestorePaths.users).document(uid).setData(data)
+        try await db.collection(FirestoreCollections.users).document(uid).setData(data)
     }
 }
