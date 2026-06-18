@@ -4,6 +4,7 @@ struct DiscountsGridView: View {
     let discounts: [Discount]
     let onTap: (String) -> Void
     var onSave: ((String) -> Void)? = nil
+    var showCount: Bool = true
 
     private let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -12,10 +13,12 @@ struct DiscountsGridView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("ნაპოვნია \(discounts.count) შეთავაზება")
-                .font(.system(size: 13, weight: .medium))
-                .foregroundColor(.gray500)
-                .padding(.horizontal, 20)
+            if showCount {
+                Text("ნაპოვნია \(discounts.count) შეთავაზება")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.gray500)
+                    .padding(.horizontal, 20)
+            }
 
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(discounts) { discount in

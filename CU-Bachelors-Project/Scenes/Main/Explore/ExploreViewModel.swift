@@ -164,10 +164,4 @@ final class ExploreViewModel: ObservableObject {
         selectedCategoryIds = []
     }
 
-//    func applyFilter(_ filter: DiscountFilter) {
-//        activeFilter = filter
-//    }
-//    func resetFilter() {
-//        activeFilter = DiscountFilter()
-//    }
 }

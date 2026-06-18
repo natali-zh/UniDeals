@@ -13,7 +13,6 @@ final class PartnerDetailViewModel: ObservableObject {
     let partner: Partner
     @Published var offers: [Discount] = []
     @Published var isLoading = false
-    @Published var isSaved: Bool = false
 
     // MARK: - Navigation callbacks
 
@@ -44,7 +43,4 @@ final class PartnerDetailViewModel: ObservableObject {
         isLoading = false
     }
 
-    func toggleSave() {
-        isSaved.toggle()
-    }
 }

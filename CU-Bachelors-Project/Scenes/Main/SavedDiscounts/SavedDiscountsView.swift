@@ -25,12 +25,13 @@ struct SavedDiscountsView: View {
                         discounts: viewModel.discounts,
                         onTap: { discountId in
                             if let d = viewModel.discounts.first(where: { $0.id == discountId }) {
-                                viewModel.onDiscountTap?(d)
+                                viewModel.onDiscountTapped?(d)
                             }
                         },
                         onSave: { discountId in
                             viewModel.toggleSave(discountId)
-                        }
+                        },
+                        showCount: false
                     )
                     .padding(.top, 16)
                     .padding(.bottom, 24)

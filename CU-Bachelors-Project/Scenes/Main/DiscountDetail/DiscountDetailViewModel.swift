@@ -19,7 +19,6 @@ final class DiscountDetailViewModel: ObservableObject {
     var onBack: (() -> Void)?
     var onViewOnMap: ((Discount) -> Void)?
     var onUseOffer: (() -> Void)?
-    var onToggleSave: ((String) -> Void)?
 
     // MARK: - Init
 
@@ -36,13 +35,13 @@ final class DiscountDetailViewModel: ObservableObject {
 
     func loadPartner() async {
         async let partnerFetch = partnerService.fetchPartner(id: discount.storeId)
-        async let savedFetch: [String] = {
-            guard let uid = await SessionManager.shared.userId else { return [] }
-            return (try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid)) ?? []
-        }()
-
+        let savedIds: [String]
+        if let uid = SessionManager.shared.userId {
+            savedIds = (try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid)) ?? []
+        } else {
+            savedIds = []
+        }
         partner = try? await partnerFetch
-        let savedIds = await savedFetch
         if let id = discount.id {
             isSaved = savedIds.contains(id)
         }
@@ -51,7 +50,6 @@ final class DiscountDetailViewModel: ObservableObject {
     func toggleSave() {
         guard let id = discount.id, let uid = SessionManager.shared.userId else { return }
         isSaved.toggle()
-        onToggleSave?(id)
         Task {
             if isSaved {
                 try? await SavedDiscountsService.shared.save(discountId: id, uid: uid)

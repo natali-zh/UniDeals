@@ -3,10 +3,11 @@ import Foundation
 
 @MainActor
 final class HomeViewModel: ObservableObject {
-    
+
     // MARK: - Dependencies
-    
+
     private let discountService: DiscountServiceProtocol
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Published Properties
     
@@ -81,6 +82,10 @@ final class HomeViewModel: ObservableObject {
     
     init(discountService: DiscountServiceProtocol = DiscountService.shared) {
         self.discountService = discountService
+        UserManager.shared.$currentUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in self?.objectWillChange.send() }
+            .store(in: &cancellables)
     }
     
     // MARK: - Methods

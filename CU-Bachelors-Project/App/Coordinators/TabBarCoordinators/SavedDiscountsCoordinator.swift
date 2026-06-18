@@ -11,7 +11,7 @@ final class SavedDiscountsCoordinator: Coordinator {
 
     func start() {
         let vm = SavedDiscountsViewModel()
-        vm.onDiscountTap = { [weak self] discount in
+        vm.onDiscountTapped = { [weak self] discount in
             self?.showDiscountDetail(discount: discount)
         }
         let vc = UIHostingController(rootView: SavedDiscountsView(viewModel: vm))

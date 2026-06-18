@@ -7,7 +7,7 @@ final class SavedDiscountsViewModel {
     var discounts: [Discount] = []
     var isLoading = false
 
-    var onDiscountTap: ((Discount) -> Void)?
+    var onDiscountTapped: ((Discount) -> Void)?
 
     func load() async {
         guard let uid = SessionManager.shared.userId else { return }

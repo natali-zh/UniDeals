@@ -55,7 +55,7 @@ final class MainCoordinator: Coordinator {
         let cardVC = UIHostingController(rootView: CardView())
         cardNav.setViewControllers([cardVC], animated: false)
 
-        let mapNav = makeNav(title: "რუქა", icon: "map", selectedIcon: "map.fill")
+        let mapNav = makeNav(title: "რუკა", icon: "map", selectedIcon: "map.fill")
         mapCoordinator = MapCoordinator(navigationController: mapNav)
         mapCoordinator?.start()
 

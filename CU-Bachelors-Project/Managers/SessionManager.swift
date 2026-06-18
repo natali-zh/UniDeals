@@ -14,9 +14,7 @@ final class SessionManager {
     
     //MARK: - Init
     
-    private init() {
-       // try? Auth.auth().signOut()
-    }
+    private init() {}
     
     //MARK: - Computed Properties
     
@@ -42,6 +40,7 @@ final class SessionManager {
         do {
             try Auth.auth().signOut()
             UserManager.shared.clearUser()
+            SavedDiscountsService.shared.invalidateCache()
         } catch {
             print("logout failed: \(error.localizedDescription)")
         }

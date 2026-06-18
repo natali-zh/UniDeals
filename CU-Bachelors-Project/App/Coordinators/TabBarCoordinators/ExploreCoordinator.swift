@@ -75,7 +75,6 @@ final class ExploreCoordinator: Coordinator {
             self?.navigationController.popViewController(animated: false)
             self?.onShowOnMap?(discount)
         }
-        detailVM.onToggleSave = { _ in /* TODO: persist */ }
         let detailView = DiscountDetailView(viewModel: detailVM)
         let vc = UIHostingController(rootView: detailView)
         vc.hidesBottomBarWhenPushed = true

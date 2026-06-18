@@ -2,7 +2,7 @@ import UIKit
 
 struct Validators {
     static func isValidFullname(_ fullname: String) -> Bool {
-        let fullnameRegex = "^[A-Za-z ]+$"
+        let fullnameRegex = "^[A-Za-z\u{10D0}-\u{10FF} ]+$"
         return NSPredicate(format: "SELF MATCHES %@", fullnameRegex)
             .evaluate(with: fullname)
     }

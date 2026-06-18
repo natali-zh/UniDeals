@@ -112,14 +112,14 @@ final class LoginViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpUI()
+        setupUI()
         bindViewModel()
         addActionsToButtons()
     }
     
     // MARK: - Methods
     
-    private func setUpUI() {
+    private func setupUI() {
         setCustomBackground()
         setupScrollView()
         configureKeyboardScrollView()
