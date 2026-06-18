@@ -21,6 +21,7 @@ struct FeaturedCarousel: View {
                     FeaturedCard(discount: discount, onSave: { onSave(discount.id ?? "") })
                         .padding(.horizontal, 20)
                         .tag(index)
+                        .pressEffect()
                         .onTapGesture { onTap(discount.id ?? "") }
                 }
             }

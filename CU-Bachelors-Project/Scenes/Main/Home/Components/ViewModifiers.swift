@@ -103,6 +103,23 @@ struct StickyFooter: ViewModifier {
     }
 }
 
+struct PressEffect: ViewModifier {
+    @State private var pressed = false
+
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(pressed ? 0.96 : 1)
+            .animation(.easeInOut(duration: 0.12), value: pressed)
+            .onLongPressGesture(minimumDuration: .infinity, pressing: { isPressing in
+                pressed = isPressing
+            }, perform: {})
+    }
+}
+
+extension View {
+    func pressEffect() -> some View { modifier(PressEffect()) }
+}
+
 extension View {
     func heroNavButton() -> some View { modifier(HeroNavButton()) }
 

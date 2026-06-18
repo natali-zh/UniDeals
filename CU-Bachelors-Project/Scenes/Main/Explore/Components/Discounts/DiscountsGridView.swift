@@ -23,6 +23,7 @@ struct DiscountsGridView: View {
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(discounts) { discount in
                     DiscountGridCard(discount: discount, onSave: onSave.map { cb in { cb(discount.id ?? "") } })
+                        .pressEffect()
                         .onTapGesture { onTap(discount.id ?? "") }
                 }
             }

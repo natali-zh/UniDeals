@@ -25,6 +25,7 @@ struct NearbySection: View {
                             discount: discount,
                             onSave: { onSave(discount.id ?? "") }
                         )
+                        .pressEffect()
                         .onTapGesture { onTap(discount.id ?? "") }
                     }
                 }

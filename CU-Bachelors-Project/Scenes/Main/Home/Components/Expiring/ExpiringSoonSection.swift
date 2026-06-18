@@ -24,6 +24,7 @@ struct ExpiringSoonSection: View {
             VStack(spacing: 12) {
                 ForEach(discounts) { discount in
                     ExpiringCard(discount: discount, onSave: onSave.map { cb in { cb(discount.id ?? "") } })
+                        .pressEffect()
                         .onTapGesture { onTap(discount.id ?? "") }
                 }
             }
