@@ -16,7 +16,7 @@ enum DiscountFormatter {
         let days = Calendar.current.dateComponents([.day], from: Date(), to: endDate).day ?? 0
         if days < 0 { return "ვადა გასულია" }
         if days == 0 { return "დღეს იწურება" }
-        return "\(days) დღე დარჩა"
+        return "\(days) დღე"
     }
 
     static func daysLeftColor(for endDate: Date) -> Color {
@@ -42,6 +42,13 @@ enum DiscountFormatter {
     }
 
     static func distanceText(_ km: Double) -> String {
-        String(format: "%.1f კმ", km)
+        if km < 1.0 {
+            let m = Int(km * 1000)
+            return "\(m) მ"
+        }
+        if km < 10 {
+            return String(format: "%.1f კმ", km)
+        }
+        return "\(Int(km.rounded())) კმ"
     }
 }

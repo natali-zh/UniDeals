@@ -20,12 +20,12 @@ struct DiscountDetailView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
                     heroSection
-                    contentCard
+                    contentSheet
                 }
             }
             .ignoresSafeArea(edges: .top)
 
-            bottomButtons
+            bottomCTA
                 .stickyFooter()
         }
         .navigationBarHidden(true)
@@ -38,7 +38,7 @@ struct DiscountDetailView: View {
         }
     }
 
-    // MARK: - Hero
+    // MARK: - Hero (identical pattern to PartnerDetailView)
 
     private var heroSection: some View {
         GeometryReader { geo in
@@ -46,54 +46,26 @@ struct DiscountDetailView: View {
             let totalHeight = 280 + stretch
 
             ZStack(alignment: .bottom) {
-                // Image stretches to fill pull-down gap
-                if let urlStr = viewModel.discount.imageUrl, let url = URL(string: urlStr) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image.resizable().aspectRatio(contentMode: .fill)
-                                .frame(width: geo.size.width, height: totalHeight)
-                                .clipped()
-                        default:
-                            Color.gray100.frame(width: geo.size.width, height: totalHeight)
-                        }
-                    }
-                } else {
-                    Color.gray100.frame(width: geo.size.width, height: totalHeight)
-                }
+                heroImage(width: geo.size.width, height: totalHeight)
 
                 LinearGradient(
-                    colors: [.clear, .black.opacity(0.45)],
+                    colors: [.clear, .black.opacity(0.5)],
                     startPoint: .center,
                     endPoint: .bottom
                 )
-                .frame(height: totalHeight)
-                .frame(maxWidth: .infinity)
-
-                Text(viewModel.discount.label)
-                    .badgeStyle()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 36)
-
+                .frame(maxWidth: .infinity, maxHeight: totalHeight)
+            }
+            .overlay(alignment: .top) {
                 HStack {
-                    Button { viewModel.onBack?() } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(.gray900)
-                            .heroNavButton()
-                    }
+                    blurNavButton(icon: "chevron.left") { viewModel.onBack?() }
                     Spacer()
-                    Button { viewModel.toggleSave() } label: {
-                        Image(systemName: viewModel.isSaved ? "heart.fill" : "heart")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(viewModel.isSaved ? .red : .gray900)
-                            .heroNavButton()
-                    }
+                    blurNavButton(
+                        icon: viewModel.isSaved ? "heart.fill" : "heart",
+                        tint: viewModel.isSaved ? .red : .primary
+                    ) { viewModel.toggleSave() }
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 56)
-                .frame(maxHeight: .infinity, alignment: .top)
             }
             .frame(width: geo.size.width, height: totalHeight)
             .offset(y: -stretch)
@@ -101,38 +73,52 @@ struct DiscountDetailView: View {
         .frame(height: 280)
     }
 
-    // MARK: - Content card
-
-    private var contentCard: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            storeRow
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-                .padding(.bottom, 20)
-
-            Divider().padding(.horizontal, 20)
-
-            VStack(alignment: .leading, spacing: 16) {
-                // Title + info pills
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(viewModel.discount.title)
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.gray900)
-
-                    infoPills
-                }
-
-                Divider()
-
-                aboutSection
-
-                if !viewModel.isExpired {
-                    expiryBanner
+    @ViewBuilder
+    private func heroImage(width: CGFloat, height: CGFloat) -> some View {
+        if let urlStr = viewModel.discount.imageUrl, let url = URL(string: urlStr) {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable().aspectRatio(contentMode: .fill)
+                        .frame(width: width, height: height)
+                        .clipped()
+                default:
+                    heroBg.frame(width: width, height: height)
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
+        } else {
+            heroBg.frame(width: width, height: height)
+        }
+    }
 
+    private var heroBg: some View {
+        Color.gray100.overlay(
+            Image(systemName: "tag.fill")
+                .font(.system(size: 48))
+                .foregroundColor(Color.colorPrimary.opacity(0.15))
+        )
+    }
+
+    private func blurNavButton(icon: String, tint: Color = .primary, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(tint)
+                .heroNavButton()
+        }
+    }
+
+    // MARK: - Content sheet (same white sheet + divider pattern as PartnerDetailView)
+
+    private var contentSheet: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            titleBlock
+            Divider().padding(.horizontal, 20)
+            aboutSection
+            Divider().padding(.horizontal, 20)
+            validitySection
+            Divider().padding(.horizontal, 20)
+            merchantSection
             Color.clear.frame(height: 90)
         }
         .background(Color.white)
@@ -140,112 +126,144 @@ struct DiscountDetailView: View {
         .padding(.top, -24)
     }
 
-    // MARK: - Store row
+    // MARK: - Title block
 
-    private var storeRow: some View {
-        HStack(spacing: 12) {
-            partnerLogo
-                .frame(width: 48, height: 48)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.gray300, lineWidth: 0.5))
+    private var titleBlock: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(viewModel.discount.title)
+                .font(.system(size: 22, weight: .bold))
+                .foregroundColor(.gray900)
+                .fixedSize(horizontal: false, vertical: true)
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(viewModel.discount.storeName)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(.gray900)
-                Text(viewModel.partner?.address ?? viewModel.discount.storeAddress)
-                    .font(.system(size: 12))
+            HStack(spacing: 16) {
+                Label(viewModel.distanceText, systemImage: "location.fill")
+                    .font(.system(size: 13, weight: .medium))
                     .foregroundColor(.gray500)
-                    .lineLimit(1)
+                Label(viewModel.daysLeftText, systemImage: "clock")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(viewModel.daysLeftIsUrgent ? .red : .gray500)
             }
         }
+        .padding(.horizontal, 20)
+        .padding(.top, 24)
+        .padding(.bottom, 16)
     }
 
-    @ViewBuilder
-    private var partnerLogo: some View {
-        if let logoUrl = viewModel.partner?.logoUrl, let url = URL(string: logoUrl) {
-            AsyncImage(url: url) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().aspectRatio(contentMode: .fill)
-                default:
-                    placeholderLogo
+    // MARK: - Merchant section
+
+    private var merchantSection: some View {
+        sectionBlock(title: "პარტნიორი") {
+            Button {
+                viewModel.onPartnerTapped?(viewModel.partner?.id ?? viewModel.discount.storeId)
+            } label: {
+                HStack(spacing: 12) {
+                    partnerLogo
+
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(viewModel.discount.storeName)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(.gray900)
+
+                        HStack(spacing: 4) {
+                            Image(systemName: "location.circle")
+                                .font(.system(size: 11))
+                                .foregroundColor(.gray500)
+                            Text(viewModel.partner?.address ?? viewModel.discount.storeAddress)
+                                .font(.system(size: 12))
+                                .foregroundColor(.gray500)
+                                .lineLimit(1)
+                        }
+                    }
+
+                    Spacer()
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(.gray500)
                 }
             }
-        } else {
-            placeholderLogo
+            .buttonStyle(.plain)
         }
     }
 
-    private var placeholderLogo: some View {
-        Color.gray100.overlay(
-            Image(systemName: "storefront")
-                .font(.system(size: 18))
-                .foregroundColor(Color.gray500.opacity(0.4))
-        )
-    }
-
-    // MARK: - Info pills
-
-    private var infoPills: some View {
-        HStack(spacing: 10) {
-            InfoPill(
-                icon: "location.fill",
-                iconColor: .colorPrimary,
-                text: viewModel.distanceText
-            )
-            InfoPill(
-                icon: "clock",
-                iconColor: viewModel.daysLeftIsUrgent ? .red : .green,
-                text: viewModel.daysLeftText
-            )
+    private var partnerLogo: some View {
+        Group {
+            if let logoUrl = viewModel.partner?.logoUrl, let url = URL(string: logoUrl) {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image.resizable().aspectRatio(contentMode: .fill)
+                    default:
+                        Color.gray100
+                    }
+                }
+            } else {
+                Color.gray100.overlay(
+                    Image(systemName: "storefront")
+                        .font(.system(size: 20))
+                        .foregroundColor(Color.gray500.opacity(0.4))
+                )
+            }
         }
+        .frame(width: 56, height: 56)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.gray300, lineWidth: 0.5))
     }
 
     // MARK: - About section
 
     private var aboutSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("შეთავაზების შესახებ")
-                .font(.system(size: 16, weight: .bold))
-                .foregroundColor(.gray900)
-
+        sectionBlock(title: "შეთავაზების შესახებ") {
             Text(viewModel.discount.description)
                 .font(.system(size: 14))
                 .foregroundColor(.gray500)
-                .lineSpacing(4)
+                .lineSpacing(5)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
-    // MARK: - Expiry banner
+    // MARK: - Validity section
 
-    private var expiryBanner: some View {
-        HStack(spacing: 10) {
-            Image(systemName: "calendar")
-                .font(.system(size: 14))
-                .foregroundColor(.orange)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text("იწურება \(viewModel.formattedEndDate)")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(.orange)
-                if viewModel.daysLeftIsUrgent {
-                    Text("ძალიან მალე იწურება. არ გაუშვა!")
-                        .font(.system(size: 11))
-                        .foregroundColor(.orange.opacity(0.8))
+    private var validitySection: some View {
+        sectionBlock(title: "მოქმედების ვადა") {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 24) {
+                    dateColumn(label: "დაწყება", value: DiscountFormatter.formattedDate(viewModel.discount.startDate))
+                    Divider().frame(height: 32)
+                    dateColumn(label: "დასრულება", value: viewModel.formattedEndDate)
+                    Spacer()
                 }
             }
-
-            Spacer()
         }
-        .padding(14)
-        .background(Color.orange.opacity(0.08))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
-    // MARK: - Bottom buttons
+    private func dateColumn(label: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(label)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.gray500)
+            Text(value)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(.gray900)
+        }
+    }
 
-    private var bottomButtons: some View {
+    // MARK: - Shared layout helper
+
+    private func sectionBlock<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text(title)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(.gray900)
+            content()
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 20)
+    }
+
+    // MARK: - Bottom CTA
+
+    private var bottomCTA: some View {
         HStack(spacing: 12) {
             Button { viewModel.onViewOnMap?(viewModel.discount) } label: {
                 HStack(spacing: 6) {
@@ -267,28 +285,5 @@ struct DiscountDetailView: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
-    }
-}
-
-// MARK: - Info Pill
-
-private struct InfoPill: View {
-    let icon: String
-    let iconColor: Color
-    let text: String
-
-    var body: some View {
-        HStack(spacing: 6) {
-            Image(systemName: icon)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(iconColor)
-            Text(text)
-                .font(.system(size: 13, weight: .medium))
-                .foregroundColor(.gray700)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 7)
-        .background(Color(red: 0.97, green: 0.97, blue: 0.98))
-        .clipShape(Capsule())
     }
 }

@@ -29,7 +29,7 @@ private struct PartnerRow: View {
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundColor(.gray900)
 
-                Text(partner.category)
+                Text(AppCategories.georgianName(for: partner.category))
                     .font(.system(size: 13))
                     .foregroundColor(.gray500)
 

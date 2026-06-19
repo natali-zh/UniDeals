@@ -68,6 +68,26 @@ final class HomeCoordinator: Coordinator {
 
     // MARK: - Navigation
 
+    private func showPartnerDetail(id: String) {
+        Task { @MainActor in
+            guard let partner = try? await PartnerService.shared.fetchPartner(id: id) else { return }
+            let detailVM = PartnerDetailViewModel(partner: partner)
+            detailVM.onBack = { [weak self] in
+                self?.navigationController.popViewController(animated: true)
+            }
+            detailVM.onViewOnMap = { [weak self] discount in
+                self?.navigationController.popViewController(animated: false)
+                self?.onShowOnMap?(discount)
+            }
+            detailVM.onOfferTapped = { [weak self] discountId in
+                self?.showDiscountDetail(id: discountId)
+            }
+            let vc = UIHostingController(rootView: PartnerDetailView(viewModel: detailVM))
+            vc.hidesBottomBarWhenPushed = true
+            navigationController.pushViewController(vc, animated: true)
+        }
+    }
+
     private func showDiscountDetail(id: String) {
         Task { @MainActor in
             guard let discount = try? await DiscountService.shared.fetchDiscount(id: id) else { return }
@@ -78,6 +98,9 @@ final class HomeCoordinator: Coordinator {
             detailVM.onViewOnMap = { [weak self] discount in
                 self?.navigationController.popViewController(animated: false)
                 self?.onShowOnMap?(discount)
+            }
+            detailVM.onPartnerTapped = { [weak self] partnerId in
+                self?.showPartnerDetail(id: partnerId)
             }
             let detailView = DiscountDetailView(viewModel: detailVM)
             let vc = UIHostingController(rootView: detailView)

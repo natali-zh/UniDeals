@@ -20,6 +20,7 @@ final class DiscountDetailViewModel: ObservableObject {
     var onBack: (() -> Void)?
     var onViewOnMap: ((Discount) -> Void)?
     var onUseOffer: (() -> Void)?
+    var onPartnerTapped: ((String) -> Void)?
 
     // MARK: - Init
 

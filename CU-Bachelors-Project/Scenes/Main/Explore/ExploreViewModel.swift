@@ -84,13 +84,7 @@ final class ExploreViewModel: ObservableObject {
         return result
     }
 
-    let categories: [DiscountCategory] = [
-        DiscountCategory(id: "food",    name: "საკვები", icon: "fork.knife"),
-        DiscountCategory(id: "tech",    name: "ტექნიკა", icon: "laptopcomputer"),
-        DiscountCategory(id: "fashion", name: "მოდა",    icon: "tshirt.fill"),
-        DiscountCategory(id: "fitness", name: "ფიტნესი", icon: "heart.fill"),
-        DiscountCategory(id: "books",   name: "წიგნები", icon: "book.fill"),
-    ]
+    let categories: [DiscountCategory] = AppCategories.all
 
     // MARK: - Navigation callbacks
 

@@ -102,10 +102,6 @@ struct PartnerDetailView: View {
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.gray900)
 
-                    Text(viewModel.partner.category.capitalized)
-                        .font(.system(size: 13))
-                        .foregroundColor(.gray500)
-
                     HStack(spacing: 4) {
                         Image(systemName: "location.circle")
                             .font(.system(size: 12))

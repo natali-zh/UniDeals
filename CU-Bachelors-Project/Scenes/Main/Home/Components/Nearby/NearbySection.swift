@@ -30,8 +30,9 @@ struct NearbySection: View {
                     }
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 4)
+                .padding(.vertical, 8)
             }
+            .background(Color(red: 0.97, green: 0.97, blue: 0.98))
         }
     }
 }
@@ -60,11 +61,13 @@ private struct NearbyCard: View {
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(.gray900)
                     .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(height: 40, alignment: .topLeading)
 
                 Text(discount.storeName)
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.gray500)
+
+                Spacer()
 
                 HStack(spacing: 4) {
                     Image(systemName: "location")
@@ -74,12 +77,11 @@ private struct NearbyCard: View {
                         .font(.system(size: 12, weight: .regular))
                         .foregroundColor(.gray500)
                 }
-                .padding(.top, 6)
             }
             .padding(12)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         }
-        .frame(width: 170)
+        .frame(width: 170, height: 230)
         .cardStyle()
     }
 }

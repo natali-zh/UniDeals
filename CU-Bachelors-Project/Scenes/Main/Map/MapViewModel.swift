@@ -12,14 +12,7 @@ final class MapViewModel {
     var onViewOffer: ((Discount) -> Void)?
     var pendingDiscount: Discount? = nil
 
-    let categories: [DiscountCategory] = [
-        DiscountCategory(id: "all",     name: "ყველა",   icon: "square.grid.2x2.fill"),
-        DiscountCategory(id: "food",    name: "საკვები", icon: "fork.knife"),
-        DiscountCategory(id: "tech",    name: "ტექნიკა", icon: "laptopcomputer"),
-        DiscountCategory(id: "fashion", name: "მოდა",    icon: "tshirt.fill"),
-        DiscountCategory(id: "fitness", name: "ფიტნესი", icon: "heart.fill"),
-        DiscountCategory(id: "books",   name: "წიგნები", icon: "book.fill"),
-    ]
+    let categories: [DiscountCategory] = AppCategories.allWithAll
 
     var filteredDiscounts: [Discount] {
         selectedCategoryId == "all"

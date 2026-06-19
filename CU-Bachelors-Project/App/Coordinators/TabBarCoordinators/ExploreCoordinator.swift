@@ -75,6 +75,9 @@ final class ExploreCoordinator: Coordinator {
             self?.navigationController.popViewController(animated: false)
             self?.onShowOnMap?(discount)
         }
+        detailVM.onPartnerTapped = { [weak self] partnerId in
+            self?.showPartnerDetail(id: partnerId)
+        }
         let detailView = DiscountDetailView(viewModel: detailVM)
         let vc = UIHostingController(rootView: detailView)
         vc.hidesBottomBarWhenPushed = true
