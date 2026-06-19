@@ -9,7 +9,6 @@ struct Partner: Identifiable, Decodable {
     let address: String
     let description: String
     let logoUrl: String?
-    let rating: Double
     let offerCount: Int
     let phone: String?
     let website: String?

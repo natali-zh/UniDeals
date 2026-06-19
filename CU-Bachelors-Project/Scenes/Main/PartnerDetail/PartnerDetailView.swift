@@ -60,12 +60,6 @@ struct PartnerDetailView: View {
                 )
                 .frame(maxWidth: .infinity, maxHeight: totalHeight)
 
-                Text(viewModel.partner.category)
-                    .badgeStyle()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 36)
-
                 HStack {
                     Button { viewModel.onBack?() } label: {
                         Image(systemName: "chevron.left")
@@ -108,23 +102,34 @@ struct PartnerDetailView: View {
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.gray900)
 
-                    Text(viewModel.partner.address)
+                    Text(viewModel.partner.category.capitalized)
                         .font(.system(size: 13))
                         .foregroundColor(.gray500)
-                        .lineLimit(1)
+
+                    HStack(spacing: 4) {
+                        Image(systemName: "location.circle")
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray500)
+                        Text(viewModel.partner.address)
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray500)
+                            .lineLimit(1)
+                    }
+                    .padding(.top, 2)
                 }
 
                 Spacer()
             }
             .padding(.horizontal, 20)
             .padding(.top, 24)
-            .padding(.bottom, 20)
+            .padding(.bottom, 12)
 
-            Divider().padding(.horizontal, 20)
+            // Info row
+            infoSection
 
             // About
             VStack(alignment: .leading, spacing: 8) {
-                Text("შესახებ")
+                Text("კომპანიის შესახებ")
                     .font(.system(size: 16, weight: .bold))
                     .foregroundColor(.gray900)
 
@@ -146,6 +151,54 @@ struct PartnerDetailView: View {
         .background(Color.white)
         .clipShape(.rect(topLeadingRadius: 24, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 24))
         .padding(.top, -24)
+    }
+
+    private var infoSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            let hasPhone = viewModel.partner.phone != nil
+            let hasWebsite = viewModel.partner.website != nil
+
+            if hasPhone || hasWebsite {
+                HStack(spacing: 12) {
+                    if let phone = viewModel.partner.phone {
+                        actionButton(icon: "phone.fill", title: "დარეკვა") {
+                            if let url = URL(string: "tel://\(phone.replacingOccurrences(of: " ", with: ""))") {
+                                UIApplication.shared.open(url)
+                            }
+                        }
+                    }
+                    if let website = viewModel.partner.website {
+                        actionButton(icon: "globe", title: "ვებსაიტი") {
+                            if let url = URL(string: website) {
+                                UIApplication.shared.open(url)
+                            }
+                        }
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+
+            Divider().padding(.horizontal, 20)
+        }
+        .padding(.top, 16)
+    }
+
+    private func actionButton(icon: String, title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.colorPrimary)
+                Text(title)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.colorPrimary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(Color.colorPrimary.opacity(0.07))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
     }
 
     private var partnerLogo: some View {

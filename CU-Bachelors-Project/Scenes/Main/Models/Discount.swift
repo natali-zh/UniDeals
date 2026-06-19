@@ -15,7 +15,6 @@ struct Discount: Identifiable, Decodable {
     let discountValue: Int
     let label: String              // "20% OFF", "FREE"
     let isFeatured: Bool
-    let usageLimit: String         // "unlimited" / "oncePerDiscount" / "oncePerDay"
     let startDate: Date
     let endDate: Date
     let imageUrl: String?
@@ -37,7 +36,6 @@ struct Discount: Identifiable, Decodable {
         case discountValue
         case label
         case isFeatured
-        case usageLimit
         case startDate
         case endDate
         case imageUrl
