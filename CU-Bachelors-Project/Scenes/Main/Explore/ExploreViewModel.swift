@@ -109,8 +109,9 @@ final class ExploreViewModel: ObservableObject {
 
     // MARK: - Methods
 
-    func loadData() async {
-        guard discounts.isEmpty else { return }
+    func loadData(forceReload: Bool = false) async {
+        guard discounts.isEmpty || forceReload else { return }
+        if forceReload { discounts = [] }
         isLoading = true
         errorMessage = nil
         defer { isLoading = false }

@@ -36,6 +36,7 @@ struct SavedDiscountsView: View {
                     .padding(.top, 16)
                     .padding(.bottom, 24)
                 }
+                .refreshable { await viewModel.load() }
             }
         }
         .navigationTitle("შენახული შეთავაზებები")

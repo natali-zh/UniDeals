@@ -31,6 +31,7 @@ struct HomeView: View {
                         .padding(.bottom, 24)
                 }
             }
+            .refreshable { await viewModel.loadDiscounts(forceReload: true) }
             .background(Color(red: 0.97, green: 0.97, blue: 0.98))
         }
         .navigationBarHidden(true)

@@ -90,8 +90,9 @@ final class HomeViewModel: ObservableObject {
     
     // MARK: - Methods
     
-    func loadDiscounts() async {
-        guard discounts.isEmpty else { return }
+    func loadDiscounts(forceReload: Bool = false) async {
+        guard discounts.isEmpty || forceReload else { return }
+        if forceReload { discounts = [] }
         isLoading = true
         errorMessage = nil
         defer { isLoading = false }
