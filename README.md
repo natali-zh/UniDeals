@@ -6,13 +6,9 @@ An iOS app that connects Georgian university students with exclusive discounts f
 
 ## Screenshots
 
-| | | |
-|-|-|-|
-| ![](screenshots/login.png) | ![](screenshots/signup.png) | ![](screenshots/forgot_password.png) |
+<img src="screenshots/login.png" width="19%"> <img src="screenshots/signup.png" width="19%"> <img src="screenshots/forgot_password.png" width="19%">
 
-| | | | | | | |
-|-|-|-|-|-|-|-|
-| ![](screenshots/home.png) | ![](screenshots/explore.png) | ![](screenshots/map.png) | ![](screenshots/saved.png) | ![](screenshots/offer_detail.png) | ![](screenshots/partner_detail.png) | ![](screenshots/card.png) |
+<img src="screenshots/home.png" width="19%"> <img src="screenshots/explore.png" width="19%"> <img src="screenshots/map.png" width="19%"> <img src="screenshots/saved.png" width="19%"> <img src="screenshots/offer_detail.png" width="19%"> <img src="screenshots/partner_detail.png" width="19%"> <img src="screenshots/card.png" width="19%">
 
 ---
 
