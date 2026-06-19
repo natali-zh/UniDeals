@@ -165,6 +165,7 @@ final class LoginViewController: BaseViewController {
         mainStackView.setCustomSpacing(40, after: titleLabel)
 
         mainStackView.addArrangedSubview(emailField)
+        mainStackView.setCustomSpacing(16, after: emailField)
         mainStackView.addArrangedSubview(passwordField)
         mainStackView.setCustomSpacing(8, after: passwordField)
 

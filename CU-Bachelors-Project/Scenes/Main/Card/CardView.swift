@@ -3,6 +3,7 @@ import SwiftUI
 struct CardView: View {
 
     @State private var viewModel = CardViewModel()
+    @State private var cardVisible = false
 
     var body: some View {
         ZStack {
@@ -21,6 +22,13 @@ struct CardView: View {
                     CardSkeleton()
                 } else {
                     studentCard
+                        .offset(y: cardVisible ? 0 : 40)
+                        .opacity(cardVisible ? 1 : 0)
+                        .onAppear {
+                            withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) {
+                                cardVisible = true
+                            }
+                        }
                 }
 
                 // Hint
