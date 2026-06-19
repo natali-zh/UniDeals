@@ -6,13 +6,13 @@ An iOS app that connects Georgian university students with exclusive discounts f
 
 ## Screenshots
 
-| Sign In | Sign Up | Forgot Password |
-|---------|---------|----------------|
-| ![Sign In](screenshots/login.png) | ![Sign Up](screenshots/signup.png) | ![Forgot Password](screenshots/forgot_password.png) |
+| | | |
+|-|-|-|
+| ![](screenshots/login.png) | ![](screenshots/signup.png) | ![](screenshots/forgot_password.png) |
 
-| Home | Explore | Map | Saved | Offer Details | Partner Details | Student Card |
-|------|---------|-----|-------|--------------|----------------|--------------|
-| ![Home](screenshots/home.png) | ![Explore](screenshots/explore.png) | ![Map](screenshots/map.png) | ![Saved](screenshots/saved.png) | ![Offer Details](screenshots/offer_detail.png) | ![Partner Details](screenshots/partner_detail.png) | ![Card](screenshots/card.png) |
+| | | | | | | |
+|-|-|-|-|-|-|-|
+| ![](screenshots/home.png) | ![](screenshots/explore.png) | ![](screenshots/map.png) | ![](screenshots/saved.png) | ![](screenshots/offer_detail.png) | ![](screenshots/partner_detail.png) | ![](screenshots/card.png) |
 
 ---
 
