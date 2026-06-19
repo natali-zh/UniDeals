@@ -78,7 +78,7 @@ final class MainCoordinator: Coordinator {
     }
 
     private func makeNav(title: String, icon: String, selectedIcon: String) -> UINavigationController {
-        let nav = UINavigationController()
+        let nav = SwipeableNavigationController()
         nav.tabBarItem = UITabBarItem(title: title,
                                       image: UIImage(systemName: icon),
                                       selectedImage: UIImage(systemName: selectedIcon))
