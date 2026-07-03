@@ -1,12 +1,12 @@
-import Combine
 import SwiftUI
 
 struct HomeView: View {
     
-    @ObservedObject var viewModel: HomeViewModel
-    @State private var pendingFilter = DiscountFilter()
+    //MARK: - Properties
     
-    // MARK: - Init
+    @ObservedObject var viewModel: HomeViewModel
+    
+    //MARK: - Init
     
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -16,16 +16,12 @@ struct HomeView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            
             ScrollView {
                 LazyVStack(spacing: 8) {
                     homeHeader
                         .padding(.bottom)
-
                     featuredSection
-                    
                     nearbySection
-                    
                     expiringSoonSection
                         .padding(.top, 8)
                         .padding(.bottom, 24)
@@ -48,7 +44,7 @@ struct HomeView: View {
     }
     
     //MARK: - Subviews
-
+    
     private var homeHeader: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 2) {
@@ -60,9 +56,7 @@ struct HomeView: View {
                     .foregroundColor(.primary)
             }
             Spacer()
-            Button {
-                viewModel.onSettingsTapped?()
-            } label: {
+            Button(action: { viewModel.onSettingsTapped?() }) {
                 RemoteImage(url: viewModel.userImageUrl, placeholder: Image(systemName: "person.circle.fill"))
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
@@ -70,20 +64,16 @@ struct HomeView: View {
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 20)
-        .overlay(alignment: .bottom) {
-            Divider()
-        }
+        .overlay(alignment: .bottom) { Divider() }
         .padding(.bottom, 8)
     }
-
+    
     private var featuredSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            HStack {
-                Text("გამორჩეული შეთავაზებები")
-                    .sectionTitleStyle()
-            }
-            .padding(.horizontal, 20)
-
+            Text("გამორჩეული შეთავაზებები")
+                .sectionTitleStyle()
+                .padding(.horizontal, 20)
+            
             if viewModel.isLoading {
                 FeaturedCardSkeleton()
             } else if viewModel.featured.isEmpty {
@@ -98,7 +88,7 @@ struct HomeView: View {
             }
         }
     }
-
+    
     private var nearbySection: some View {
         Group {
             if viewModel.isLoading {
@@ -114,7 +104,7 @@ struct HomeView: View {
         }
         .padding(.top, 24)
     }
-
+    
     private var expiringSoonSection: some View {
         Group {
             if viewModel.isLoading {
@@ -130,14 +120,6 @@ struct HomeView: View {
         }
         .padding(.top, 24)
     }
-}
-
-
-
-// MARK: - Color helper
-
-extension Color {
-    static let gray300 = Color(.systemFill)
 }
 
 #Preview {

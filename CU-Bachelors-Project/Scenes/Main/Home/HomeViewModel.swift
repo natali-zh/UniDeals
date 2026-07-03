@@ -3,73 +3,40 @@ import Foundation
 
 @MainActor
 final class HomeViewModel: ObservableObject {
-
+    
     // MARK: - Dependencies
-
+    
     private let discountService: DiscountServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     
-    // MARK: - Published Properties
+    // MARK: - Published
     
     @Published private var discounts: [Discount] = []
-    @Published var searchQuery: String = ""
-    @Published var activeFilter: DiscountFilter = DiscountFilter()
     @Published var isLoading: Bool = false
-    @Published var errorMessage: String?
-
-    // MARK: - Computed properties
-
+    
+    // MARK: - Computed
+    
     var featured: [Discount] {
-        applyFilter(to: discounts.filter { $0.isFeatured })
-    }
-
-    var nearby: [Discount] {
-        Array(applyFilter(to: discounts).prefix(5))
-    }
-
-    var expiring: [Discount] {
-        let threeDaysFromNow = Date().addingTimeInterval(3 * 24 * 60 * 60)
-        let soon = discounts.filter { $0.endDate <= threeDaysFromNow && $0.endDate >= Date() }
-        return applyFilter(to: soon)
-    }
-
-    // MARK: - Private helpers
-
-    private func applyFilter(to list: [Discount]) -> [Discount] {
-        var result = list
-
-        if !searchQuery.trimmingCharacters(in: .whitespaces).isEmpty {
-            let q = searchQuery.lowercased()
-            result = result.filter {
-                $0.title.lowercased().contains(q) || $0.storeName.lowercased().contains(q)
-            }
-        }
-
-        if let maxKm = activeFilter.maxDistanceKm {
-            result = result.filter { $0.distanceKm <= maxKm }
-        }
-
-        if let type = activeFilter.discountType.firestoreValue {
-            result = result.filter { $0.discountType == type }
-        }
-
-        switch activeFilter.sortBy {
-        case .nearest:
-            result.sort { $0.distanceKm < $1.distanceKm }
-        case .expiringSoon:
-            result.sort { $0.endDate < $1.endDate }
-        case .newest:
-            result.sort { $0.startDate > $1.startDate }
-        case .none:
-            break
-        }
-
-        return result
+        discounts.filter { $0.isFeatured }
     }
     
-    var userName: String { UserManager.shared.currentUser?.fullname.components(separatedBy: " ").first ?? "სტუდენტო" }
-    var userImageUrl: String? { UserManager.shared.currentUser?.imageUrl }
-
+    var nearby: [Discount] {
+        Array(discounts.prefix(5))
+    }
+    
+    var expiring: [Discount] {
+        let threeDaysFromNow = Date().addingTimeInterval(3 * 24 * 60 * 60)
+        return discounts.filter { $0.endDate <= threeDaysFromNow && $0.endDate >= Date() }
+    }
+    
+    var userName: String {
+        UserManager.shared.currentUser?.fullname.components(separatedBy: " ").first ?? "სტუდენტო"
+    }
+    
+    var userImageUrl: String? {
+        UserManager.shared.currentUser?.imageUrl
+    }
+    
     // MARK: - Navigation callbacks
     
     var onSeeAllFeatured: (() -> Void)?
@@ -94,9 +61,8 @@ final class HomeViewModel: ObservableObject {
         guard discounts.isEmpty || forceReload else { return }
         if forceReload { discounts = [] }
         isLoading = true
-        errorMessage = nil
         defer { isLoading = false }
-
+        
         do {
             var loaded = DiscountFormatter.withDistances(try await discountService.fetchAllDiscounts())
             if let uid = SessionManager.shared.userId,
@@ -107,8 +73,6 @@ final class HomeViewModel: ObservableObject {
             }
             discounts = loaded
         } catch {
-            errorMessage = "შეთავაზებების ჩატვირთვა ვერ მოხერხდა. სცადე თავიდან."
-            print("loadDiscounts failed: \(error.localizedDescription)")
         }
     }
     
@@ -116,7 +80,7 @@ final class HomeViewModel: ObservableObject {
         guard !discounts.isEmpty else { return }
         discounts = DiscountFormatter.withDistances(discounts)
     }
-
+    
     func refreshSavedState() async {
         guard !discounts.isEmpty, let uid = SessionManager.shared.userId,
               let savedIds = try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid) else { return }
@@ -124,15 +88,7 @@ final class HomeViewModel: ObservableObject {
             discounts[i].isSaved = savedIds.contains(discounts[i].id ?? "")
         }
     }
-
-    func applyFilter(_ filter: DiscountFilter) {
-        activeFilter = filter
-    }
-
-    func resetFilter() {
-        activeFilter = DiscountFilter()
-    }
-
+    
     func toggleSave(_ id: String) {
         guard !id.isEmpty,
               let index = discounts.firstIndex(where: { $0.id == id }),
@@ -147,5 +103,4 @@ final class HomeViewModel: ObservableObject {
             }
         }
     }
-    
 }
