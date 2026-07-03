@@ -5,42 +5,25 @@ import CoreImage.CIFilterBuiltins
 @MainActor
 @Observable
 final class CardViewModel {
-
+    
     // MARK: - Published
-
+    
     var user: User?
     var qrImage: Image?
-
+    
     // MARK: - Dependencies
-
+    
     private let userManager: UserManager
     private let sessionManager: SessionManager
-
-    // MARK: - Init
-
-    init(userManager: UserManager = .shared, sessionManager: SessionManager = .shared) {
-        self.userManager = userManager
-        self.sessionManager = sessionManager
-    }
-
-    // MARK: - Methods
-
-    func load() async {
-        if userManager.currentUser == nil {
-            await userManager.fetchUser()
-        }
-        user = userManager.currentUser
-        generateQR()
-    }
-
-    // MARK: - Computed display
-
+    
+    // MARK: - Computed properties
+    
     var validityText: String {
         guard let semester = user?.semester else { return "–" }
         let (enrollmentYear, graduationYear) = academicYears(for: semester)
         return "09/\(enrollmentYear) – 06/\(graduationYear)"
     }
-
+    
     var isExpired: Bool {
         guard let semester = user?.semester else { return false }
         let (_, graduationYear) = academicYears(for: semester)
@@ -49,7 +32,24 @@ final class CardViewModel {
         let month = Calendar.current.component(.month, from: now)
         return year > graduationYear || (year == graduationYear && month > 6)
     }
-
+    
+    // MARK: - Init
+    
+    init(userManager: UserManager = .shared, sessionManager: SessionManager = .shared) {
+        self.userManager = userManager
+        self.sessionManager = sessionManager
+    }
+    
+    // MARK: - Methods
+    
+    func load() async {
+        if userManager.currentUser == nil {
+            await userManager.fetchUser()
+        }
+        user = userManager.currentUser
+        generateQR()
+    }
+    
     private func academicYears(for semester: Int) -> (enrollment: Int, graduation: Int) {
         let now = Date()
         let cal = Calendar.current
@@ -59,9 +59,7 @@ final class CardViewModel {
         let enrollmentYear = academicStart - (semester - 1) / 2
         return (enrollmentYear, enrollmentYear + 4)
     }
-
-    // MARK: - Private
-
+    
     private func generateQR() {
         guard let uid = sessionManager.userId else { return }
         let context = CIContext()

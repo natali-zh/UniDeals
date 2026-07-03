@@ -86,8 +86,6 @@ final class TextFieldWithError: UIView {
 }
 
 
-
-
 protocol TextFieldErrorShowable {
     func showError()
     func hideError()

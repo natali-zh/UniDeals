@@ -36,6 +36,7 @@ struct HomeView: View {
         }
         .navigationBarHidden(true)
         .task {
+            LocationManager.shared.requestPermission()
             await viewModel.loadDiscounts()
         }
         .onAppear {

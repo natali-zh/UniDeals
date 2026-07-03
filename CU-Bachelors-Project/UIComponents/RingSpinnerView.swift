@@ -1,29 +1,29 @@
 import UIKit
 
 final class RingSpinnerView: UIView {
-
+    
     private let trackLayer = CAShapeLayer()
     private let ringLayer = CAShapeLayer()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setup()
     }
-
+    
     private func setup() {
         backgroundColor = .clear
-
+        
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.strokeColor = UIColor.white.withAlphaComponent(0.15).cgColor
         trackLayer.lineWidth = 4
         trackLayer.lineCap = .round
         layer.addSublayer(trackLayer)
-
+        
         ringLayer.fillColor = UIColor.clear.cgColor
         ringLayer.strokeColor = UIColor.colorPrimary.cgColor
         ringLayer.lineWidth = 4
@@ -32,7 +32,7 @@ final class RingSpinnerView: UIView {
         ringLayer.strokeEnd = 0.75
         layer.addSublayer(ringLayer)
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
@@ -43,7 +43,7 @@ final class RingSpinnerView: UIView {
         trackLayer.frame = bounds
         ringLayer.frame = bounds
     }
-
+    
     func startAnimating() {
         let rotation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotation.fromValue = 0
@@ -53,7 +53,7 @@ final class RingSpinnerView: UIView {
         rotation.isRemovedOnCompletion = false
         ringLayer.add(rotation, forKey: "rotation")
     }
-
+    
     func stopAnimating() {
         ringLayer.removeAllAnimations()
     }

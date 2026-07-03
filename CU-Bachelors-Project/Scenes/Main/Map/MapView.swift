@@ -44,6 +44,8 @@ struct MapView: View {
 
             if let discount = viewModel.selectedDiscount {
                 discountCard(discount)
+                    .padding(.horizontal, 12)
+                    .padding(.bottom, 8)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(1)
             }
@@ -103,12 +105,6 @@ struct MapView: View {
 
     private func discountCard(_ discount: Discount) -> some View {
         VStack(spacing: 0) {
-            RoundedRectangle(cornerRadius: 2)
-                .fill(Color.gray300)
-                .frame(width: 36, height: 4)
-                .padding(.top, 12)
-                .padding(.bottom, 16)
-
             HStack(alignment: .top, spacing: 12) {
                 discountImage(discount)
 
@@ -150,6 +146,7 @@ struct MapView: View {
                 }
             }
             .padding(.horizontal, 16)
+            .padding(.top, 16)
 
             Button {
                 viewModel.onViewOffer?(discount)
@@ -161,10 +158,10 @@ struct MapView: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, 14)
-            .padding(.bottom, 16)
+            .padding(.bottom, 8)
         }
         .background(Color(.secondarySystemGroupedBackground))
-        .clipShape(.rect(topLeadingRadius: 24, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 24))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
         .shadow(color: .black.opacity(0.12), radius: 16, x: 0, y: -4)
     }
 

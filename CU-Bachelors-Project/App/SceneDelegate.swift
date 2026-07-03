@@ -14,11 +14,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         coordinator.start()
         self.window = window
         applyStoredColorScheme()
-        NotificationCenter.default.addObserver(self, selector: #selector(colorSchemeChanged), name: .colorSchemeDidChange, object: nil)
-    }
-
-    @objc private func colorSchemeChanged() {
-        applyStoredColorScheme()
     }
 
     private func applyStoredColorScheme() {

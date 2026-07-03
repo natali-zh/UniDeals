@@ -5,16 +5,16 @@ class BaseViewController: UIViewController {
     //MARK: - Properties
     
     var keyboardScrollView: UIScrollView?
-
+    
     private lazy var loadingOverlay: UIView = {
         let overlay = UIView()
         overlay.backgroundColor = UIColor.black.withAlphaComponent(0.35)
         overlay.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let spinner = RingSpinnerView()
         spinner.translatesAutoresizingMaskIntoConstraints = false
         overlay.addSubview(spinner)
-
+        
         NSLayoutConstraint.activate([
             spinner.centerXAnchor.constraint(equalTo: overlay.centerXAnchor),
             spinner.centerYAnchor.constraint(equalTo: overlay.centerYAnchor),
@@ -23,25 +23,6 @@ class BaseViewController: UIViewController {
         ])
         return overlay
     }()
-
-    func showLoader() {
-        guard loadingOverlay.superview == nil else { return }
-        view.addSubview(loadingOverlay)
-        NSLayoutConstraint.activate([
-            loadingOverlay.topAnchor.constraint(equalTo: view.topAnchor),
-            loadingOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            loadingOverlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            loadingOverlay.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        view.bringSubviewToFront(loadingOverlay)
-        (loadingOverlay.subviews.first as? RingSpinnerView)?.startAnimating()
-    }
-
-    func hideLoader() {
-        (loadingOverlay.subviews.first as? RingSpinnerView)?.stopAnimating()
-        loadingOverlay.removeFromSuperview()
-    }
-    
     
     //MARK: - View Lifecycle
     
@@ -63,6 +44,24 @@ class BaseViewController: UIViewController {
     }
     
     //MARK: - Methods
+    
+    func showLoader() {
+        guard loadingOverlay.superview == nil else { return }
+        view.addSubview(loadingOverlay)
+        NSLayoutConstraint.activate([
+            loadingOverlay.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingOverlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingOverlay.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        view.bringSubviewToFront(loadingOverlay)
+        (loadingOverlay.subviews.first as? RingSpinnerView)?.startAnimating()
+    }
+    
+    func hideLoader() {
+        (loadingOverlay.subviews.first as? RingSpinnerView)?.stopAnimating()
+        loadingOverlay.removeFromSuperview()
+    }
     
     private func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)

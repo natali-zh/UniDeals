@@ -37,19 +37,17 @@ class TextFieldWithPadding: UITextField, UITextFieldDelegate, TextFieldErrorShow
         return true
     }
     
-    
-    
     private let normalBackgroundColor = UIColor.gray100
-
-       private let errorBorderColor = UIColor.systemRed.cgColor
-
-       func showError() {
-           layer.borderWidth = 1
-           layer.borderColor = errorBorderColor
-       }
-
-       func hideError() {
-           layer.borderWidth = 0
-           layer.borderColor = UIColor.clear.cgColor
-       }
+    
+    private let errorBorderColor = UIColor.systemRed.cgColor
+    
+    func showError() {
+        layer.borderWidth = 1
+        layer.borderColor = errorBorderColor
+    }
+    
+    func hideError() {
+        layer.borderWidth = 0
+        layer.borderColor = UIColor.clear.cgColor
+    }
 }
