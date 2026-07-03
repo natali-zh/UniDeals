@@ -42,7 +42,6 @@ final class MapViewModel {
     func show(discount: Discount) {
         pendingDiscount = discount
         selectedDiscount = discount
-        // auto-switch category to match the incoming discount
         if selectedCategoryId != "all" {
             selectedCategoryId = "all"
         }
