@@ -21,7 +21,7 @@ struct ProfileAvatarView: View {
             avatarImage
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
-                .overlay(Circle().stroke(Color.white, lineWidth: 3))
+                .overlay(Circle().stroke(Color(.systemBackground), lineWidth: 3))
                 .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
 
             if isUploading {

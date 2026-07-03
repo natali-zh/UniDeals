@@ -8,7 +8,7 @@ struct CardStyle: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .background(Color.white)
+            .background(Color(.secondarySystemGroupedBackground))
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .shadow(color: .black.opacity(shadowOpacity), radius: shadowRadius, x: 0, y: shadowYOffset)
     }
@@ -56,7 +56,7 @@ struct HeroNavButton: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(width: 36, height: 36)
-            .background(Color.white)
+            .background(Color(.systemBackground))
             .clipShape(Circle())
             .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
     }
@@ -96,7 +96,7 @@ struct StickyFooter: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(
-                Color.white
+                Color(.systemBackground)
                     .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: -4)
                     .ignoresSafeArea()
             )
@@ -175,7 +175,7 @@ extension View {
 
     func settingsCard() -> some View {
         self
-            .background(Color.white)
+            .background(Color(.secondarySystemGroupedBackground))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(color: .black.opacity(0.04), radius: 8, x: 0, y: 2)
     }

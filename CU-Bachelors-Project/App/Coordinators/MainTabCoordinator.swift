@@ -50,7 +50,6 @@ final class MainCoordinator: Coordinator {
         }
         exploreCoordinator?.start()
 
-        // Create navigation controllers for SwiftUI views
         let cardNav = makeNav(title: "ბარათი", icon: "creditcard", selectedIcon: "creditcard.fill")
         let cardVC = UIHostingController(rootView: CardView())
         cardNav.setViewControllers([cardVC], animated: false)

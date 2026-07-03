@@ -32,7 +32,7 @@ struct NearbySection: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 8)
             }
-            .background(Color(red: 0.97, green: 0.97, blue: 0.98))
+            .background(Color(.systemGroupedBackground))
         }
     }
 }

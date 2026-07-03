@@ -10,7 +10,7 @@ struct SavedDiscountsView: View {
 
     var body: some View {
         ZStack {
-            Color(red: 0.97, green: 0.97, blue: 0.98).ignoresSafeArea()
+            Color(.systemGroupedBackground).ignoresSafeArea()
 
             if viewModel.isLoading {
                 ScrollView(showsIndicators: false) {

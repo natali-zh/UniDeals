@@ -50,7 +50,7 @@ struct ExploreView: View {
                 .padding(.bottom, 24)
             }
             .refreshable { await viewModel.loadData(forceReload: true) }
-            .background(Color(red: 0.97, green: 0.97, blue: 0.98))
+            .background(Color(.systemGroupedBackground))
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $showFilter) {
@@ -149,7 +149,7 @@ struct ExploreView: View {
             .padding(.horizontal, 4)
             .padding(.bottom, 4)
         }
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 2)
     }
 
@@ -160,7 +160,7 @@ struct ExploreView: View {
             segmentButton(title: "ფასდაკლებები", tab: .discounts)
             segmentButton(title: "პარტნიორები", tab: .partners)
         }
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal, 16)
         .shadow(color: .black.opacity(0.06), radius: 6, x: 0, y: 2)
@@ -207,7 +207,7 @@ private struct ActiveFilterChip: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .clipShape(Capsule())
     }
 }

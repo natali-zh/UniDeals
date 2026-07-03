@@ -6,6 +6,25 @@ struct ProfileView: View {
     @State private var showLogOutAlert = false
     @State private var showEditNameAlert = false
     @State private var editNameText = ""
+    @AppStorage("appColorScheme") private var colorSchemeRaw: String = "system"
+
+    private var currentThemeLabel: String {
+        switch colorSchemeRaw {
+        case "dark": return "მუქი"
+        case "light": return "ნათელი"
+        default: return "სისტემა"
+        }
+    }
+
+    private func applyColorScheme(_ value: String) {
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = scene.windows.first else { return }
+        switch value {
+        case "dark":  window.overrideUserInterfaceStyle = .dark
+        case "light": window.overrideUserInterfaceStyle = .light
+        default:      window.overrideUserInterfaceStyle = .unspecified
+        }
+    }
 
     init(viewModel: ProfileViewModel) {
         _viewModel = State(wrappedValue: viewModel)
@@ -48,6 +67,47 @@ struct ProfileView: View {
                 .settingsCard()
                 .padding(.bottom, 12)
 
+                // Appearance
+                VStack(spacing: 0) {
+                    Menu {
+                        ForEach([("system", "სისტემის რეჟიმი"), ("light", "ნათელი რეჟიმი"), ("dark", "მუქი რეჟიმი")], id: \.0) { value, label in
+                            Button {
+                                colorSchemeRaw = value
+                                applyColorScheme(value)
+                            } label: {
+                                if colorSchemeRaw == value {
+                                    Label(label, systemImage: "checkmark")
+                                } else {
+                                    Text(label)
+                                }
+                            }
+                        }
+                    } label: {
+                        HStack(spacing: 14) {
+                            Image(systemName: "moon.fill")
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.gray500)
+                                .frame(width: 22)
+                            Text("ვიზუალი")
+                                .font(.system(size: 15, weight: .medium))
+                                .foregroundColor(.gray900)
+                            Spacer()
+                            Text(currentThemeLabel)
+                                .font(.system(size: 14))
+                                .foregroundColor(.gray500)
+                            Image(systemName: "chevron.up.chevron.down")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundColor(.gray300)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 14)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                }
+                .settingsCard()
+                .padding(.bottom, 12)
+
                 // Log out
                 VStack(spacing: 0) {
                     SettingsRow(
@@ -72,7 +132,7 @@ struct ProfileView: View {
             .padding(.horizontal, 16)
             .padding(.top, 24)
         }
-        .background(Color(red: 0.97, green: 0.97, blue: 0.98).ignoresSafeArea())
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .navigationBarHidden(false)
         .navigationTitle("პარამეტრები")
         .navigationBarTitleDisplayMode(.inline)

@@ -22,7 +22,7 @@ struct ExploreCategoryBar: View {
                     .foregroundColor(isAllSelected ? .white : .gray700)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
-                    .background(isAllSelected ? Color.colorPrimary : Color.white)
+                    .background(isAllSelected ? Color.colorPrimary : Color(.systemBackground))
                     .clipShape(Capsule())
                     .shadow(color: .black.opacity(isAllSelected ? 0 : 0.05), radius: 4, x: 0, y: 1)
                 }
@@ -43,7 +43,7 @@ struct ExploreCategoryBar: View {
                         .foregroundColor(isSelected ? .white : .gray700)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 8)
-                        .background(isSelected ? Color.colorPrimary : Color.white)
+                        .background(isSelected ? Color.colorPrimary : Color(.systemBackground))
                         .clipShape(Capsule())
                         .shadow(color: .black.opacity(isSelected ? 0 : 0.05), radius: 4, x: 0, y: 1)
                     }

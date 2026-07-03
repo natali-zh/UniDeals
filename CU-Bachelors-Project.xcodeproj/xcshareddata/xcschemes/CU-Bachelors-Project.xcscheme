@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E1603B472F83F7E600A16266"
-               BuildableName = "CU-Bachelors-Project.app"
+               BuildableName = "UniDeals.app"
                BlueprintName = "CU-Bachelors-Project"
                ReferencedContainer = "container:CU-Bachelors-Project.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E1603B472F83F7E600A16266"
-            BuildableName = "CU-Bachelors-Project.app"
+            BuildableName = "UniDeals.app"
             BlueprintName = "CU-Bachelors-Project"
             ReferencedContainer = "container:CU-Bachelors-Project.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E1603B472F83F7E600A16266"
-            BuildableName = "CU-Bachelors-Project.app"
+            BuildableName = "UniDeals.app"
             BlueprintName = "CU-Bachelors-Project"
             ReferencedContainer = "container:CU-Bachelors-Project.xcodeproj">
          </BuildableReference>

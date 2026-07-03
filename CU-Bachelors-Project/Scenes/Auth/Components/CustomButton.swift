@@ -20,7 +20,7 @@ final class CustomButton: UIButton {
         var titleColor: UIColor {
             switch self {
             case .primary: return .white
-            case .secondary: return .black
+            case .secondary: return .label
             case .text: return .colorPrimary
             }
         }

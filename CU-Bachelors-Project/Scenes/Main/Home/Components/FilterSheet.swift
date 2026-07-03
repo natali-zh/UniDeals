@@ -26,7 +26,7 @@ struct FilterSheet: View {
 
             actionButtons
         }
-        .background(Color.white)
+        .background(Color(.systemBackground))
     }
 
     // MARK: - Subviews
@@ -137,7 +137,7 @@ struct FilterSheet: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
-        .background(Color.white.shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: -2))
+        .background(Color(.systemBackground).shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: -2))
     }
 }
 

@@ -30,7 +30,7 @@ struct GraduationYearPickerView: View {
                 .padding(.vertical, 16)
                 .stickyFooter()
         }
-        .background(Color(red: 0.97, green: 0.97, blue: 0.98).ignoresSafeArea())
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .alert("შეცდომა", isPresented: Binding(
             get: { viewModel.errorMessage != nil },
             set: { if !$0 { viewModel.errorMessage = nil } }
@@ -93,7 +93,7 @@ struct GraduationYearPickerView: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
-            .background(Color.white)
+            .background(Color(.secondarySystemGroupedBackground))
             .clipShape(RoundedRectangle(cornerRadius: 14))
             .overlay(
                 RoundedRectangle(cornerRadius: 14)
@@ -128,7 +128,7 @@ struct GraduationYearPickerView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
-                    .background(viewModel.selectedSemester == semester ? Color.colorPrimary.opacity(0.05) : Color.white)
+                    .background(viewModel.selectedSemester == semester ? Color.colorPrimary.opacity(0.05) : Color(.secondarySystemGroupedBackground))
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
@@ -138,7 +138,7 @@ struct GraduationYearPickerView: View {
                 }
             }
         }
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 6)
     }

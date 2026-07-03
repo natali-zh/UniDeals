@@ -39,7 +39,7 @@ private struct CategoryItem: View {
                     .font(.system(size: 22, weight: .medium))
                     .foregroundColor(isSelected ? .white : .gray700)
                     .frame(width: 60, height: 60)
-                    .background(isSelected ? Color.colorPrimary : Color.white)
+                    .background(isSelected ? Color.colorPrimary : Color(.systemBackground))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .shadow(color: .black.opacity(0.07), radius: 8, x: 0, y: 2)
 

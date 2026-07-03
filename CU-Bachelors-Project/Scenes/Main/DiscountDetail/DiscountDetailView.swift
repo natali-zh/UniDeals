@@ -29,7 +29,7 @@ struct DiscountDetailView: View {
                 .stickyFooter()
         }
         .navigationBarHidden(true)
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .task { await viewModel.loadPartner() }
         .sheet(isPresented: $showCard) {
             CardView()
@@ -121,7 +121,7 @@ struct DiscountDetailView: View {
             merchantSection
             Color.clear.frame(height: 90)
         }
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .clipShape(.rect(topLeadingRadius: 24, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 24))
         .padding(.top, -24)
     }

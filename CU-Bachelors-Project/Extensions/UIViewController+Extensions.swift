@@ -23,6 +23,10 @@ extension UIViewController {
     }
     
     func setCustomBackground() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
     }
+}
+
+extension Notification.Name {
+    static let colorSchemeDidChange = Notification.Name("colorSchemeDidChange")
 }

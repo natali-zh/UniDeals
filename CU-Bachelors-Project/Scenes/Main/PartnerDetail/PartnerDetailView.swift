@@ -25,7 +25,7 @@ struct PartnerDetailView: View {
                 .stickyFooter()
         }
         .navigationBarHidden(true)
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .task { await viewModel.loadOffers() }
     }
 
@@ -144,7 +144,7 @@ struct PartnerDetailView: View {
 
             Color.clear.frame(height: 90)
         }
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .clipShape(.rect(topLeadingRadius: 24, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 24))
         .padding(.top, -24)
     }
@@ -344,7 +344,7 @@ private struct OfferRow: View {
                     .foregroundColor(.gray500)
             }
             .padding(12)
-            .background(Color(red: 0.97, green: 0.97, blue: 0.98))
+            .background(Color(.systemGroupedBackground))
             .clipShape(RoundedRectangle(cornerRadius: 14))
         }
         .buttonStyle(.plain)

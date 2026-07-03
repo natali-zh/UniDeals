@@ -8,7 +8,7 @@ struct UniversityPickerView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            Color(red: 0.97, green: 0.97, blue: 0.98).ignoresSafeArea()
+            Color(.systemGroupedBackground).ignoresSafeArea()
 
             VStack(spacing: 0) {
                 headerSection
@@ -117,7 +117,7 @@ struct UniversityPickerView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .overlay(
             RoundedRectangle(cornerRadius: 14)
@@ -162,7 +162,7 @@ struct UniversityPickerView: View {
                             .padding(.vertical, 13)
                             .background(viewModel.selectedUniversity == university
                                 ? Color.colorPrimary.opacity(0.05)
-                                : Color.white)
+                                : Color(.secondarySystemGroupedBackground))
                             .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
@@ -175,7 +175,7 @@ struct UniversityPickerView: View {
             }
         }
         .frame(maxHeight: 260)
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 6)
     }

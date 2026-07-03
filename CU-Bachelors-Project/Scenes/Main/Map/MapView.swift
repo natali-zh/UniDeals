@@ -163,7 +163,7 @@ struct MapView: View {
             .padding(.top, 14)
             .padding(.bottom, 16)
         }
-        .background(Color.white)
+        .background(Color(.secondarySystemGroupedBackground))
         .clipShape(.rect(topLeadingRadius: 24, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 24))
         .shadow(color: .black.opacity(0.12), radius: 16, x: 0, y: -4)
     }
@@ -223,7 +223,7 @@ private struct DiscountPin: View {
 
             ZStack {
                 Circle()
-                    .fill(isSelected ? pinColor : Color.white)
+                    .fill(isSelected ? pinColor : Color(.secondarySystemGroupedBackground))
                     .frame(width: isSelected ? 42 : 34, height: isSelected ? 42 : 34)
                     .shadow(color: .black.opacity(0.18), radius: 4, x: 0, y: 2)
 
@@ -254,7 +254,7 @@ private struct MapCategoryChip: View {
             .foregroundColor(isSelected ? .white : .gray900)
             .padding(.horizontal, 12)
             .padding(.vertical, 7)
-            .background(isSelected ? Color.colorPrimary : Color.white)
+            .background(isSelected ? Color.colorPrimary : Color(.secondarySystemGroupedBackground))
             .clipShape(Capsule())
             .shadow(color: .black.opacity(isSelected ? 0 : 0.08), radius: 4, x: 0, y: 2)
         }

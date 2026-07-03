@@ -27,7 +27,6 @@ final class AuthCoordinator : Coordinator {
         logInViewModel.onNavigateToSignUp = { [weak self] in
             self?.goToSignUp()
         }
-        
         logInViewModel.onNavigateToForgotPassword = { [weak self] in
             self?.goToForgotPassword()
         }
