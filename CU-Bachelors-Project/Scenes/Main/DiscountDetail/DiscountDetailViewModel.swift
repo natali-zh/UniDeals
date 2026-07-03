@@ -36,15 +36,9 @@ final class DiscountDetailViewModel {
     // MARK: - Methods
 
     func loadPartner() async {
-        async let partnerFetch = partnerService.fetchPartner(id: discount.storeId)
-        let savedIds: [String]
-        if let uid = SessionManager.shared.userId {
-            savedIds = (try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid)) ?? []
-        } else {
-            savedIds = []
-        }
-        partner = try? await partnerFetch
-        if let id = discount.id {
+        partner = try? await partnerService.fetchPartner(id: discount.storeId)
+        if let id = discount.id, let uid = SessionManager.shared.userId,
+           let savedIds = try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid) {
             isSaved = savedIds.contains(id)
         }
     }

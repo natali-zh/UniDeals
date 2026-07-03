@@ -31,6 +31,7 @@ final class FeaturedCarouselViewModel {
         timerTask?.cancel()
         timerTask = nil
     }
+    
 
     func updateItemCount(_ count: Int) {
         itemCount = count

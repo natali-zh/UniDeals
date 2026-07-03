@@ -36,19 +36,21 @@ final class LocationManager: NSObject {
 extension LocationManager: CLLocationManagerDelegate {
     
     nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let status = manager.authorizationStatus
         Task { @MainActor in
-            authorizationStatus = manager.authorizationStatus
+            authorizationStatus = status
             if authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways {
-                manager.startUpdatingLocation()
+                self.manager.startUpdatingLocation()
             }
         }
     }
-    
+
     nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let coordinate = locations.last?.coordinate
         Task { @MainActor in
-            userLocation = locations.last?.coordinate
+            userLocation = coordinate
             locationUpdateCount += 1
-            manager.stopUpdatingLocation()
+            self.manager.stopUpdatingLocation()
         }
     }
 }

@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 
+@MainActor
 final class HomeCoordinator: Coordinator {
 
     // MARK: - Properties
@@ -10,10 +11,15 @@ final class HomeCoordinator: Coordinator {
     var onShowOnMap: ((Discount) -> Void)?
     var onLogOut: (() -> Void)?
 
+    private var isNavigating = false
+
     // MARK: - Init
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        (navigationController as? SwipeableNavigationController)?.onDidShow = { [weak self] in
+            self?.isNavigating = false
+        }
     }
 
     // MARK: - Start
@@ -34,9 +40,7 @@ final class HomeCoordinator: Coordinator {
 
     private func showSettings() {
         let vm = ProfileViewModel()
-        vm.onLogOut = { [weak self] in
-            self?.onLogOut?()
-        }
+        vm.onLogOut = { [weak self] in self?.onLogOut?() }
         vm.onEditUniversity = { [weak self] in self?.showUniversityPicker() }
         vm.onEditSemester = { [weak self] in self?.showSemesterPicker() }
         let vc = UIHostingController(rootView: ProfileView(viewModel: vm))
@@ -68,44 +72,46 @@ final class HomeCoordinator: Coordinator {
 
     // MARK: - Navigation
 
-    private func showPartnerDetail(id: String) {
-        Task { @MainActor in
-            guard let partner = try? await PartnerService.shared.fetchPartner(id: id) else { return }
-            let detailVM = PartnerDetailViewModel(partner: partner)
-            detailVM.onBack = { [weak self] in
-                self?.navigationController.popViewController(animated: true)
+    private func showDiscountDetail(id: String) {
+        guard !isNavigating else { return }
+        isNavigating = true
+        Task {
+            guard let discount = try? await DiscountService.shared.fetchDiscount(id: id) else {
+                isNavigating = false
+                return
             }
+            let detailVM = DiscountDetailViewModel(discount: discount)
+            detailVM.onBack = { [weak self] in self?.navigationController.popViewController(animated: true) }
             detailVM.onViewOnMap = { [weak self] discount in
                 self?.navigationController.popViewController(animated: false)
                 self?.onShowOnMap?(discount)
             }
-            detailVM.onOfferTapped = { [weak self] discountId in
-                self?.showDiscountDetail(id: discountId)
-            }
-            let vc = UIHostingController(rootView: PartnerDetailView(viewModel: detailVM))
+            detailVM.onPartnerTapped = { [weak self] partnerId in self?.showPartnerDetail(id: partnerId) }
+            let vc = UIHostingController(rootView: DiscountDetailView(viewModel: detailVM))
             vc.hidesBottomBarWhenPushed = true
             navigationController.pushViewController(vc, animated: true)
         }
     }
 
-    private func showDiscountDetail(id: String) {
-        Task { @MainActor in
-            guard let discount = try? await DiscountService.shared.fetchDiscount(id: id) else { return }
-            let detailVM = DiscountDetailViewModel(discount: discount)
-            detailVM.onBack = { [weak self] in
-                self?.navigationController.popViewController(animated: true)
+    private func showPartnerDetail(id: String) {
+        guard !isNavigating else { return }
+        isNavigating = true
+        Task {
+            guard let partner = try? await PartnerService.shared.fetchPartner(id: id) else {
+                isNavigating = false
+                return
             }
+            let detailVM = PartnerDetailViewModel(partner: partner)
+            detailVM.onBack = { [weak self] in self?.navigationController.popViewController(animated: true) }
             detailVM.onViewOnMap = { [weak self] discount in
                 self?.navigationController.popViewController(animated: false)
                 self?.onShowOnMap?(discount)
             }
-            detailVM.onPartnerTapped = { [weak self] partnerId in
-                self?.showPartnerDetail(id: partnerId)
-            }
-            let detailView = DiscountDetailView(viewModel: detailVM)
-            let vc = UIHostingController(rootView: detailView)
+            detailVM.onOfferTapped = { [weak self] discountId in self?.showDiscountDetail(id: discountId) }
+            let vc = UIHostingController(rootView: PartnerDetailView(viewModel: detailVM))
             vc.hidesBottomBarWhenPushed = true
             navigationController.pushViewController(vc, animated: true)
         }
     }
 }
+

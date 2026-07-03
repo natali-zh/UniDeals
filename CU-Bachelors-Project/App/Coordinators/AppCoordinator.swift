@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import FirebaseAuth
 
+@MainActor
 final class AppCoordinator: Coordinator {
     
     //MARK: - Properties

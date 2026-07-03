@@ -1,7 +1,8 @@
 import Foundation
 import UIKit
 
-final class AuthCoordinator : Coordinator {
+@MainActor
+final class AuthCoordinator: Coordinator {
     
     //MARK: - Properties
     

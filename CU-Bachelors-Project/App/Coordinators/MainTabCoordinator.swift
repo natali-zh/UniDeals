@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 
+@MainActor
 final class MainCoordinator: Coordinator {
 
     // MARK: - Properties

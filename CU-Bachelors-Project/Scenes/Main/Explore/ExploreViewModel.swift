@@ -102,9 +102,7 @@ final class ExploreViewModel {
         defer { isLoading = false }
 
         do {
-            async let fetchedDiscounts = discountService.fetchAllDiscounts()
-            async let fetchedPartners = partnerService.fetchAllPartners()
-            var loaded = DiscountFormatter.withDistances(try await fetchedDiscounts)
+            var loaded = DiscountFormatter.withDistances(try await discountService.fetchAllDiscounts())
             if let uid = SessionManager.shared.userId,
                let savedIds = try? await SavedDiscountsService.shared.fetchSavedIds(uid: uid) {
                 for i in loaded.indices where savedIds.contains(loaded[i].id ?? "") {
@@ -112,9 +110,8 @@ final class ExploreViewModel {
                 }
             }
             discounts = loaded
-            partners = try await fetchedPartners
+            partners = try await partnerService.fetchAllPartners()
         } catch {
-            // silent — empty state shown in UI
         }
     }
 

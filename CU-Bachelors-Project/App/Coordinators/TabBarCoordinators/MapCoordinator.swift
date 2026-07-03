@@ -1,14 +1,25 @@
 import UIKit
 import SwiftUI
 
+@MainActor
 final class MapCoordinator: Coordinator {
+
+    // MARK: - Properties
 
     let navigationController: UINavigationController
     private var mapViewModel: MapViewModel?
+    private var isNavigating = false
+
+    // MARK: - Init
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        (navigationController as? SwipeableNavigationController)?.onDidShow = { [weak self] in
+            self?.isNavigating = false
+        }
     }
+
+    // MARK: - Start
 
     func start() {
         let viewModel = MapViewModel()
@@ -22,7 +33,7 @@ final class MapCoordinator: Coordinator {
 
     func show(discount: Discount) {
         navigationController.popToRootViewController(animated: false)
-        Task { @MainActor in
+        Task {
             if mapViewModel?.discounts.isEmpty == true {
                 await mapViewModel?.load()
             }
@@ -34,19 +45,39 @@ final class MapCoordinator: Coordinator {
         }
     }
 
+    // MARK: - Navigation
+
+    private func showDiscountDetail(discount: Discount) {
+        guard !isNavigating else { return }
+        isNavigating = true
+        let detailVM = DiscountDetailViewModel(discount: discount)
+        detailVM.onBack = { [weak self] in self?.navigationController.popViewController(animated: true) }
+        detailVM.onViewOnMap = { [weak self] discount in
+            self?.navigationController.popViewController(animated: false)
+            self?.show(discount: discount)
+        }
+        detailVM.onPartnerTapped = { [weak self] partnerId in self?.showPartnerDetail(id: partnerId) }
+        let vc = UIHostingController(rootView: DiscountDetailView(viewModel: detailVM))
+        vc.hidesBottomBarWhenPushed = true
+        navigationController.pushViewController(vc, animated: true)
+    }
+
     private func showPartnerDetail(id: String) {
-        Task { @MainActor in
-            guard let partner = try? await PartnerService.shared.fetchPartner(id: id) else { return }
-            let detailVM = PartnerDetailViewModel(partner: partner)
-            detailVM.onBack = { [weak self] in
-                self?.navigationController.popViewController(animated: true)
+        guard !isNavigating else { return }
+        isNavigating = true
+        Task {
+            guard let partner = try? await PartnerService.shared.fetchPartner(id: id) else {
+                isNavigating = false
+                return
             }
+            let detailVM = PartnerDetailViewModel(partner: partner)
+            detailVM.onBack = { [weak self] in self?.navigationController.popViewController(animated: true) }
             detailVM.onViewOnMap = { [weak self] discount in
                 self?.navigationController.popViewController(animated: false)
                 self?.show(discount: discount)
             }
             detailVM.onOfferTapped = { [weak self] discountId in
-                Task { @MainActor in
+                Task {
                     guard let discount = try? await DiscountService.shared.fetchDiscount(id: discountId) else { return }
                     self?.showDiscountDetail(discount: discount)
                 }
@@ -56,22 +87,5 @@ final class MapCoordinator: Coordinator {
             navigationController.pushViewController(vc, animated: true)
         }
     }
-
-    private func showDiscountDetail(discount: Discount) {
-        let detailVM = DiscountDetailViewModel(discount: discount)
-        detailVM.onBack = { [weak self] in
-            self?.navigationController.popViewController(animated: true)
-        }
-        detailVM.onViewOnMap = { [weak self] discount in
-            self?.navigationController.popViewController(animated: false)
-            self?.show(discount: discount)
-        }
-        detailVM.onPartnerTapped = { [weak self] partnerId in
-            self?.showPartnerDetail(id: partnerId)
-        }
-        let detailView = DiscountDetailView(viewModel: detailVM)
-        let vc = UIHostingController(rootView: detailView)
-        vc.hidesBottomBarWhenPushed = true
-        navigationController.pushViewController(vc, animated: true)
-    }
 }
+
