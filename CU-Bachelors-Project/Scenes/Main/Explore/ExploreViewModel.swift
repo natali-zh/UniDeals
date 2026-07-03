@@ -1,10 +1,6 @@
 import Combine
 import Foundation
 
-enum ExploreTab {
-    case discounts, partners
-}
-
 @MainActor
 final class ExploreViewModel: ObservableObject {
 
@@ -20,12 +16,18 @@ final class ExploreViewModel: ObservableObject {
     @Published var selectedCategoryIds: Set<String> = []
     @Published var activeFilter = DiscountFilter()
     @Published var isLoading: Bool = false
-    @Published var errorMessage: String?
 
     @Published private var discounts: [Discount] = []
-    private var partners: [Partner] = []
+    @Published private var partners: [Partner] = []
+
+    // MARK: - Navigation callbacks
+
+    var onDiscountTapped: ((String) -> Void)?
+    var onPartnerTapped: ((String) -> Void)?
 
     // MARK: - Computed
+
+    let categories: [DiscountCategory] = AppCategories.all
 
     var hasActiveFilters: Bool {
         activeFilter.isActive || !selectedCategoryIds.isEmpty
@@ -50,14 +52,10 @@ final class ExploreViewModel: ObservableObject {
         }
 
         switch activeFilter.sortBy {
-        case .expiringSoon:
-            result.sort { $0.endDate < $1.endDate }
-        case .newest:
-            result.sort { $0.startDate > $1.startDate }
-        case .nearest:
-            result.sort { $0.distanceKm < $1.distanceKm }
-        case nil:
-            break
+        case .expiringSoon: result.sort { $0.endDate < $1.endDate }
+        case .newest:       result.sort { $0.startDate > $1.startDate }
+        case .nearest:      result.sort { $0.distanceKm < $1.distanceKm }
+        case nil:           break
         }
 
         return result
@@ -84,13 +82,6 @@ final class ExploreViewModel: ObservableObject {
         return result
     }
 
-    let categories: [DiscountCategory] = AppCategories.all
-
-    // MARK: - Navigation callbacks
-
-    var onDiscountTapped: ((String) -> Void)?
-    var onPartnerTapped: ((String) -> Void)?
-
     // MARK: - Init
 
     init(
@@ -107,7 +98,6 @@ final class ExploreViewModel: ObservableObject {
         guard discounts.isEmpty || forceReload else { return }
         if forceReload { discounts = [] }
         isLoading = true
-        errorMessage = nil
         defer { isLoading = false }
 
         do {
@@ -123,8 +113,7 @@ final class ExploreViewModel: ObservableObject {
             discounts = loaded
             partners = try await fetchedPartners
         } catch {
-            errorMessage = "მონაცემების ჩატვირთვა ვერ მოხდა."
-            print("ExploreViewModel loadData failed: \(error.localizedDescription)")
+            // silent — empty state shown in UI
         }
     }
 
@@ -167,5 +156,4 @@ final class ExploreViewModel: ObservableObject {
     func clearCategories() {
         selectedCategoryIds = []
     }
-
 }
