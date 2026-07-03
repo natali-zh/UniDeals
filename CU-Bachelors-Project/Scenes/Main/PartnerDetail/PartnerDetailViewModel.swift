@@ -1,3 +1,4 @@
+import CoreLocation
 import Foundation
 import Combine
 
@@ -28,6 +29,18 @@ final class PartnerDetailViewModel: ObservableObject {
     ) {
         self.partner = partner
         self.discountService = discountService
+    }
+
+    // MARK: - Computed
+
+    func distanceText(for discount: Discount) -> String {
+        if let userCoord = LocationManager.shared.userLocation {
+            let userLoc = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
+            let discountLoc = CLLocation(latitude: discount.latitude, longitude: discount.longitude)
+            let km = userLoc.distance(from: discountLoc) / 1000.0
+            return DiscountFormatter.distanceText(km)
+        }
+        return DiscountFormatter.distanceText(discount.distanceKm)
     }
 
     // MARK: - Methods
