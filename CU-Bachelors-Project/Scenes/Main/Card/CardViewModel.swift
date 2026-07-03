@@ -5,25 +5,25 @@ import CoreImage.CIFilterBuiltins
 @MainActor
 @Observable
 final class CardViewModel {
-    
-    // MARK: - Published
-    
+
+    // MARK: - Properties
+
     var user: User?
     var qrImage: Image?
-    
+
     // MARK: - Dependencies
-    
+
     private let userManager: UserManager
     private let sessionManager: SessionManager
-    
+
     // MARK: - Computed properties
-    
+
     var validityText: String {
         guard let semester = user?.semester else { return "–" }
         let (enrollmentYear, graduationYear) = academicYears(for: semester)
         return "09/\(enrollmentYear) – 06/\(graduationYear)"
     }
-    
+
     var isExpired: Bool {
         guard let semester = user?.semester else { return false }
         let (_, graduationYear) = academicYears(for: semester)
@@ -32,16 +32,20 @@ final class CardViewModel {
         let month = Calendar.current.component(.month, from: now)
         return year > graduationYear || (year == graduationYear && month > 6)
     }
-    
+
     // MARK: - Init
-    
-    init(userManager: UserManager = .shared, sessionManager: SessionManager = .shared) {
+
+    init(userManager: UserManager, sessionManager: SessionManager) {
         self.userManager = userManager
         self.sessionManager = sessionManager
     }
-    
+
+    convenience init() {
+        self.init(userManager: .shared, sessionManager: .shared)
+    }
+
     // MARK: - Methods
-    
+
     func load() async {
         if userManager.currentUser == nil {
             await userManager.fetchUser()
@@ -49,7 +53,9 @@ final class CardViewModel {
         user = userManager.currentUser
         generateQR()
     }
-    
+
+    // MARK: - Private
+
     private func academicYears(for semester: Int) -> (enrollment: Int, graduation: Int) {
         let now = Date()
         let cal = Calendar.current
@@ -59,7 +65,7 @@ final class CardViewModel {
         let enrollmentYear = academicStart - (semester - 1) / 2
         return (enrollmentYear, enrollmentYear + 4)
     }
-    
+
     private func generateQR() {
         guard let uid = sessionManager.userId else { return }
         let context = CIContext()

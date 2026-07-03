@@ -13,12 +13,13 @@ final class UniversityPickerViewModel {
     private let firestoreService: FirestoreServiceProtocol
     private let sessionManager: SessionManager
 
-    init(
-        firestoreService: FirestoreServiceProtocol = FirestoreService.shared,
-        sessionManager: SessionManager = .shared
-    ) {
+    init(firestoreService: FirestoreServiceProtocol, sessionManager: SessionManager) {
         self.firestoreService = firestoreService
         self.sessionManager = sessionManager
+    }
+
+    convenience init() {
+        self.init(firestoreService: FirestoreService.shared, sessionManager: .shared)
     }
 
     var filteredUniversities: [String] {

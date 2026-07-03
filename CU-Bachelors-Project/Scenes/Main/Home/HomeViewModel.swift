@@ -47,14 +47,18 @@ final class HomeViewModel: ObservableObject {
     
     // MARK: - Init
     
-    init(discountService: DiscountServiceProtocol = DiscountService.shared) {
+    init(discountService: DiscountServiceProtocol) {
         self.discountService = discountService
         UserManager.shared.$currentUser
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)
     }
-    
+
+    convenience init() {
+        self.init(discountService: DiscountService.shared)
+    }
+
     // MARK: - Methods
     
     func loadDiscounts(forceReload: Bool = false) async {

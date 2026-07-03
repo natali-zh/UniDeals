@@ -23,13 +23,14 @@ final class DiscountDetailViewModel: ObservableObject {
 
     // MARK: - Init
 
-    init(
-        discount: Discount,
-        partnerService: PartnerServiceProtocol = PartnerService.shared
-    ) {
+    init(discount: Discount, partnerService: PartnerServiceProtocol) {
         self.discount = discount
         self.isSaved = discount.isSaved
         self.partnerService = partnerService
+    }
+
+    convenience init(discount: Discount) {
+        self.init(discount: discount, partnerService: PartnerService.shared)
     }
 
     // MARK: - Methods

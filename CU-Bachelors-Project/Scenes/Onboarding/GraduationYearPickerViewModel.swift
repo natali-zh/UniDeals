@@ -16,14 +16,14 @@ final class GraduationYearPickerViewModel {
     private let firestoreService: FirestoreServiceProtocol
     private let sessionManager: SessionManager
 
-    init(
-        university: String,
-        firestoreService: FirestoreServiceProtocol = FirestoreService.shared,
-        sessionManager: SessionManager = .shared
-    ) {
+    init(university: String, firestoreService: FirestoreServiceProtocol, sessionManager: SessionManager) {
         self.university = university
         self.firestoreService = firestoreService
         self.sessionManager = sessionManager
+    }
+
+    convenience init(university: String) {
+        self.init(university: university, firestoreService: FirestoreService.shared, sessionManager: .shared)
     }
 
     func confirm() async {

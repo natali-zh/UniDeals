@@ -84,12 +84,13 @@ final class ExploreViewModel: ObservableObject {
 
     // MARK: - Init
 
-    init(
-        discountService: DiscountServiceProtocol = DiscountService.shared,
-        partnerService: PartnerServiceProtocol = PartnerService.shared
-    ) {
+    init(discountService: DiscountServiceProtocol, partnerService: PartnerServiceProtocol) {
         self.discountService = discountService
         self.partnerService = partnerService
+    }
+
+    convenience init() {
+        self.init(discountService: DiscountService.shared, partnerService: PartnerService.shared)
     }
 
     // MARK: - Methods
