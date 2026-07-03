@@ -4,12 +4,12 @@ struct PartnerDetailView: View {
     
     //MARK: - Properties
     
-    @StateObject private var viewModel: PartnerDetailViewModel
-    
+    @State private var viewModel: PartnerDetailViewModel
+
     //MARK: - Init
-    
+
     init(viewModel: PartnerDetailViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = State(wrappedValue: viewModel)
     }
     
     //MARK: - Body

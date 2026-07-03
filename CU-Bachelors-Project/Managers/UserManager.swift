@@ -1,13 +1,14 @@
 import Foundation
-import Combine
 
-final class UserManager: ObservableObject {
+@MainActor
+@Observable
+final class UserManager {
     
     //MARK: - Properties
     
     static let shared = UserManager()
     
-    @Published var currentUser: User? = nil
+    var currentUser: User? = nil
     
     private let firestoreService: FirestoreServiceProtocol
     private let sessionManager: SessionManager
@@ -15,9 +16,13 @@ final class UserManager: ObservableObject {
     
     //MARK: - Init
     
-    private init(firestoreService: FirestoreServiceProtocol = FirestoreService.shared, sessionManager: SessionManager = .shared) {
+    init(firestoreService: FirestoreServiceProtocol, sessionManager: SessionManager)  {
         self.firestoreService = firestoreService
         self.sessionManager = sessionManager
+    }
+    
+    convenience init() {
+        self.init(firestoreService: FirestoreService.shared, sessionManager: .shared)
     }
     
     //MARK: - Methods
@@ -25,7 +30,7 @@ final class UserManager: ObservableObject {
     func fetchUser() async {
         guard let userId = sessionManager.userId else { return }
         do {
-            currentUser = try await firestoreService.fetchDocument(from: FirestoreCollections.users, documentId: userId, as: User.self)
+            currentUser = try await firestoreService.fetchDocument(from: FirestoreCollections.users, documentId: userId)
         } catch {
             print("fetchuser: \(error.localizedDescription)")
         }

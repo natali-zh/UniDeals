@@ -1,24 +1,24 @@
-import Combine
 import Foundation
 
 @MainActor
-final class ExploreViewModel: ObservableObject {
+@Observable
+final class ExploreViewModel {
 
     // MARK: - Dependencies
 
     private let discountService: DiscountServiceProtocol
     private let partnerService: PartnerServiceProtocol
 
-    // MARK: - Published
+    // MARK: - State
 
-    @Published var searchQuery: String = ""
-    @Published var selectedTab: ExploreTab = .discounts
-    @Published var selectedCategoryIds: Set<String> = []
-    @Published var activeFilter = DiscountFilter()
-    @Published var isLoading: Bool = false
+    var searchQuery: String = ""
+    var selectedTab: ExploreTab = .discounts
+    var selectedCategoryIds: Set<String> = []
+    var activeFilter = DiscountFilter()
+    var isLoading: Bool = false
 
-    @Published private var discounts: [Discount] = []
-    @Published private var partners: [Partner] = []
+    private var discounts: [Discount] = []
+    private var partners: [Partner] = []
 
     // MARK: - Navigation callbacks
 

@@ -4,10 +4,10 @@ struct HomeView: View {
     
     //MARK: - Properties
     
-    @ObservedObject var viewModel: HomeViewModel
-    
+    var viewModel: HomeViewModel
+
     //MARK: - Init
-    
+
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }

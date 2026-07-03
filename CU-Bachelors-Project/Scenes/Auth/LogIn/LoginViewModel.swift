@@ -2,6 +2,7 @@ import UIKit
 import FirebaseAuth
 import GoogleSignIn
 
+@MainActor
 final class LoginViewModel {
     
     //MARK: - Properties
@@ -19,8 +20,12 @@ final class LoginViewModel {
     
     //MARK: - Init
     
-    init(authService: AuthServiceProtocol = AuthService.shared) {
+    init(authService: AuthServiceProtocol) {
         self.authService = authService
+    }
+    
+    convenience init() {
+        self.init(authService: AuthService.shared)
     }
     
     //MARK: - Methods

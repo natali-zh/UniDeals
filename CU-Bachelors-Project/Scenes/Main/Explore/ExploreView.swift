@@ -4,7 +4,7 @@ struct ExploreView: View {
     
     //MARK: - Properties
     
-    @ObservedObject var viewModel: ExploreViewModel
+    @Bindable var viewModel: ExploreViewModel
     @State private var showFilter = false
     @State private var pendingFilter = DiscountFilter()
     

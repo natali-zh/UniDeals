@@ -4,13 +4,13 @@ struct DiscountDetailView: View {
     
     //MARK: - Properties
     
-    @StateObject private var viewModel: DiscountDetailViewModel
+    @State private var viewModel: DiscountDetailViewModel
     @State private var showCard = false
-    
+
     //MARK: - Init
-    
+
     init(viewModel: DiscountDetailViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = State(wrappedValue: viewModel)
     }
     
     //MARK: - Boduy

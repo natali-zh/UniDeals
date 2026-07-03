@@ -36,6 +36,7 @@ final class SessionManager {
         }
     }
     
+    @MainActor
     func logout() {
         do {
             try Auth.auth().signOut()

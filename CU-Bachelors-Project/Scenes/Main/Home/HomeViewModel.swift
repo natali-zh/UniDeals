@@ -1,18 +1,17 @@
-import Combine
 import Foundation
 
 @MainActor
-final class HomeViewModel: ObservableObject {
-    
+@Observable
+final class HomeViewModel {
+
     // MARK: - Dependencies
-    
+
     private let discountService: DiscountServiceProtocol
-    private var cancellables = Set<AnyCancellable>()
-    
-    // MARK: - Published
-    
-    @Published private var discounts: [Discount] = []
-    @Published var isLoading: Bool = false
+
+    // MARK: - State
+
+    private var discounts: [Discount] = []
+    var isLoading: Bool = false
     
     // MARK: - Computed
     
@@ -49,10 +48,6 @@ final class HomeViewModel: ObservableObject {
     
     init(discountService: DiscountServiceProtocol) {
         self.discountService = discountService
-        UserManager.shared.$currentUser
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in self?.objectWillChange.send() }
-            .store(in: &cancellables)
     }
 
     convenience init() {

@@ -6,13 +6,13 @@ struct FeaturedCarousel: View {
     let onTap: (String) -> Void
     let onSave: (String) -> Void
 
-    @StateObject private var carouselViewModel: FeaturedCarouselViewModel
+    @State private var carouselViewModel: FeaturedCarouselViewModel
 
     init(discounts: [Discount], onTap: @escaping (String) -> Void, onSave: @escaping (String) -> Void) {
         self.discounts = discounts
         self.onTap = onTap
         self.onSave = onSave
-        _carouselViewModel = StateObject(wrappedValue: FeaturedCarouselViewModel(itemCount: discounts.count))
+        _carouselViewModel = State(wrappedValue: FeaturedCarouselViewModel(itemCount: discounts.count))
     }
 
     var body: some View {

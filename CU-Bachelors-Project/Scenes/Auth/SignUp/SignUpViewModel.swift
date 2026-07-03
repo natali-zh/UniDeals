@@ -1,5 +1,6 @@
 import FirebaseAuth
 
+@MainActor
 final class SignUpViewModel {
     
     //MARK: - Properties
@@ -15,8 +16,12 @@ final class SignUpViewModel {
     
     //MARK: - Init
     
-    init(authService: AuthServiceProtocol = AuthService.shared) {
+    init(authService: AuthServiceProtocol) {
         self.authService = authService
+    }
+    
+    convenience init() {
+        self.init(authService: AuthService.shared)
     }
     
     //MARK: - Methods

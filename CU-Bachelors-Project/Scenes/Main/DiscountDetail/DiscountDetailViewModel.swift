@@ -1,19 +1,19 @@
 import CoreLocation
 import Foundation
-import Combine
 
 @MainActor
-final class DiscountDetailViewModel: ObservableObject {
+@Observable
+final class DiscountDetailViewModel {
 
     // MARK: - Dependencies
 
     private let partnerService: PartnerServiceProtocol
 
-    // MARK: - Published
+    // MARK: - State
 
     let discount: Discount
-    @Published var partner: Partner?
-    @Published var isSaved: Bool
+    var partner: Partner?
+    var isSaved: Bool
 
     // MARK: - Navigation callbacks
 

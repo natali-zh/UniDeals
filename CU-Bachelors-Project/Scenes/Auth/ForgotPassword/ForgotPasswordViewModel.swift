@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 final class ForgotPasswordViewModel {
     
     // MARK: - Properties
@@ -14,10 +15,13 @@ final class ForgotPasswordViewModel {
     
     // MARK: - Init
     
-    init(authService: AuthServiceProtocol = AuthService.shared) {
+    init(authService: AuthServiceProtocol) {
         self.authService = authService
     }
     
+    convenience init() {
+        self.init(authService: AuthService.shared)
+    }
     // MARK: - Methods
     
     func sendResetLink(email: String) async {
