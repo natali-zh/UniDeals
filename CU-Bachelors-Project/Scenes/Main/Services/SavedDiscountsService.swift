@@ -2,10 +2,17 @@ import FirebaseFirestore
 
 final class SavedDiscountsService {
 
+    // MARK: - Properties
+
     static let shared = SavedDiscountsService()
     private let db = Firestore.firestore()
     private var cachedIds: [String]?
+
+    // MARK: - Init
+
     private init() {}
+
+    // MARK: - Methods
 
     func invalidateCache() {
         cachedIds = nil

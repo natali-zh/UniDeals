@@ -7,10 +7,16 @@ protocol PartnerServiceProtocol {
 
 final class PartnerService: PartnerServiceProtocol {
 
+    // MARK: - Properties
+
     static let shared = PartnerService()
     private let db = Firestore.firestore()
 
+    // MARK: - Init
+
     private init() {}
+
+    // MARK: - Methods
 
     func fetchAllPartners() async throws -> [Partner] {
         let snapshot = try await db.collection(FirestoreCollections.partners).getDocuments()
