@@ -1,24 +1,30 @@
 import SwiftUI
 
 struct SavedDiscountsView: View {
-
+    
+    //MARK: - Properties
+    
     @State private var viewModel: SavedDiscountsViewModel
-
+    
+    //MARK: - Init
+    
     init(viewModel: SavedDiscountsViewModel) {
         _viewModel = State(wrappedValue: viewModel)
     }
-
+    
+    //MARK: - Body
+    
     var body: some View {
         ZStack {
             Color(.systemGroupedBackground).ignoresSafeArea()
-
+            
             if viewModel.isLoading {
                 ScrollView(showsIndicators: false) {
                     DiscountsGridSkeleton()
                         .padding(.top, 16)
                 }
             } else if viewModel.discounts.isEmpty {
-                emptyState
+                SavedDiscountsEmptyState()
             } else {
                 ScrollView(showsIndicators: false) {
                     DiscountsGridView(
@@ -28,9 +34,7 @@ struct SavedDiscountsView: View {
                                 viewModel.onDiscountTapped?(d)
                             }
                         },
-                        onSave: { discountId in
-                            viewModel.toggleSave(discountId)
-                        },
+                        onSave: { viewModel.toggleSave($0) },
                         showCount: false
                     )
                     .padding(.top, 16)
@@ -43,21 +47,5 @@ struct SavedDiscountsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarHidden(false)
         .task { await viewModel.load() }
-    }
-
-    private var emptyState: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "heart.slash")
-                .font(.system(size: 48, weight: .light))
-                .foregroundColor(.gray300)
-            Text("შენახული შეთავაზება არ გაქვს")
-                .font(.system(size: 16, weight: .medium))
-                .foregroundColor(.gray500)
-            Text("შენი ფავორიტი შეთავაზებები აქ გამოჩნდება")
-                .font(.system(size: 13))
-                .foregroundColor(.gray300)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-        }
     }
 }

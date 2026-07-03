@@ -15,9 +15,7 @@ final class FirestoreService: FirestoreServiceProtocol {
     private let db = Firestore.firestore()
     
     private init() {}
-    
-    //MARK: - Methods
-    
+
     func fetchDocument<T: Decodable>(from collection: String, documentId: String, as type: T.Type) async throws -> T? {
         let docRef = db.collection(collection).document(documentId)
         let snapshot = try await docRef.getDocument()
@@ -64,4 +62,3 @@ final class FirestoreService: FirestoreServiceProtocol {
         try await docRef.delete()
     }
 }
-

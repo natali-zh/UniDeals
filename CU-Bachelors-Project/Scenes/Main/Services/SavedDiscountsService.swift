@@ -36,8 +36,9 @@ final class SavedDiscountsService {
         guard !ids.isEmpty else { return [] }
         var result: [Discount] = []
         for id in ids {
-            if let discount = try? await DiscountService.shared.fetchDiscount(id: id) {
-                var saved = discount; saved.isSaved = true; result.append(saved)
+            if var discount = try? await DiscountService.shared.fetchDiscount(id: id) {
+                discount.isSaved = true
+                result.append(discount)
             }
         }
         return DiscountFormatter.withDistances(result)

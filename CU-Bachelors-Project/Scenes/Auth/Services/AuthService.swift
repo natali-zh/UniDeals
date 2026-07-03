@@ -12,19 +12,13 @@ protocol AuthServiceProtocol {
 }
 
 final class AuthService: AuthServiceProtocol {
-    
-    //MARK: - Properties
-    
+
     static let shared = AuthService()
     private let db = Firestore.firestore()
     private let auth = Auth.auth()
-    
-    //MARK: - Init
-    
+
     private init() {}
-    
-    //MARK: - Methods
-    
+
     @MainActor
     func signInWithGoogle(presenting viewController: UIViewController) async throws {
         guard let clientID = FirebaseApp.app()?.options.clientID else {
@@ -69,8 +63,6 @@ final class AuthService: AuthServiceProtocol {
     func signOut() throws {
         try auth.signOut()
     }
-    
-    // MARK: - Methods
     
     private func syncUserToFirestore(_ firebaseUser: FirebaseAuth.User, googleUser: GIDGoogleUser) async throws {
         let userDoc = db.collection(FirestoreCollections.users).document(firebaseUser.uid)
