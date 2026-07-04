@@ -9,13 +9,11 @@ final class AppCoordinator: Coordinator {
     
     var window: UIWindow
     private var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
-    
+
     //MARK: - Init
-    
+
     init(window: UIWindow) {
         self.window = window
-        self.navigationController = UINavigationController()
     }
     
     //MARK: - Methods
@@ -37,21 +35,15 @@ final class AppCoordinator: Coordinator {
         }
     }
     
-    private func showAuth(startingWithSignUp: Bool = false) {
+    private func showAuth() {
         let authNav = UINavigationController()
         let authCoordinator = AuthCoordinator(navigationController: authNav)
         childCoordinators = [authCoordinator]
-        authCoordinator.parentCoordinator = self
-        
         authCoordinator.onAuthenticationComplete = { [weak self] in
             self?.navigate(to: .main)
         }
         authCoordinator.start()
         window.rootViewController = authCoordinator.navigationController
-        
-        if startingWithSignUp {
-            authCoordinator.goToSignUp()
-        }
     }
     
     private func showMainOrOnboarding() async {

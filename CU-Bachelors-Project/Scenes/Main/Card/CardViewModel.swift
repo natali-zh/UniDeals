@@ -51,7 +51,7 @@ final class CardViewModel {
             await userManager.fetchUser()
         }
         user = userManager.currentUser
-        generateQR()
+        await generateQR()
     }
 
     // MARK: - Private
@@ -66,15 +66,20 @@ final class CardViewModel {
         return (enrollmentYear, enrollmentYear + 4)
     }
 
-    private func generateQR() {
+    private func generateQR() async {
         guard let uid = sessionManager.userId else { return }
-        let context = CIContext()
-        let filter = CIFilter.qrCodeGenerator()
-        filter.message = Data(uid.utf8)
-        filter.correctionLevel = "H"
-        guard let outputImage = filter.outputImage else { return }
-        let scaled = outputImage.transformed(by: CGAffineTransform(scaleX: 10, y: 10))
-        guard let cgImage = context.createCGImage(scaled, from: scaled.extent) else { return }
-        qrImage = Image(uiImage: UIImage(cgImage: cgImage))
+        let rendered = await Task.detached(priority: .userInitiated) {
+            let context = CIContext()
+            let filter = CIFilter.qrCodeGenerator()
+            filter.message = Data(uid.utf8)
+            filter.correctionLevel = "H"
+            guard let outputImage = filter.outputImage else { return nil as UIImage? }
+            let scaled = outputImage.transformed(by: CGAffineTransform(scaleX: 10, y: 10))
+            guard let cgImage = context.createCGImage(scaled, from: scaled.extent) else { return nil as UIImage? }
+            return UIImage(cgImage: cgImage)
+        }.value
+        if let rendered {
+            qrImage = Image(uiImage: rendered)
+        }
     }
 }

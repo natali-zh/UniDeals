@@ -5,8 +5,7 @@ import UIKit
 final class AuthCoordinator: Coordinator {
     
     //MARK: - Properties
-    
-    weak var parentCoordinator: AppCoordinator?
+
     var navigationController: UINavigationController
     
     var onAuthenticationComplete: (() -> Void)?
@@ -31,7 +30,7 @@ final class AuthCoordinator: Coordinator {
         logInViewModel.onNavigateToForgotPassword = { [weak self] in
             self?.goToForgotPassword()
         }
-        navigationController.setViewControllers([loginViewController], animated: true)
+        navigationController.setViewControllers([loginViewController], animated: false)
     }
     
     func goToSignUp() {

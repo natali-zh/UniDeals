@@ -3,25 +3,25 @@ import SwiftUI
 
 @MainActor
 final class ExploreCoordinator: Coordinator {
-
+    
     // MARK: - Properties
-
+    
     let navigationController: UINavigationController
     var onShowOnMap: ((Discount) -> Void)?
-
+    
     private var isNavigating = false
-
+    
     // MARK: - Init
-
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         (navigationController as? SwipeableNavigationController)?.onDidShow = { [weak self] in
             self?.isNavigating = false
         }
     }
-
-    // MARK: - Start
-
+    
+    // MARK: - Methods
+    
     func start() {
         let viewModel = ExploreViewModel()
         viewModel.onDiscountTapped = { [weak self] id in self?.showDiscountDetail(id: id) }
@@ -29,9 +29,7 @@ final class ExploreCoordinator: Coordinator {
         let vc = UIHostingController(rootView: ExploreView(viewModel: viewModel))
         navigationController.setViewControllers([vc], animated: false)
     }
-
-    // MARK: - Navigation
-
+    
     private func showDiscountDetail(id: String) {
         guard !isNavigating else { return }
         isNavigating = true
@@ -43,7 +41,7 @@ final class ExploreCoordinator: Coordinator {
             pushDiscountDetail(discount: discount)
         }
     }
-
+    
     private func showPartnerDetail(id: String) {
         guard !isNavigating else { return }
         isNavigating = true
@@ -64,7 +62,7 @@ final class ExploreCoordinator: Coordinator {
             navigationController.pushViewController(vc, animated: true)
         }
     }
-
+    
     private func pushDiscountDetail(discount: Discount) {
         let detailVM = DiscountDetailViewModel(discount: discount)
         detailVM.onBack = { [weak self] in self?.navigationController.popViewController(animated: true) }

@@ -61,6 +61,9 @@ final class MainCoordinator: Coordinator {
 
         let savedNav = makeNav(title: "შენახული", icon: "heart", selectedIcon: "heart.fill")
         savedCoordinator = SavedDiscountsCoordinator(navigationController: savedNav)
+        savedCoordinator?.onShowOnMap = { [weak self] discount in
+            self?.showOnMap(discount: discount)
+        }
         savedCoordinator?.start()
 
         return [

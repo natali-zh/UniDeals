@@ -21,8 +21,8 @@ final class HomeCoordinator: Coordinator {
             self?.isNavigating = false
         }
     }
-
-    // MARK: - Start
+    
+    // MARK: - Methods
 
     func start() {
         let viewModel = HomeViewModel(discountService: DiscountService.shared)
@@ -69,9 +69,7 @@ final class HomeCoordinator: Coordinator {
         vc.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(vc, animated: true)
     }
-
-    // MARK: - Navigation
-
+    
     private func showDiscountDetail(id: String) {
         guard !isNavigating else { return }
         isNavigating = true

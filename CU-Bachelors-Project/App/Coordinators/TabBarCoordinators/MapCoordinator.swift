@@ -3,34 +3,34 @@ import SwiftUI
 
 @MainActor
 final class MapCoordinator: Coordinator {
-
+    
     // MARK: - Properties
-
+    
     let navigationController: UINavigationController
     private var mapViewModel: MapViewModel?
     private var isNavigating = false
-
+    
     // MARK: - Init
-
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         (navigationController as? SwipeableNavigationController)?.onDidShow = { [weak self] in
             self?.isNavigating = false
         }
     }
-
-    // MARK: - Start
-
+    
+    // MARK: - Methods
+    
     func start() {
         let viewModel = MapViewModel()
         viewModel.onViewOffer = { [weak self] discount in
             self?.showDiscountDetail(discount: discount)
         }
-        self.mapViewModel = viewModel
+        mapViewModel = viewModel
         let vc = UIHostingController(rootView: MapView(viewModel: viewModel))
         navigationController.setViewControllers([vc], animated: false)
     }
-
+    
     func show(discount: Discount) {
         navigationController.popToRootViewController(animated: false)
         Task {
@@ -44,12 +44,26 @@ final class MapCoordinator: Coordinator {
             }
         }
     }
-
-    // MARK: - Navigation
-
+    
+    private func showDiscountDetail(id: String) {
+        guard !isNavigating else { return }
+        isNavigating = true
+        Task {
+            guard let discount = try? await DiscountService.shared.fetchDiscount(id: id) else {
+                isNavigating = false
+                return
+            }
+            pushDiscountDetail(discount: discount)
+        }
+    }
+    
     private func showDiscountDetail(discount: Discount) {
         guard !isNavigating else { return }
         isNavigating = true
+        pushDiscountDetail(discount: discount)
+    }
+    
+    private func pushDiscountDetail(discount: Discount) {
         let detailVM = DiscountDetailViewModel(discount: discount)
         detailVM.onBack = { [weak self] in self?.navigationController.popViewController(animated: true) }
         detailVM.onViewOnMap = { [weak self] discount in
@@ -61,7 +75,7 @@ final class MapCoordinator: Coordinator {
         vc.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(vc, animated: true)
     }
-
+    
     private func showPartnerDetail(id: String) {
         guard !isNavigating else { return }
         isNavigating = true
@@ -76,12 +90,7 @@ final class MapCoordinator: Coordinator {
                 self?.navigationController.popViewController(animated: false)
                 self?.show(discount: discount)
             }
-            detailVM.onOfferTapped = { [weak self] discountId in
-                Task {
-                    guard let discount = try? await DiscountService.shared.fetchDiscount(id: discountId) else { return }
-                    self?.showDiscountDetail(discount: discount)
-                }
-            }
+            detailVM.onOfferTapped = { [weak self] id in self?.showDiscountDetail(id: id) }
             let vc = UIHostingController(rootView: PartnerDetailView(viewModel: detailVM))
             vc.hidesBottomBarWhenPushed = true
             navigationController.pushViewController(vc, animated: true)
